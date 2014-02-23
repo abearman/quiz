@@ -78,7 +78,7 @@ public class Quiz {
 		this.isImmediateCorrection = isImmediateCorrection;
 	}
 	
-	public boolean setCanBeTakenInPracticeMode(boolean canBeTakenInPracticeMode){
+	public void setCanBeTakenInPracticeMode(boolean canBeTakenInPracticeMode){
 		this.canBeTakenInPracticeMode = canBeTakenInPracticeMode;
 	}
 	
