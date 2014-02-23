@@ -2,6 +2,7 @@ package quiz;
 
 public class Question {
 
+
 	/*
 	 * Instance Variables
 	 */
@@ -47,8 +48,4 @@ public class Question {
 	{
 		return imageFile;
 	}
-	
-	
-	
-	
 }
