@@ -71,6 +71,10 @@ public class User {
 		return this.loginName;
 	}
 	
+	public String getPasswordHash() {
+		return this.passwordHash;
+	}
+	
 	public boolean getIsAdministrator() {
 		return this.isAdministrator;
 	}
