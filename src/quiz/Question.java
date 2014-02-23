@@ -2,13 +2,11 @@ package quiz;
 
 public class Question {
 
-
 	/*
 	 * Instance Variables
 	 */
 	private String questionPrompt;
 	private Answer answer;
-	private String answerType;
 	private String imageFile;
 	
 	/**
@@ -38,6 +36,15 @@ public class Question {
 	public Answer getAnswer()
 	{
 		return answer;
+	}
+	
+	/**
+	 * Sets the path of the image
+	 * file as a String.
+	 */
+	public void setImageFile(String imagePath)
+	{
+		imageFile = imagePath;
 	}
 	
 	/**
