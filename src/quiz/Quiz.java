@@ -1,6 +1,7 @@
 package quiz;
 import java.util.*;
 
+
 public class Quiz {
 	
 	//instance variables
@@ -115,12 +116,39 @@ public class Quiz {
 	
 	public void addTopScorer(TopScorer topScorer){
 		topScorers.add(topScorer);
+		sortTopScorers();
 	}
 	
 	public void removeTopScorer(TopScorer topScorer){
 		if (topScorers.contains(topScorer)){
 			topScorers.remove(topScorer);
 		}
+	}
+	
+	/** Sort top scorers first by number of correct questions, then by
+	 * amount of time taken. */
+	private void sortTopScorers(){
+		
+		//Sort top scorers
+		Collections.sort(topScorers, new Comparator<TopScorer>(){
+			
+			@Override
+			public int compare(TopScorer topScorer1, TopScorer topScorer2){
+				
+				//sort first by number of correct questions
+				int diffNumCorrectQuestions = topScorer2.getNumCorrectQuestions() - topScorer1.getNumCorrectQuestions();
+				if (diffNumCorrectQuestions != 0) {
+					return diffNumCorrectQuestions;
+				}else{
+					
+					//sort next by time taken
+					double diffTimeTaken = topScorer1.getTimeTaken() - topScorer2.getTimeTaken();
+					if (diffTimeTaken < 0) return -1;
+					else if (diffTimeTaken > 0) return 1;
+					else return 0;
+				}
+			}
+		});
 	}
 	
 }
