@@ -1,5 +1,7 @@
 package quiz;
 
+import java.util.*;
+
 public class Answer {
 
 	/*
@@ -19,7 +21,8 @@ public class Answer {
 	}
 	
 	/**
-	 * Method is mean to overwritten by subclasses.
+	 * Returns the type of question/answer as an int.
+	 * Method is meant to overwritten by subclasses.
 	 */
 	public int getAnswerType()
 	{
@@ -27,11 +30,11 @@ public class Answer {
 	}
 	
 	/**
-	 * Returns the answer which could be in the form
-	 * of a String, ArrayList, etc., depending on the
-	 * type of question. Should be typecasted by the user. 
+	 * Returns the an ArrayList of Strings for
+	 * the possible answers because there can be
+	 * variations.  
 	 */
-	public Object getAnswer()
+	public ArrayList<String> getAnswer()
 	{
 		return null;
 	}
