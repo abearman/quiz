@@ -18,6 +18,7 @@ public class Answer {
 	 */
 	public Answer()
 	{
+		//TODO: DONT REALLY THINK WE NEED THIS CLASS
 	}
 	
 	/**

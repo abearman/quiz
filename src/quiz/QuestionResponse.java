@@ -2,36 +2,15 @@ package quiz;
 
 import java.util.*;
 
-public class QuestionResponse extends Answer {
+public class QuestionResponse extends Question {
 
-	/*
-	 * Instance Variables
-	 */
-	private ArrayList<String> answers;
-	
-	
 	/**
-	 * Constructor creates
+	 * Constructor creates a new QuestionResponse object,
+	 * which has all of the functionality of Question.
 	 */
-	public QuestionResponse()
+	public QuestionResponse(String question, ArrayList<String> answers)
 	{
-		answers = new ArrayList<String>();
-	}
-	
-	/**
-	 * Returns the answer type.
-	 */
-	public int getAnswerType()
-	{
-		return Answer.QUESTION_RESPONSE;
-	}
-	
-	/**
-	 * 
-	 */
-	public ArrayList<String> getAnswer()
-	{
-		return answers;
+		super(question, answers);
 	}
 	
 }

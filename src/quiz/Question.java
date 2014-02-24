@@ -1,28 +1,29 @@
 package quiz;
 
+import java.util.*;
+
 public class Question {
 
 	/*
 	 * Instance Variables
 	 */
 	private String questionPrompt;
-	private Answer answer;
-	private String imageFile;
+	private ArrayList<String> answers;
 	
 	/**
 	 * Construct creates a new Question by
 	 * taking in a String for the question
-	 * and an Answer object that defines the answer
-	 * for the question.
+	 * and an ArrayList of Strings that hold the
+	 * answers.
 	 */
-	public Question(String question, Answer answer)
+	public Question(String question, ArrayList<String> qAnswers)
 	{
 		questionPrompt = question;
-		this.answer = answer;
+		answers = qAnswers;
 	}
 	
 	/**
-	 * Returns the question as a String;
+	 * Returns the question as a String.
 	 */
 	public String getQuestion()
 	{
@@ -33,26 +34,27 @@ public class Question {
 	 * Returns the Answer object associated
 	 * with the question.
 	 */
-	public Answer getAnswer()
+	public ArrayList<String> getAnswer()
 	{
-		return answer;
+		return answers;
 	}
 	
 	/**
-	 * Sets the path of the image
-	 * file as a String.
+	 * Takes in the user's answer,
+	 * compares it to the answers for the question,
+	 * and returns true if there is a match or false,
+	 * if there is no match.
 	 */
-	public void setImageFile(String imagePath)
+	public boolean isCorrect(String input)
 	{
-		imageFile = imagePath;
+		for(String answer: answers)
+		{
+			if(answer.equalsIgnoreCase(input))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	/**
-	 * Returns the path of the image
-	 * file as a String.
-	 */
-	public String getImageFile()
-	{
-		return imageFile;
-	}
 }
