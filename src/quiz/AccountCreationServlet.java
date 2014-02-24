@@ -10,23 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class LoginServlet.
- * On a post request, checks whether entered username exists and the password
- * matches the username.  If it does, displays the welcome user page.  If it 
- * does not, displays the try again page.
+ * Servlet implementation class AccountCreationServlet.
+ * When called with post, checks whether entered username is in use.
+ * If it is, a webpage is displays stating that the username is in use.
+ * If it is not, an account is created with given username and password.
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/AccountCreationServlet")
+public class AccountCreationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 	private AccountManager manager;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public LoginServlet() {
-		super();
-	}
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AccountCreationServlet() {
+        super();
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,9 +34,8 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	/**
-	 * Gets username and password fields entered by the user and displays appropriate
-	 * page depending on whether or not the username inputed exists and the password
-	 * matches the username.
+	 * Reads in the username and password and displays appropriate webpage depending on 
+	 * whether username is in use or not.
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,17 +44,22 @@ public class LoginServlet extends HttpServlet {
 		String username = (String)request.getParameter("username");
 		String password = (String)request.getParameter("password");
 		
-		if (manager.accountExists(username) && manager.isPasswordForAccount(username, password)){
+		//check if username is in use 
+		if (manager.accountExists(username)){
+			
+			RequestDispatcher dispatch = request.getRequestDispatcher("accountExists.jsp");
+			dispatch.forward(request,response);
+			
+		}else{
+			
+			//If username is not already in use
+			//Create account with given username and password
+			manager.createNewAccount(username, password);
 			
 			//display user homepage
 			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");
 			dispatch.forward(request,response);
-		
-		}else{
-		
-			//display try again page
-			RequestDispatcher dispatch = request.getRequestDispatcher("tryAgainPage.html");
-			dispatch.forward(request,response);
 		}
 	}
+
 }
