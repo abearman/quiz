@@ -6,6 +6,7 @@ public class Quiz {
 	//instance variables
 	
 	//stay the same across sessions, stored in database
+	private String quizName;
 	private String descriptionOfQuiz;
 	private boolean isRandom;
 	private boolean isMultiplePage;
@@ -24,6 +25,12 @@ public class Quiz {
 	public Quiz(){
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
+	}
+	
+	/* Getters */
+	
+	public String getQuizName(){
+		return quizName;
 	}
 	
 	public String getDescriptionOfQuiz(){
@@ -60,6 +67,12 @@ public class Quiz {
 	
 	public ArrayList<TopScorer> getTopScorers(){
 		return topScorers;
+	}
+	
+	/* Setters */
+	
+	public void setQuizName(String quizName){
+		this.quizName = quizName;
 	}
 	
 	public void setDescriptionOfQuiz(String descriptionOfQuiz){

@@ -26,9 +26,15 @@ public class ServletListener implements ServletContextListener {
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent arg0) {
+    	
+    	//create account manager
     	manager = new AccountManager();
     	ServletContext context = arg0.getServletContext();
     	context.setAttribute("manager", manager);
+    	
+    	//TODO keep track of announcements array of strings (from database)
+    	//TODO keep track of array list of popular quizzes by name
+    	//TODO keep track of recently created quizzes
     }
 
 	/**
