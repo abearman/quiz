@@ -9,11 +9,17 @@ public class User {
 	boolean isAdministrator;
 	String loginName;
 	String passwordHash;
+	boolean hasNewMessages;
 	
-	ArrayList<String> friends;
+	ArrayList<User> friends;
 	ArrayList<HistoryObject> historyList;
 	boolean[] achievements;
 	ArrayList<Message> messages;
+	
+	ArrayList<String> recentlyTakenQuizzes;
+	ArrayList<String> recentlyCreatedQuizzes;
+	
+	ArrayList<FriendRecentActivity> friendsRecentActivity;
 	
 	/* Private helper method to set all achievements to false */
 	private void initAchievementsArray() {
@@ -57,12 +63,16 @@ public class User {
 		this.loginName = loginName;
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
-	
-		friends = new ArrayList<String>();
+		this.hasNewMessages = false;
+		
+		friends = new ArrayList<User>();
 		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
 		initAchievementsArray();
 		historyList = new ArrayList<HistoryObject>();
 		messages = new ArrayList<Message>();
+		
+		recentlyTakenQuizzes = new ArrayList<String>();
+		recentlyCreatedQuizzes = new ArrayList<String>();
 	}
 	
 	/* Getter methods */
@@ -79,7 +89,7 @@ public class User {
 		return this.isAdministrator;
 	}
 	
-	public ArrayList<String> getFriends() {
+	public ArrayList<User> getFriends() {
 		return this.friends;
 	}
 	
@@ -95,6 +105,10 @@ public class User {
 		return this.messages;
 	}
 	
+	public ArrayList<FriendRecentActivity> getListOfFriendsRecentActivities() {
+		return this.friendsRecentActivity;
+	}
+	
 	/* Setter methods */
 	
 	public void setAsAdministrator() {
@@ -106,11 +120,15 @@ public class User {
 	}
 	
 	public void addFriend(User friend) {
-		friends.add(friend.getLoginName());
+		friends.add(friend);
 	}
 	
 	public void removeFriend(User friend) {
 		friends.remove(friend.getLoginName());
+	}
+	
+	public void deleteMessage(Message message) {
+		messages.remove(message);
 	}
 	
 }
