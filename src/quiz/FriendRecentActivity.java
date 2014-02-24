@@ -10,7 +10,7 @@ public class FriendRecentActivity {
 	
 	/* Constructor */
 	public FriendRecentActivity(String friendName) {
-		this.friendName = friendName;
+		this.friendName = friendName; 
 		this.recentAchievement = -1;
 		this.recentlyCreatedQuiz = null;
 		this.recentlyTakenQuiz = null;
