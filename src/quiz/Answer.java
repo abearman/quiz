@@ -10,9 +10,12 @@ public class Answer {
 	public static final int MULTIPLE_CHOICE = 3;
 	public static final int PICTURE_RESPONSE = 4;
 	
+	/**
+	 * Blank constructor because this class is
+	 * not meant to be instantiated. 
+	 */
 	public Answer()
 	{
-		
 	}
 	
 	/**
@@ -23,4 +26,16 @@ public class Answer {
 		return -1;
 	}
 	
+	/**
+	 * Returns the answer which could be in the form
+	 * of a String, ArrayList, etc., depending on the
+	 * type of question. Should be typecasted by the user. 
+	 */
+	public Object getAnswer()
+	{
+		return null;
+	}
+	
+	
 }
+
