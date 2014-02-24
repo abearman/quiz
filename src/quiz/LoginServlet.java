@@ -52,19 +52,6 @@ public class LoginServlet extends HttpServlet {
 			//display user homepage
 			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");
 			dispatch.forward(request,response);
-			
-			//Display "Welcome User" page
-			/*response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<!DOCTYPE html>");
-			out.println("<head>");
-			out.println("<meta charset=\"UTF-8\" />");
-			out.println("<title>Welcome " + username + "</title>");
-			out.println("</head>");
-			out.println("<body>");
-			out.println("<h1>Welcome " + username + "</h1>");
-			out.println("</body>");
-			out.println("</html>");*/
 		
 		}else{
 		
