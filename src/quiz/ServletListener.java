@@ -11,14 +11,14 @@ import javax.servlet.annotation.WebListener;
  * used by the whole login system website.
  */
 @WebListener
-public class MyListener implements ServletContextListener {
+public class ServletListener implements ServletContextListener {
 
 	private AccountManager manager;
 	
     /**
      * Default constructor. 
      */
-    public MyListener() {
+    public ServletListener() {
     }
 
 	/**
