@@ -8,17 +8,15 @@ public class Quiz {
 	
 	//stay the same across sessions, stored in database
 	private String quizName;
-	private String quizLink;
 	private String descriptionOfQuiz;
 	private boolean isRandom;
 	private boolean isMultiplePage;
 	private boolean isImmediateCorrection;
 	private boolean canBeTakenInPracticeMode;
 	private ArrayList<Question> questions;
-	private ArrayList<HistoryObject> allHistories;
 	
 	//different across sessions
-	private long lengthOfCompletion;
+	private double lengthOfCompletion;
 	private double usersScore;
 	
 	//updated across different sessions, stored in database
@@ -28,17 +26,12 @@ public class Quiz {
 	public Quiz(){
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
-		allHistories = new ArrayList<HistoryObject>();
 	}
 	
 	/* Getters */
 	
 	public String getQuizName(){
 		return quizName;
-	}
-	
-	public String getQuizLink() {
-		return quizLink;
 	}
 	
 	public String getDescriptionOfQuiz(){
@@ -65,7 +58,7 @@ public class Quiz {
 		return questions;
 	}
 	
-	public long getLengthOfCompletion(){
+	public double getLengthOfCompletion(){
 		return lengthOfCompletion;
 	}
 	
@@ -77,18 +70,10 @@ public class Quiz {
 		return topScorers;
 	}
 	
-	public ArrayList<HistoryObject> getAllHistories() {
-		return allHistories;
-	}
-	
 	/* Setters */
 	
 	public void setQuizName(String quizName){
 		this.quizName = quizName;
-	}
-	
-	public void setQuizLink(String quizLink) {
-		this.quizLink = quizLink;
 	}
 	
 	public void setDescriptionOfQuiz(String descriptionOfQuiz){
@@ -111,7 +96,7 @@ public class Quiz {
 		this.canBeTakenInPracticeMode = canBeTakenInPracticeMode;
 	}
 	
-	public void setLengthOfCompletion(long lengthOfCompletion){
+	public void setLengthOfCompletion(double lengthOfCompletion){
 		this.lengthOfCompletion = lengthOfCompletion;
 	}
 	
