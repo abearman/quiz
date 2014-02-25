@@ -4,6 +4,8 @@ import java.util.*;
 
 public class Quiz {
 	
+	public static final int TOPSCORER_MAX = 5;
+	
 	//instance variables
 	
 	//stay the same across sessions, stored in database
@@ -132,6 +134,14 @@ public class Quiz {
 	public void addTopScorer(TopScorer topScorer){
 		topScorers.add(topScorer);
 		sortTopScorers();
+		
+		//cap top scorers at 5
+		int numExtra = topScorers.size() - TOPSCORER_MAX;
+		if (numExtra > 0){
+			for (int i = 0; i < numExtra; i++){
+				this.removeTopScorer(topScorers.get(TOPSCORER_MAX+1+i));
+			}
+		}
 	}
 	
 	public void removeTopScorer(TopScorer topScorer){
