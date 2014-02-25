@@ -1,56 +1,39 @@
 package quiz;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class HistoryObject {
 	
-	/* Instance variables */
-	private Date date;
+	private String dateString;
+	private long timeElapsed;
 	private double score;
-	private double timeTaken;
-	private String nameOfQuiz;
-	
-	/* Constructor */
-	public HistoryObject(String quizName, double score, double timeTaken, Date date) {
-		this.nameOfQuiz = quizName;
-		this.score = score;
-		this.timeTaken = timeTaken;
-		this.date = date;
+	private String userName;
+
+	public HistoryObject(String userName, Quiz quiz) {
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		dateString = dateFormat.format(date);
+		this.timeElapsed = quiz.lengthOfCompletion();
+		this.score = quiz.usersScore();
+		this.userName = userName;
 	}
 	
-	/* Getter methods */
-	public Date getDate() {
-		return this.date;
+	public String getDate() {
+		return dateString;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public String getDateString() {
-		return date.getMonth() + " " + date.getDay() + ", " + date.getYear() + " at" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+	public long getElapsedTime() {
+		return timeElapsed;
+	}
+	
+	public String getUserName() {
+		return userName;
 	}
 	
 	public double getScore() {
-		return this.score;
+		return score;
 	}
 	
-	public double getTimeTaken() {
-		return this.timeTaken;
-	}
-	
-	public String getNameOfQuiz() {
-		return this.nameOfQuiz;
-	}
-	
-	/* Setter methods */
-	
-	public void setDate() {
-		this.date = new Date();
-	}
-	
-	public void setScore(double newScore) {
-		this.score = newScore;
-	}
-	
-	public void setTimeTaken(double newTime) {
-		this.timeTaken = newTime;
-	}
-
 }
