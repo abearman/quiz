@@ -1,6 +1,7 @@
 package quiz;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Statement;
 import java.util.*;
 
 public class User {
@@ -18,8 +19,10 @@ public class User {
 	
 	private ArrayList<String> recentlyTakenQuizzes;
 	private ArrayList<String> recentlyCreatedQuizzes;
-	
 	private ArrayList<FriendRecentActivity> friendsRecentActivity;
+	
+	private DBConnection con; //Manages connection to database
+	private Statement stmt;
 	
 	/* Private helper method to set all achievements to false */
 	private void initAchievementsArray() {
@@ -57,9 +60,9 @@ public class User {
 			ex.printStackTrace(); //TODO: How should we handle this exception?
 		}
 	}
-	
+		
 	/* Constructor */
-	public User(String loginName, String password) {
+	public User(String loginName, String password, DBConnection con) {
 		this.loginName = loginName;
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
@@ -73,6 +76,9 @@ public class User {
 		
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
+		
+		this.con = con;
+		this.stmt = con.getStatement();
 	}
 	
 	/* Getter methods */
