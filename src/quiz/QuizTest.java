@@ -10,7 +10,7 @@ public class QuizTest {
 
 	@Before
 	public void setUp() throws Exception {
-		thisQuiz = new Quiz();
+		thisQuiz = new Quiz(new DBConnection());
 		
 		User user1 = new User("user1","pwd1");
 		User user2 = new User("user2","pwd2");

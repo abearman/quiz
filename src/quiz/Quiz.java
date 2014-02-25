@@ -26,11 +26,15 @@ public class Quiz {
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
 	
+	//constructor of DBConnection
+	private DBConnection con;
+	
 	//constructor initializes arraylists
-	public Quiz(){
+	public Quiz(DBConnection con){
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = new ArrayList<HistoryObject>();
+		this.con = con;
 	}
 	
 	/* Getters */
@@ -139,7 +143,7 @@ public class Quiz {
 		int numExtra = topScorers.size() - TOPSCORER_MAX;
 		if (numExtra > 0){
 			for (int i = 0; i < numExtra; i++){
-				this.removeTopScorer(topScorers.get(TOPSCORER_MAX+1+i));
+				this.removeTopScorer(topScorers.get(TOPSCORER_MAX+i));
 			}
 		}
 	}
