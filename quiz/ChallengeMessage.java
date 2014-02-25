@@ -8,15 +8,15 @@ public class ChallengeMessage extends Message {
 	public ChallengeMessage(String fromUser, String toUser, Quiz quiz) {
 		super(fromUser, toUser);
 		this.quiz = quiz;
-		message = fromUser + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
+		message = fromUser + "is challenging you to take the " + quiz.getName() + "quiz!";
 	}
 	
 	public String getQuizName() {
-		return quiz.getQuizName();
+		return quiz.getName();
 	}
 	
 	public String getQuizLink() {
-		return quiz.getQuizLink();
+		return quiz.getLink();
 	}
 	
 	public String getMessage() {

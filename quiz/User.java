@@ -6,20 +6,20 @@ import java.util.*;
 public class User {
 	
 	/* Instance variables*/
-	private boolean isAdministrator;
-	private String loginName;
-	private String passwordHash;
-	private boolean hasNewMessages;
+	boolean isAdministrator;
+	String loginName;
+	String passwordHash;
+	boolean hasNewMessages;
 	
-	private ArrayList<User> friends;
-	private ArrayList<HistoryObject> historyList;
-	private boolean[] achievements;
-	private ArrayList<Message> messages;
+	ArrayList<User> friends;
+	ArrayList<HistoryObject> historyList;
+	boolean[] achievements;
+	ArrayList<Message> messages;
 	
-	private ArrayList<String> recentlyTakenQuizzes;
-	private ArrayList<String> recentlyCreatedQuizzes;
+	ArrayList<String> recentlyTakenQuizzes;
+	ArrayList<String> recentlyCreatedQuizzes;
 	
-	private ArrayList<FriendRecentActivity> friendsRecentActivity;
+	ArrayList<FriendRecentActivity> friendsRecentActivity;
 	
 	/* Private helper method to set all achievements to false */
 	private void initAchievementsArray() {
