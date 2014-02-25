@@ -26,11 +26,15 @@ public class Quiz {
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
 	
+	//constructor of DBConnection
+	private DBConnection con;
+	
 	//constructor initializes arraylists
-	public Quiz(){
+	public Quiz(DBConnection con){
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = new ArrayList<HistoryObject>();
+		this.con = con;
 	}
 	
 	/* Getters */
