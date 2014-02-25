@@ -3,32 +3,18 @@ package quiz;
 import java.util.ArrayList;
 
 public class PictureResponse extends Question {
-
-	/*
-	 * Instance Variables
-	 */
-	private String imageFile;
 	
 	/**
 	 * Constructor creates a new PictureResponse object,
 	 * which has all of the functionality of Question.
-	 * It takes in an extra String that hold the URL path
-	 * for displaying the picture.
+	 * The question is simply the picture. 
+	 * getQuestion() will return the image URL.
 	 */
-	public PictureResponse(String question, ArrayList<String> answers, String imageFile)
+	public PictureResponse(String imageURL, ArrayList<String> answers)
 	{
-		super(question, answers);
-		this.imageFile = imageFile;
+		super(imageURL, answers);
 	}
 	
-	/**
-	 * Returns a String that holds the
-	 * image URL path. 
-	 */
-	public String getImageFile()
-	{
-		return imageFile;
-	}
 	
 	/**
 	 * Overwritten so returns an int corresponding
