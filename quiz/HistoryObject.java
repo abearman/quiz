@@ -15,8 +15,8 @@ public class HistoryObject {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		dateString = dateFormat.format(date);
-		this.timeElapsed = quiz.getLengthOfCompletion();
-		this.score = quiz.getUsersScore();
+		this.timeElapsed = quiz.lengthOfCompletion();
+		this.score = quiz.usersScore();
 		this.userName = userName;
 	}
 	
