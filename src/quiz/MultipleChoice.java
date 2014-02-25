@@ -30,4 +30,13 @@ public class MultipleChoice extends Question {
 	{
 		return choices;
 	}
+	
+	/**
+	 * Overwritten so returns an int corresponding
+	 * to multiple choice.
+	 */
+	public int getQuestionType()
+	{
+		return Question.MULTIPLE_CHOICE;
+	}
 }

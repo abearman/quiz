@@ -29,4 +29,13 @@ public class PictureResponse extends Question {
 	{
 		return imageFile;
 	}
+	
+	/**
+	 * Overwritten so returns an int corresponding
+	 * to picture-response.
+	 */
+	public int getQuestionType()
+	{
+		return Question.PICTURE_RESPONSE;
+	}
 }
