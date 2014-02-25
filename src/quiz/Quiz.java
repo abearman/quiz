@@ -139,7 +139,7 @@ public class Quiz {
 		int numExtra = topScorers.size() - TOPSCORER_MAX;
 		if (numExtra > 0){
 			for (int i = 0; i < numExtra; i++){
-				this.removeTopScorer(topScorers.get(TOPSCORER_MAX+1+i));
+				this.removeTopScorer(topScorers.get(TOPSCORER_MAX+i));
 			}
 		}
 	}
