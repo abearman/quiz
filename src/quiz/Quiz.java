@@ -1,5 +1,6 @@
 package quiz;
 import java.util.*;
+import java.sql.Statement;
 
 
 public class Quiz {
@@ -26,8 +27,9 @@ public class Quiz {
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
 	
-	//constructor of DBConnection
+	//connect to database
 	private DBConnection con;
+	private Statement stmt;
 	
 	//constructor initializes arraylists
 	public Quiz(DBConnection con){
@@ -35,6 +37,7 @@ public class Quiz {
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = new ArrayList<HistoryObject>();
 		this.con = con;
+		this.stmt = con.getStatement();
 	}
 	
 	/* Getters */
