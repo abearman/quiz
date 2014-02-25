@@ -10,6 +10,7 @@ public class HistoryObject {
 	private long timeElapsed;
 	private double score;
 	private String userName;
+	private String quizName;
 
 	public HistoryObject(String userName, Quiz quiz) {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -18,6 +19,7 @@ public class HistoryObject {
 		this.timeElapsed = quiz.getLengthOfCompletion();
 		this.score = quiz.getUsersScore();
 		this.userName = userName;
+		this.quizName = quiz.getQuizName();
 	}
 	
 	public String getDate() {
@@ -34,6 +36,10 @@ public class HistoryObject {
 	
 	public double getScore() {
 		return score;
+	}
+	
+	public String getQuizName() {
+		return quizName;
 	}
 	
 }
