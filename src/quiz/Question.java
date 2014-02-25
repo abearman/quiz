@@ -10,6 +10,14 @@ public class Question {
 	private String questionPrompt;
 	private ArrayList<String> answers;
 	
+	/*
+	 * Question Labels
+	 */
+	public static final int QUESTION_RESPONSE = 1;
+	public static final int FILL_IN_THE_BLANK = 2;
+	public static final int MULTIPLE_CHOICE = 3;
+	public static final int PICTURE_RESPONSE = 4;
+	
 	/**
 	 * Construct creates a new Question by
 	 * taking in a String for the question
@@ -55,6 +63,15 @@ public class Question {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns a int corresponding to the Question type for
+	 * subclasses.
+	 */
+	public int getQuestionType()
+	{
+		return 0;
 	}
 	
 }

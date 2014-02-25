@@ -13,4 +13,13 @@ public class QuestionResponse extends Question {
 		super(question, answers);
 	}
 	
+	/**
+	 * Overwritten so returns an int corresponding
+	 * to Question Response.
+	 */
+	public int getQuestionType()
+	{
+		return Question.QUESTION_RESPONSE;
+	}
+	
 }

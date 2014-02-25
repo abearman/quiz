@@ -13,5 +13,14 @@ public class FillInTheBlank extends Question{
 		super(question, answers);
 	}
 	
+	/**
+	 * Overwritten so returns an int corresponding
+	 * to fill-in-the-blank.
+	 */
+	public int getQuestionType()
+	{
+		return Question.FILL_IN_THE_BLANK;
+	}
+	
 	//should we break the question up into two strings for display purposes
 }
