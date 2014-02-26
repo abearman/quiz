@@ -20,13 +20,20 @@ public class HistoryObject {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		dateString = dateFormat.format(date);
-		this.date = date;
 		this.timeElapsed = quiz.getLengthOfCompletion();
 		this.score = quiz.getUsersScore();
 		this.userName = userName;
 		this.quizName = quiz.getQuizName();
 		this.con = con;
 		addToHistoryTable();
+	}
+	
+	public HistoryObject(String dateString, long timeElapsed, double score, String userName, String quizName, DBConnection con) {
+		this.dateString = dateString;
+		this.timeElapsed = timeElapsed;
+		this.score = score;
+		this.userName = userName;
+		this.quizName = quizName;
 	}
 	
 	public String getDate() {
@@ -54,12 +61,11 @@ public class HistoryObject {
 		//update MySQL database
 		try {
 			String update = "INSERT INTO histories VALUES(\"" + userName + "\",\"" + quizName + "\","
-										+ "\"" + score + "\",\"" + timeElapsed + "\",\"" + date + "\")";
+										+ "\"" + score + "\",\"" + timeElapsed + "\",\"" + dateString + "\")";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 }
