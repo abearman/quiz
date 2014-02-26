@@ -9,6 +9,7 @@ public class Question {
 	 */
 	private String questionPrompt;
 	private ArrayList<String> answers;
+	private int questionNumber; //allows us to order the questions for the quiz
 	
 	/*
 	 * Question Labels
@@ -24,10 +25,11 @@ public class Question {
 	 * and an ArrayList of Strings that hold the
 	 * answers.
 	 */
-	public Question(String question, ArrayList<String> qAnswers)
+	public Question(String question, ArrayList<String> qAnswers, int orderNum)
 	{
 		questionPrompt = question;
 		answers = qAnswers;
+		questionNumber = orderNum;
 	}
 	
 	/**
@@ -74,4 +76,13 @@ public class Question {
 		return 0;
 	}
 	
+	/**
+	 * Returns an int that corresponds to the 
+	 * question number of the question in the quiz.
+	 * This is needed to properly order the quiz.
+	 */
+	public int getQuestionNumber()
+	{
+		return questionNumber;
+	}
 }

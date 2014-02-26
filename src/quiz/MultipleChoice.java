@@ -16,9 +16,9 @@ public class MultipleChoice extends Question {
 	 * It takes in an extra ArrayList of Strings that 
 	 * represent the choices for answers.
 	 */
-	public MultipleChoice(String question, ArrayList<String> answers, ArrayList<String> qChoices)
+	public MultipleChoice(String question, ArrayList<String> answers, int orderNum, ArrayList<String> qChoices)
 	{
-		super(question, answers);
+		super(question, answers, orderNum);
 		choices = qChoices;
 	}
 	
