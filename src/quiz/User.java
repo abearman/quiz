@@ -82,6 +82,14 @@ public class User {
 		
 		this.con = con;
 		this.stmt = con.getStatement();
+		
+		String achievementsString = "000000"; //Initialized to all 0's for all "false"
+		try {
+			String update = "INSERT INTO users VALUES(\"" + loginName + " \",\" " + isAdministrator + " \",\" " + passwordHash + " \",\" " + achievementsString + ");";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
 	}
 	
 	private ArrayList<HistoryObject> initializeHistoryList() {
@@ -164,10 +172,22 @@ public class User {
 	
 	public void setAsAdministrator() {
 		isAdministrator = true;
+		String update = "UPDATE users SET isAdministrator = true";
+		try {
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void setAsNotAdministrator() {
 		isAdministrator = false;
+		String update = "UPDATE users SET isAdministrator = false";
+		try {
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void addFriend(String friend) {
