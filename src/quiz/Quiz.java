@@ -31,14 +31,31 @@ public class Quiz {
 	private DBConnection con;
 	private Statement stmt;
 	
-	//constructor initializes arraylists
-	public Quiz(DBConnection con){
+	private void initializeArrayLists(){
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = new ArrayList<HistoryObject>();
+	}
+	
+	private void setupDB(DBConnection con){
 		this.con = con;
 		this.stmt = con.getStatement();
 	}
+	
+	//constructor for creating a quiz, adds quiz to database
+	public Quiz(DBConnection con){
+		initializeArrayLists();
+		setupDB(con);
+		
+	}
+	
+	//constructor for taking a quiz, handles querying of database
+	public Quiz(DBConnection con, String quizName){
+		initializeArrayLists();
+		setupDB(con);
+		
+	}
+	
 	
 	/* Getters */
 	
