@@ -1,5 +1,7 @@
 package quiz;
 
+import java.sql.Statement;
+
 public class TopScorer {
 	
 	/* Instance variables */
@@ -7,6 +9,7 @@ public class TopScorer {
 	private int numCorrectQuestions;
 	private double timeTaken;
 	private DBConnection conn;
+	private Statement stmt;
 	
 	/* Constructor */
 	public TopScorer(User user, int numCorrect, double time, DBConnection conn) {
@@ -14,6 +17,7 @@ public class TopScorer {
 		this.numCorrectQuestions = numCorrect;
 		this.timeTaken = time;
 		this.conn = conn;
+		this.stmt = conn.getStatement();
 	}
 	
 	/* Getter methods*/

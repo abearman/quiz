@@ -12,7 +12,7 @@ public class User {
 	private String passwordHash;
 	private boolean hasNewMessages;
 	
-	private ArrayList<User> friends;
+	private ArrayList<String> friends;
 	private ArrayList<HistoryObject> historyList;
 	private boolean[] achievements;
 	private ArrayList<Message> messages;
@@ -68,7 +68,7 @@ public class User {
 		this.isAdministrator = false; //By default, a user is not an administrator
 		this.hasNewMessages = false;
 		
-		friends = new ArrayList<User>();
+		friends = new ArrayList<String>();
 		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
 		initAchievementsArray();
 		historyList = new ArrayList<HistoryObject>();
@@ -95,7 +95,7 @@ public class User {
 		return this.isAdministrator;
 	}
 	
-	public ArrayList<User> getFriends() {
+	public ArrayList<String> getFriends() {
 		return this.friends;
 	}
 	
@@ -125,12 +125,12 @@ public class User {
 		isAdministrator = false;
 	}
 	
-	public void addFriend(User friend) {
+	public void addFriend(String friend) {
 		friends.add(friend);
 	}
 	
-	public void removeFriend(User friend) {
-		friends.remove(friend.getLoginName());
+	public void removeFriend(String friend) {
+		friends.remove(friend);
 	}
 	
 	public void deleteMessage(Message message) {
