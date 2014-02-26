@@ -5,20 +5,12 @@ import java.util.ArrayList;
 public class ChallengeMessage extends Message {
 	
 	private String quizName;
-<<<<<<< HEAD
-=======
-	//private String quizLink;
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	private String message;
 	private double bestScore;
 	
 	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DBConnection con) {
 		super(fromUser.getLoginName(), toUser.getLoginName(), con);
 		this.quizName = quiz.getQuizName();
-<<<<<<< HEAD
-=======
-		//this.quizLink = quiz.getQuizLink();
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 		this.bestScore = challengingUserBestScore(fromUser);
 		message = fromUser + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
 	}
@@ -27,14 +19,6 @@ public class ChallengeMessage extends Message {
 		return quizName;
 	}
 	
-<<<<<<< HEAD
-=======
-	/*
-	public String getQuizLink() {
-		return quizLink;
-	}*/
-	
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	public String getMessage() {
 		return message;
 	}
