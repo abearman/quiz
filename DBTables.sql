@@ -47,16 +47,51 @@ CREATE TABLE messages (
     bestScore DOUBLE
 );
 
-
-DROP TABLE IF EXISTS qandas;
+DROP TABLE IF EXISTS questionResponse;
  -- remove table if it already exists and start from scratch
 
-CREATE TABLE qandas (
+CREATE TABLE questionResponse (
     quizName CHAR(64),
     question CHAR(64),
     answer CHAR(64),
-    type INT,
+    qtype INT,
+    qNum INT
+    
+);
+
+DROP TABLE IF EXISTS fillInTheBlank;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE fillInTheBlank (
+    quizName CHAR(64),
+    question CHAR(64),
+    answer CHAR(64),
+    qtype INT,
+    qNum INT
+);
+
+DROP TABLE IF EXISTS multipleChoice;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE multipleChoice (
+    quizName CHAR(64),
+    question CHAR(64),
+    answer CHAR(64),
+    qtype INT,
+    qNum INT,
     options CHAR(64)
+);
+
+DROP TABLE IF EXISTS pictureResponse;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE pictureResponse (
+    quizName CHAR(64),
+    question CHAR(64),
+    answer CHAR(64),
+    qtype INT,
+    qNum INT,
+    imageURL CHAR(64)
 );
 
 

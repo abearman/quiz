@@ -8,9 +8,9 @@ public class FillInTheBlank extends Question{
 	 * Constructor creates a new FillInTheBlank object,
 	 * which has all of the functionality of Question.
 	 */
-	public FillInTheBlank(String question, ArrayList<String> answers)
+	public FillInTheBlank(String question, ArrayList<String> answers, int orderNum)
 	{
-		super(question, answers);
+		super(question, answers, orderNum);
 	}
 	
 	/**
