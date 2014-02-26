@@ -5,15 +5,17 @@ import java.sql.Statement;
 public class TopScorer {
 	
 	/* Instance variables */
-	private User user;
+	//private User user;
+	private String loginName;
 	private int numCorrectQuestions;
 	private double timeTaken;
 	private DBConnection conn;
 	private Statement stmt;
 	
 	/* Constructor */
-	public TopScorer(User user, int numCorrect, double time, DBConnection conn) {
-		this.user = user;
+	public TopScorer(String loginName, int numCorrect, double time, DBConnection conn) {
+		this.loginName = loginName;
+		//this.user = user;
 		this.numCorrectQuestions = numCorrect;
 		this.timeTaken = time;
 		this.conn = conn;
@@ -22,8 +24,13 @@ public class TopScorer {
 	
 	/* Getter methods*/
 	
+	/*
 	public User getUser() {
 		return this.user;
+	}*/
+	
+	public String getLoginName(){
+		return loginName;
 	}
 	
 	public int getNumCorrectQuestions() {

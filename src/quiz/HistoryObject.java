@@ -28,7 +28,7 @@ public class HistoryObject {
 		addToHistoryTable();
 	}
 	
-	public HistoryObject(String dateString, long timeElapsed, double score, String userName, String quizName, DBConnection con) {
+	public HistoryObject(String userName, String quizName, double score, long timeElapsed, String dateString, DBConnection con) {
 		this.dateString = dateString;
 		this.timeElapsed = timeElapsed;
 		this.score = score;
