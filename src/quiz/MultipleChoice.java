@@ -39,4 +39,15 @@ public class MultipleChoice extends Question {
 	{
 		return Question.MULTIPLE_CHOICE;
 	}
+	
+	public String createChoicesString()
+	{
+		String result = "";
+		for(int i = 0; i < choices.size(); i++)
+		{
+			result += (choices.get(i)+"\n");
+		}
+		return result;
+			 
+	}
 }

@@ -114,8 +114,76 @@ public class Quiz {
 		initializeArrayLists();
 		setupDB(con);
 		readDatabase(givenQuizName);
+		getQuestionsFromDB(givenQuizName);
 	}
-
+	
+	private void getQuestionsFromDB(String quizName)
+	{
+		try{
+			//for question response
+			ResultSet qrs = stmt.executeQuery("SELECT * FROM questionResponse WHERE quizName = \"" 
+				+ quizName + "\"");
+			if (qrs!=null){
+				qrs.beforeFirst();
+				while(qrs.next())
+				{
+					questions.add(new QuestionResponse(qrs.getString(2),Question.createArray(qrs.getString(3)),
+							qrs.getInt(5)));
+				}
+			}
+			
+			//for fill-in-the-blank
+			qrs = stmt.executeQuery("SELECT * FROM fillInTheBlank WHERE quizName = \"" 
+				+ quizName + "\"");
+			if (qrs!=null){
+				qrs.beforeFirst();
+				while(qrs.next())
+				{
+					questions.add(new FillInTheBlank(qrs.getString(2),Question.createArray(qrs.getString(3)),
+							qrs.getInt(5)));
+				}
+			}
+			
+			//for multiple choice
+			qrs = stmt.executeQuery("SELECT * FROM multipleChoice WHERE quizName = \"" 
+				+ quizName + "\"");
+			if (qrs!=null){
+				qrs.beforeFirst();
+				while(qrs.next())
+				{
+					questions.add(new MultipleChoice(qrs.getString(2),Question.createArray(qrs.getString(3)),
+							qrs.getInt(5), Question.createArray(qrs.getString(6))));
+				}
+			}
+			
+			//for picture response
+			qrs = stmt.executeQuery("SELECT * FROM pictureResponse WHERE quizName = \"" 
+				+ quizName + "\"");
+			if (qrs!=null){
+				qrs.beforeFirst();
+				while(qrs.next())
+				{
+					questions.add(new PictureResponse(qrs.getString(2),Question.createArray(qrs.getString(3)),
+							qrs.getInt(5), qrs.getString(6)));
+				}
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		if(isRandom)
+		{
+			Collections.shuffle(questions);
+		}
+		else 
+		{
+			//sorts according to question number
+			Collections.sort(questions, new Comparator<Question>(){
+				public int compare(Question q1, Question q2){
+					return q1.getQuestionNumber()-q2.getQuestionNumber();
+				}
+			});
+		}
+	}
 
 	/* Getters */
 
@@ -212,6 +280,38 @@ public class Quiz {
 
 	public void addQuestion(Question question){
 		questions.add(question);
+		//adds the question to the corresponding database table
+		try {
+			String update = "";
+			if(question.getQuestionType() == Question.QUESTION_RESPONSE)
+			{
+				update = "INSERT INTO questionResponse VALUES(\""+quizName+"\",\""+question.getQuestion()
+				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
+				+question.getQuestionNumber()+");";
+			}
+			if(question.getQuestionType() == Question.FILL_IN_THE_BLANK)
+			{
+				update = "INSERT INTO fillInTheBlank VALUES(\""+quizName+"\",\""+question.getQuestion()
+				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
+				+question.getQuestionNumber()+");";
+			}
+			if(question.getQuestionType() == Question.MULTIPLE_CHOICE)
+			{
+				update = "INSERT INTO multipleChoice VALUES(\""+quizName+"\",\""+question.getQuestion()
+				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
+				+question.getQuestionNumber()+",\""+((MultipleChoice)question).createChoicesString()+"\");";
+			}
+			if(question.getQuestionType() == Question.PICTURE_RESPONSE)
+			{
+				update = "INSERT INTO pictureResponse VALUES(\""+quizName+"\",\""+question.getQuestion()
+				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
+				+question.getQuestionNumber()+",\""+((PictureResponse)question).getImageURL()+"\");";
+			}
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		
 	}
 
 	public void removeQuestion(Question question){

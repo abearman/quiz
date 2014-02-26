@@ -85,4 +85,32 @@ public class Question {
 	{
 		return questionNumber;
 	}
+	/**
+	 * Returns a String that contains all of the answers
+	 * separated by endline escape sequences ("\n").
+	 */
+	public String createAnswerString()
+	{
+		String result = "";
+		for(int i = 0; i < answers.size(); i++)
+		{
+			result += (answers.get(i)+"\n");
+		}
+		return result;
+	}
+	
+	/**
+	 * Parses the String and puts the strings separated by "\n" into
+	 * an ArrayList<String> that is returned.
+	 */
+	public static ArrayList<String> createArray(String answers)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		StringTokenizer st = new StringTokenizer(answers, "\n");
+		while(st.hasMoreTokens())
+		{
+			result.add(st.nextToken());
+		}
+		return result;
+	}
 }
