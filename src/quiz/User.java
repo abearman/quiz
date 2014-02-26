@@ -1,6 +1,8 @@
 package quiz;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
@@ -12,7 +14,7 @@ public class User {
 	private String passwordHash;
 	private boolean hasNewMessages;
 	
-	private ArrayList<User> friends;
+	private ArrayList<String> friends;
 	private ArrayList<HistoryObject> historyList;
 	private boolean[] achievements;
 	private ArrayList<Message> messages;
@@ -68,10 +70,10 @@ public class User {
 		this.isAdministrator = false; //By default, a user is not an administrator
 		this.hasNewMessages = false;
 		
-		friends = new ArrayList<User>();
+		friends = initializeFriends();
 		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
 		initAchievementsArray();
-		historyList = new ArrayList<HistoryObject>();
+		historyList = initializeHistoryList();
 		messages = new ArrayList<Message>();
 		
 		recentlyTakenQuizzes = new ArrayList<String>();
@@ -79,6 +81,48 @@ public class User {
 		
 		this.con = con;
 		this.stmt = con.getStatement();
+	}
+	
+	private ArrayList<HistoryObject> initializeHistoryList() {
+		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
+		
+		try {
+			String query = "SELECT * FROM histories WHERE loginName = \"" + loginName + "\"";
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				String loginName = rs.getString(1);
+				String quizName = rs.getString(2);
+				double score = rs.getDouble(3);
+				long timeElapsed = rs.getLong(4);
+				String dateString = rs.getString(5);
+				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, con));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	private ArrayList<String> initializeFriends() {
+		ArrayList<String> result = new ArrayList<String>();
+		try {
+			String query1 = "SELECT * FROM friends WHERE user1 = \"" + loginName + "\"";
+			ResultSet rs1 = stmt.executeQuery(query1);
+			while(rs1.next()) {
+				String user2 = rs1.getString(2);
+				String query2 = "SELECT * FROM users WHERE loginName = \"" + user2 + "\"";
+				ResultSet rs2 = stmt.executeQuery(query2);
+				while (rs2.next()) {
+					//add user to result (should friends just be an ArrayList<String>?)
+					result.add(rs2.getString(1));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	/* Getter methods */
@@ -95,7 +139,7 @@ public class User {
 		return this.isAdministrator;
 	}
 	
-	public ArrayList<User> getFriends() {
+	public ArrayList<String> getFriends() {
 		return this.friends;
 	}
 	
@@ -125,8 +169,8 @@ public class User {
 		isAdministrator = false;
 	}
 	
-	public void addFriend(User friend) {
-		friends.add(friend);
+	public void addFriend(String friendName) {
+		friends.add(friendName);
 	}
 	
 	public void removeFriend(User friend) {
