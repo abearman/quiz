@@ -202,4 +202,42 @@ public class User {
 		messages.remove(message);
 	}
 	
+	public void addAchievement(int index) {
+		achievements[index] = true;
+		String achievementsString = "";
+		for (int i = 0; i < Achievements.NUM_ACHIEVEMENTS; i++) {
+			if (i == index) {
+				achievementsString.concat("1"); //Sets this achievement to be true
+			} else {
+				achievementsString.concat(achievements[i] + ""); //Leaves the achievement as before
+			}
+		}
+			
+		String update = "UPDATE users SET achievements = \"" + achievementsString + "\"";
+		try {
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteAchievement(int index){
+		achievements[index] = false;
+		String achievementsString = "";
+		for (int i = 0; i < Achievements.NUM_ACHIEVEMENTS; i++) {
+			if (i == index) {
+				achievementsString.concat("1"); //Sets this achievement to be true
+			} else {
+				achievementsString.concat(achievements[i] + ""); //Leaves the achievement as before
+			}
+		}
+			
+		String update = "UPDATE users SET achievements = \"" + achievementsString + "\"";
+		try {
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
