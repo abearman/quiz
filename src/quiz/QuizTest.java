@@ -17,10 +17,10 @@ public class QuizTest {
 		User user3 = new User("user3","pwd3", new DBConnection());
 		User user4 = new User("user4","pwd4", new DBConnection());
 		
-		topScorer4 = new TopScorer(user4, 10, 0.7);
-		topScorer3 = new TopScorer(user3, 10, 0.5);
-		topScorer2 = new TopScorer(user2, 11, 0.6);
-		topScorer1 = new TopScorer(user1, 19, 7.8);
+		topScorer4 = new TopScorer(user4, 10, 0.7, new DBConnection());
+		topScorer3 = new TopScorer(user3, 10, 0.5, new DBConnection());
+		topScorer2 = new TopScorer(user2, 11, 0.6, new DBConnection());
+		topScorer1 = new TopScorer(user1, 19, 7.8, new DBConnection());
 	}
 	
 	//order should be 1, 2, 3, 4
