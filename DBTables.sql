@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS quizzes;
 
 CREATE TABLE quizzes (
     quizName CHAR(64),
-    quizLink CHAR(64),
     description CHAR(64),
     isRandom BOOLEAN,
     isMultiplePage BOOLEAN,

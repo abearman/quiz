@@ -1,5 +1,8 @@
 package quiz;
 import java.util.*;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 
@@ -11,7 +14,6 @@ public class Quiz {
 	
 	//stay the same across sessions, stored in database
 	private String quizName;
-	private String quizLink;
 	private String descriptionOfQuiz;
 	private boolean isRandom;
 	private boolean isMultiplePage;
@@ -41,19 +43,52 @@ public class Quiz {
 		this.con = con;
 		this.stmt = con.getStatement();
 	}
+
+	//reads database to find this quiz and populates instance variables
+	private void readDatabase(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\"");
+			if (quizResultSet!=null){
+				quizResultSet.beforeFirst();
+				this.quizName = (String)quizResultSet.getObject(1);
+				this.descriptionOfQuiz = (String)quizResultSet.getObject(2);
+				this.isRandom = (Boolean) quizResultSet.getObject(3);
+				this.isMultiplePage = (Boolean) quizResultSet.getObject(4);
+				this.isImmediateCorrection = (Boolean) quizResultSet.getObject(5);
+				this.canBeTakenInPracticeMode = (Boolean) quizResultSet.getObject(6);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+	}
 	
-	//constructor for creating a quiz, adds quiz to database
+	//TODO remove this constructor
 	public Quiz(DBConnection con){
 		initializeArrayLists();
 		setupDB(con);
-		
 	}
 	
-	//constructor for taking a quiz, handles querying of database
-	public Quiz(DBConnection con, String quizName){
+	//constructor for creating a quiz, adds quiz to database
+	public Quiz(DBConnection con, String quizName, String descriptionOfQuiz,
+			boolean isRandom, boolean isMultiplePage,
+			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode){
+		
 		initializeArrayLists();
 		setupDB(con);
 		
+		try {
+			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+");";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+	}
+	
+	//constructor for taking a quiz, handles querying of database
+	public Quiz(DBConnection con, String givenQuizName){
+		initializeArrayLists();
+		setupDB(con);
+		readDatabase(givenQuizName);
 	}
 	
 	
@@ -61,10 +96,6 @@ public class Quiz {
 	
 	public String getQuizName(){
 		return quizName;
-	}
-	
-	public String getQuizLink() {
-		return quizLink;
 	}
 	
 	public String getDescriptionOfQuiz(){
@@ -109,6 +140,7 @@ public class Quiz {
 	
 	/* Setters */
 	
+	/*
 	public void setQuizName(String quizName){
 		this.quizName = quizName;
 	}
@@ -135,7 +167,7 @@ public class Quiz {
 	
 	public void setCanBeTakenInPracticeMode(boolean canBeTakenInPracticeMode){
 		this.canBeTakenInPracticeMode = canBeTakenInPracticeMode;
-	}
+	}*/
 	
 	public void setLengthOfCompletion(long lengthOfCompletion){
 		this.lengthOfCompletion = lengthOfCompletion;
