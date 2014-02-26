@@ -9,8 +9,8 @@ public class ChallengeMessage extends Message {
 	private String message;
 	private double bestScore;
 	
-	public ChallengeMessage(User fromUser, User toUser, Quiz quiz) {
-		super(fromUser.getLoginName(), toUser.getLoginName());
+	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DBConnection con) {
+		super(fromUser.getLoginName(), toUser.getLoginName(), con);
 		this.quizName = quiz.getQuizName();
 		this.quizLink = quiz.getQuizLink();
 		this.bestScore = challengingUserBestScore(fromUser);

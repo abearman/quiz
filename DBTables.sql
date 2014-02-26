@@ -30,7 +30,7 @@ CREATE TABLE histories (
     quizName CHAR(64),
     score DOUBLE,
     timeElapsed BIGINT,
-    date DATE
+    date CHAR(64)
 );
 
 
