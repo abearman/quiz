@@ -72,9 +72,9 @@ public class Quiz {
 	//reads database to find this quiz and populates instance variables
 	private void readDatabase(String givenQuizName){
 		try{
-			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\"");
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
-				quizResultSet.beforeFirst();
+				quizResultSet.first();
 				this.quizName = (String)quizResultSet.getObject(1);
 				this.descriptionOfQuiz = (String)quizResultSet.getObject(2);
 				this.isRandom = (Boolean) quizResultSet.getObject(3);
@@ -160,7 +160,34 @@ public class Quiz {
 		return usersScore;
 	}
 
+	//returns sorted array of topscorers by reading from database
 	public ArrayList<TopScorer> getTopScorers(){
+		
+		try{
+		
+			//query database to get top scorers
+			ResultSet topScorerResultSet = stmt.executeQuery("SELECT * FROM topscorers WHERE quizName = \"" + quizName + "\";");
+			if (topScorerResultSet!=null){
+				topScorerResultSet.beforeFirst(); 
+				
+				while (topScorerResultSet.next()){
+					String loginName = (String)topScorerResultSet.getObject(2);
+					int numCorrectQuestions = (Integer)topScorerResultSet.getObject(3);
+					double timeTaken = (Double)topScorerResultSet.getObject(4);
+					
+					//add top scorer to topscorers array
+					topScorers.add(new TopScorer(loginName, numCorrectQuestions, timeTaken, con));
+				}
+
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		
+		
+		//sort the array
+		sortTopScorers();
+		
 		return topScorers;
 	}
 
@@ -221,7 +248,18 @@ public class Quiz {
 	}
 
 	public void addTopScorer(TopScorer topScorer){
+		
+		//add this top scorer and update database
 		topScorers.add(topScorer);
+		try {
+			String update = "INSERT INTO topscorers VALUES(\""+quizName+"\",\""+topScorer.getLoginName()+"\","+ 
+				topScorer.getNumCorrectQuestions()+","+topScorer.getTimeTaken()+");";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		
+		//sort top scorers
 		sortTopScorers();
 
 		//cap top scorers at 5
@@ -235,7 +273,16 @@ public class Quiz {
 
 	public void removeTopScorer(TopScorer topScorer){
 		if (topScorers.contains(topScorer)){
+			
+			//remove this top scorer
+			//update database to delete entry with this quiz and this user
 			topScorers.remove(topScorer);
+			try {
+				String update = "DELETE FROM topscorers WHERE quizName = \"" + quizName + "\" AND loginName = \"" + topScorer.getLoginName() + "\";";
+				stmt.executeUpdate(update);
+			} catch (SQLException e) {
+				e.printStackTrace(); //TODO How do we want to handle this?
+			}
 		}
 	}
 
