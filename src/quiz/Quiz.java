@@ -122,7 +122,7 @@ public class Quiz {
 		try{
 			//for question response
 			ResultSet qrs = stmt.executeQuery("SELECT * FROM questionResponse WHERE quizName = \"" 
-				+ quizName + "\"");
+				+ quizName + "\";");
 			if (qrs!=null){
 				qrs.beforeFirst();
 				while(qrs.next())
@@ -134,7 +134,7 @@ public class Quiz {
 			
 			//for fill-in-the-blank
 			qrs = stmt.executeQuery("SELECT * FROM fillInTheBlank WHERE quizName = \"" 
-				+ quizName + "\"");
+				+ quizName + "\";");
 			if (qrs!=null){
 				qrs.beforeFirst();
 				while(qrs.next())
@@ -146,7 +146,7 @@ public class Quiz {
 			
 			//for multiple choice
 			qrs = stmt.executeQuery("SELECT * FROM multipleChoice WHERE quizName = \"" 
-				+ quizName + "\"");
+				+ quizName + "\";");
 			if (qrs!=null){
 				qrs.beforeFirst();
 				while(qrs.next())
@@ -158,7 +158,7 @@ public class Quiz {
 			
 			//for picture response
 			qrs = stmt.executeQuery("SELECT * FROM pictureResponse WHERE quizName = \"" 
-				+ quizName + "\"");
+				+ quizName + "\";");
 			if (qrs!=null){
 				qrs.beforeFirst();
 				while(qrs.next())
