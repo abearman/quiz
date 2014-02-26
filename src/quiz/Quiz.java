@@ -1,9 +1,6 @@
 package quiz;
 import java.util.*;
-<<<<<<< HEAD
-=======
 import java.math.BigDecimal;
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,7 +44,7 @@ public class Quiz {
 		this.stmt = con.getStatement();
 	}
 
-<<<<<<< HEAD
+
 	private ArrayList<HistoryObject> initializeAllHistories() { 
 		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
 
@@ -70,7 +67,8 @@ public class Quiz {
 	}
 
 	//constructor for creating a quiz, adds quiz to database
-=======
+
+	
 	//reads database to find this quiz and populates instance variables
 	private void readDatabase(String givenQuizName){
 		try{
@@ -90,13 +88,9 @@ public class Quiz {
 	}
 	
 	//TODO remove this constructor
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	public Quiz(DBConnection con){
 		setupDB(con);
-<<<<<<< HEAD
 		initializeArrayLists();
-
-=======
 	}
 	
 	//constructor for creating a quiz, adds quiz to database
@@ -113,18 +107,13 @@ public class Quiz {
 		} catch (SQLException e) {
 			e.printStackTrace(); //TODO How do we want to handle this?
 		}
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	}
 
 	//constructor for taking a quiz, handles querying of database
 	public Quiz(DBConnection con, String givenQuizName){
 		initializeArrayLists();
 		setupDB(con);
-<<<<<<< HEAD
-
-=======
 		readDatabase(givenQuizName);
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	}
 
 
@@ -133,15 +122,12 @@ public class Quiz {
 	public String getQuizName(){
 		return quizName;
 	}
-<<<<<<< HEAD
 
+	/*
 	public String getQuizLink() {
 		return quizLink;
-	}
+	}*/
 
-=======
-	
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	public String getDescriptionOfQuiz(){
 		return descriptionOfQuiz;
 	}
@@ -183,12 +169,9 @@ public class Quiz {
 	}
 
 	/* Setters */
-<<<<<<< HEAD
 
-=======
 	
 	/*
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	public void setQuizName(String quizName){
 		this.quizName = quizName;
 	}
@@ -215,13 +198,10 @@ public class Quiz {
 
 	public void setCanBeTakenInPracticeMode(boolean canBeTakenInPracticeMode){
 		this.canBeTakenInPracticeMode = canBeTakenInPracticeMode;
-<<<<<<< HEAD
 	}
 
-=======
 	}*/
 	
->>>>>>> d67c79c14ae3122e22a584f94b080ed60130c91b
 	public void setLengthOfCompletion(long lengthOfCompletion){
 		this.lengthOfCompletion = lengthOfCompletion;
 	}
