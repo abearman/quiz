@@ -85,6 +85,14 @@ public class Quiz {
 		getQuestionsFromDB(givenQuizName);
 	}
 	
+	//simple constructor only for unit testing
+	//TODO take this out eventually
+	public Quiz(DAL dal){
+		initializeArrayLists();
+		this.dal = dal;
+	}
+	
+	
 	private void getQuestionsFromDB(String quizName)
 	{
 		questions = dal.getQuestionsFromDB(quizName);
