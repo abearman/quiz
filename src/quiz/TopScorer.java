@@ -9,17 +9,15 @@ public class TopScorer {
 	private String loginName;
 	private int numCorrectQuestions;
 	private double timeTaken;
-	private DBConnection conn;
-	private Statement stmt;
+	private DAL dal;
 	
 	/* Constructor */
-	public TopScorer(String loginName, int numCorrect, double time, DBConnection conn) {
+	public TopScorer(String loginName, int numCorrect, double time, DAL dal) {
 		this.loginName = loginName;
 		//this.user = user;
 		this.numCorrectQuestions = numCorrect;
 		this.timeTaken = time;
-		this.conn = conn;
-		this.stmt = conn.getStatement();
+		this.dal = dal;
 	}
 	
 	/* Getter methods*/
