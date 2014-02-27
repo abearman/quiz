@@ -30,8 +30,7 @@ public class Quiz {
 	private ArrayList<TopScorer> topScorers;
 
 	//connect to database
-	private DBConnection con;
-	private Statement stmt;
+	private DAL dal;
 
 	private void initializeArrayLists(){
 		questions = new ArrayList<Question>();
@@ -39,34 +38,10 @@ public class Quiz {
 		allHistories = initializeAllHistories();
 	}
 
-	private void setupDB(DBConnection con){
-		this.con = con;
-		this.stmt = con.getStatement();
-	}
-
 
 	private ArrayList<HistoryObject> initializeAllHistories() { 
-		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
-
-		try {
-			String query = "SELECT * FROM histories";
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()) {
-				String loginName = rs.getString(1);
-				String quizName = rs.getString(2);
-				double score = rs.getDouble(3);
-				long timeElapsed = rs.getLong(4);
-				String dateString = rs.getString(5);
-				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, con));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
+		return dal.getAllHistoryLists();
 	}
-
-	//constructor for creating a quiz, adds quiz to database
 
 	
 	//reads database to find this quiz and populates instance variables
@@ -87,89 +62,32 @@ public class Quiz {
 		}
 	}
 	
-	//TODO remove this constructor
-	public Quiz(DBConnection con){
-		setupDB(con);
-		initializeArrayLists();
-	}
 	
 	//constructor for creating a quiz, adds quiz to database
-	public Quiz(DBConnection con, String quizName, String descriptionOfQuiz,
+	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
 			boolean isRandom, boolean isMultiplePage,
 			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode){
 		
 		initializeArrayLists();
-		setupDB(con);
+		this.dal = dal;
 		
-		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+");";
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
+		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode);
+		
 	}
 
 	//constructor for taking a quiz, handles querying of database
-	public Quiz(DBConnection con, String givenQuizName){
+	public Quiz(DAL dal, String givenQuizName){
+		
 		initializeArrayLists();
-		setupDB(con);
+		this.dal = dal;
+		
 		readDatabase(givenQuizName);
 		getQuestionsFromDB(givenQuizName);
 	}
 	
 	private void getQuestionsFromDB(String quizName)
 	{
-		try{
-			//for question response
-			ResultSet qrs = stmt.executeQuery("SELECT * FROM questionResponse WHERE quizName = \"" 
-				+ quizName + "\";");
-			if (qrs!=null){
-				qrs.beforeFirst();
-				while(qrs.next())
-				{
-					questions.add(new QuestionResponse(qrs.getString(2),Question.createArray(qrs.getString(3)),
-							qrs.getInt(5)));
-				}
-			}
-			
-			//for fill-in-the-blank
-			qrs = stmt.executeQuery("SELECT * FROM fillInTheBlank WHERE quizName = \"" 
-				+ quizName + "\";");
-			if (qrs!=null){
-				qrs.beforeFirst();
-				while(qrs.next())
-				{
-					questions.add(new FillInTheBlank(qrs.getString(2),Question.createArray(qrs.getString(3)),
-							qrs.getInt(5)));
-				}
-			}
-			
-			//for multiple choice
-			qrs = stmt.executeQuery("SELECT * FROM multipleChoice WHERE quizName = \"" 
-				+ quizName + "\";");
-			if (qrs!=null){
-				qrs.beforeFirst();
-				while(qrs.next())
-				{
-					questions.add(new MultipleChoice(qrs.getString(2),Question.createArray(qrs.getString(3)),
-							qrs.getInt(5), Question.createArray(qrs.getString(6))));
-				}
-			}
-			
-			//for picture response
-			qrs = stmt.executeQuery("SELECT * FROM pictureResponse WHERE quizName = \"" 
-				+ quizName + "\";");
-			if (qrs!=null){
-				qrs.beforeFirst();
-				while(qrs.next())
-				{
-					questions.add(new PictureResponse(qrs.getString(2),Question.createArray(qrs.getString(3)),
-							qrs.getInt(5), qrs.getString(6)));
-				}
-			}
-		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
+		questions = dal.getQuestionsFromDB(quizName);
 		if(isRandom)
 		{
 			Collections.shuffle(questions);
@@ -190,11 +108,6 @@ public class Quiz {
 	public String getQuizName(){
 		return quizName;
 	}
-
-	/*
-	public String getQuizLink() {
-		return quizLink;
-	}*/
 
 	public String getDescriptionOfQuiz(){
 		return descriptionOfQuiz;
@@ -231,27 +144,7 @@ public class Quiz {
 	//returns sorted array of topscorers by reading from database
 	public ArrayList<TopScorer> getTopScorers(){
 		
-		try{
-		
-			//query database to get top scorers
-			ResultSet topScorerResultSet = stmt.executeQuery("SELECT * FROM topscorers WHERE quizName = \"" + quizName + "\";");
-			if (topScorerResultSet!=null){
-				topScorerResultSet.beforeFirst(); 
-				
-				while (topScorerResultSet.next()){
-					String loginName = (String)topScorerResultSet.getObject(2);
-					int numCorrectQuestions = (Integer)topScorerResultSet.getObject(3);
-					double timeTaken = (Double)topScorerResultSet.getObject(4);
-					
-					//add top scorer to topscorers array
-					topScorers.add(new TopScorer(loginName, numCorrectQuestions, timeTaken, con));
-				}
-
-			}
-		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
-		
+		topScorers = dal.getAllTopScorersForQuiz(quizName);
 		
 		//sort the array
 		sortTopScorers();
@@ -264,38 +157,6 @@ public class Quiz {
 	}
 
 	/* Setters */
-
-	
-	/*
-	public void setQuizName(String quizName){
-		this.quizName = quizName;
-	}
-
-	public void setQuizLink(String quizLink) {
-		this.quizLink = quizLink;
-	}
-
-	public void setDescriptionOfQuiz(String descriptionOfQuiz){
-		this.descriptionOfQuiz = descriptionOfQuiz;
-	}
-
-	public void setIsRandom(boolean isRandom){
-		this.isRandom = isRandom;
-	}
-
-	public void setIsMultiplePage(boolean isMultiplePage){
-		this.isMultiplePage = isMultiplePage;
-	}
-
-	public void setIsImmediateCorrection(boolean isImmediateCorrection){
-		this.isImmediateCorrection = isImmediateCorrection;
-	}
-
-	public void setCanBeTakenInPracticeMode(boolean canBeTakenInPracticeMode){
-		this.canBeTakenInPracticeMode = canBeTakenInPracticeMode;
-	}
-
-	}*/
 	
 	public void setLengthOfCompletion(long lengthOfCompletion){
 		this.lengthOfCompletion = lengthOfCompletion;
@@ -307,37 +168,9 @@ public class Quiz {
 
 	public void addQuestion(Question question){
 		questions.add(question);
+		
 		//adds the question to the corresponding database table
-		try {
-			String update = "";
-			if(question.getQuestionType() == Question.QUESTION_RESPONSE)
-			{
-				update = "INSERT INTO questionResponse VALUES(\""+quizName+"\",\""+question.getQuestion()
-				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
-				+question.getQuestionNumber()+");";
-			}
-			if(question.getQuestionType() == Question.FILL_IN_THE_BLANK)
-			{
-				update = "INSERT INTO fillInTheBlank VALUES(\""+quizName+"\",\""+question.getQuestion()
-				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
-				+question.getQuestionNumber()+");";
-			}
-			if(question.getQuestionType() == Question.MULTIPLE_CHOICE)
-			{
-				update = "INSERT INTO multipleChoice VALUES(\""+quizName+"\",\""+question.getQuestion()
-				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
-				+question.getQuestionNumber()+",\""+((MultipleChoice)question).createChoicesString()+"\");";
-			}
-			if(question.getQuestionType() == Question.PICTURE_RESPONSE)
-			{
-				update = "INSERT INTO pictureResponse VALUES(\""+quizName+"\",\""+question.getQuestion()
-				+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
-				+question.getQuestionNumber()+",\""+((PictureResponse)question).getImageURL()+"\");";
-			}
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
+		dal.addQuestion(quizName, question);
 		
 	}
 
@@ -351,13 +184,8 @@ public class Quiz {
 		
 		//add this top scorer and update database
 		topScorers.add(topScorer);
-		try {
-			String update = "INSERT INTO topscorers VALUES(\""+quizName+"\",\""+topScorer.getLoginName()+"\","+ 
-				topScorer.getNumCorrectQuestions()+","+topScorer.getTimeTaken()+");";
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
+		dal.addTopScorer(topScorer, quizName);
+		
 		
 		//sort top scorers
 		sortTopScorers();
@@ -377,12 +205,8 @@ public class Quiz {
 			//remove this top scorer
 			//update database to delete entry with this quiz and this user
 			topScorers.remove(topScorer);
-			try {
-				String update = "DELETE FROM topscorers WHERE quizName = \"" + quizName + "\" AND loginName = \"" + topScorer.getLoginName() + "\";";
-				stmt.executeUpdate(update);
-			} catch (SQLException e) {
-				e.printStackTrace(); //TODO How do we want to handle this?
-			}
+			dal.removeTopScorer(topScorer.getLoginName(), quizName);
+			
 		}
 	}
 
