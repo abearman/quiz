@@ -127,16 +127,6 @@ public class User {
 	
 	/* Setter methods */
 	
-	public void setAsAdministrator() {
-		this.isAdministrator = true; //Updates the instance variable
-		dal.changeIsAdministrator(this.loginName, true); //Changes it in the database
-	}
-	
-	public void setAsNotAdministrator() {
-		this.isAdministrator = false; //Updates the instance variable
-		dal.changeIsAdministrator(this.loginName, false); //Changes it in the database
-	}
-	
 	public void addFriendPair(String friendName) { 
 		friends.add(friendName);
 		dal.addFriendPair(loginName, friendName);
@@ -215,6 +205,27 @@ public class User {
 	 */
 	public void removeQuiz(String quizName) {
 		dal.removeQuiz(quizName);
+	}
+	
+	/* Private helper method: can't be called outside of the class */
+	private void updateAdminInstanceVariable(boolean value) {
+		this.isAdministrator = value; //Updates the admin instance variable
+	}
+	
+	/**
+	 * Only users who are administrators can promote user accounts to administration accounts
+	 */
+	public void setAsAdministrator(User user) {
+		user.updateAdminInstanceVariable(true); //Updates the instance variable
+		dal.changeIsAdministrator(user.getLoginName(), true); //Changes it in the database
+	}
+	
+	/**
+	 * Only users who are administrators can promote user accounts to administration accounts
+	 */
+	public void setAsNotAdministrator(User user) {
+		user.updateAdminInstanceVariable(false); //Updates the instance variable
+		dal.changeIsAdministrator(user.getLoginName(), false); //Changes it in the database
 	}
 	
 }
