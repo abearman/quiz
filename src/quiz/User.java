@@ -23,8 +23,7 @@ public class User {
 	private ArrayList<String> recentlyCreatedQuizzes;
 	private ArrayList<FriendRecentActivity> friendsRecentActivity;
 	
-	private DBConnection con; //Manages connection to database
-	private Statement stmt;
+	private DAL dal; //Handles connection to Database
 	
 	/* Private helper method to set all achievements to false */
 	private void initAchievementsArray() {
@@ -64,7 +63,7 @@ public class User {
 	}
 		
 	/* Constructor */
-	public User(String loginName, String password, DBConnection con) {
+	public User(String loginName, String password, DAL dal) {
 		this.loginName = loginName;
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
@@ -80,58 +79,16 @@ public class User {
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
 		
-		this.con = con;
-		this.stmt = con.getStatement();
-		
-		String achievementsString = "000000"; //Initialized to all 0's for all "false"
-		try {
-			String update = "INSERT INTO users VALUES(\"" + loginName + " \",\" " + isAdministrator + " \",\" " + passwordHash + " \",\" " + achievementsString + ");";
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
+		this.dal = dal;
+		dal.insertUser(loginName, isAdministrator, passwordHash, achievements);
 	}
 	
 	private ArrayList<HistoryObject> initializeHistoryList() {
-		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
-		
-		try {
-			String query = "SELECT * FROM histories WHERE loginName = \"" + loginName + "\"";
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()) {
-				String loginName = rs.getString(1);
-				String quizName = rs.getString(2);
-				double score = rs.getDouble(3);
-				long timeElapsed = rs.getLong(4);
-				String dateString = rs.getString(5);
-				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, con));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
+		return dal.getHistoryListForUser(this.loginName);
 	}
 	
 	private ArrayList<String> initializeFriends() {
-		ArrayList<String> result = new ArrayList<String>();
-		try {
-			String query1 = "SELECT * FROM friends WHERE user1 = \"" + loginName + "\"";
-			ResultSet rs1 = stmt.executeQuery(query1);
-			while(rs1.next()) {
-				String user2 = rs1.getString(2);
-				String query2 = "SELECT * FROM users WHERE loginName = \"" + user2 + "\"";
-				ResultSet rs2 = stmt.executeQuery(query2);
-				while (rs2.next()) {
-					//add user to result (should friends just be an ArrayList<String>?)
-					result.add(rs2.getString(1));
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
+		return dal.getFriendListForUser(this.loginName);
 	}
 	
 	/* Getter methods */
@@ -171,39 +128,48 @@ public class User {
 	/* Setter methods */
 	
 	public void setAsAdministrator() {
-		isAdministrator = true;
-		String update = "UPDATE users SET isAdministrator = true";
-		try {
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		this.isAdministrator = true; //Updates the instance variable
+		dal.changeIsAdministrator(this.loginName, true); //Changes it in the database
 	}
 	
 	public void setAsNotAdministrator() {
-		isAdministrator = false;
-		String update = "UPDATE users SET isAdministrator = false";
-		try {
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		this.isAdministrator = false; //Updates the instance variable
+		dal.changeIsAdministrator(this.loginName, false); //Changes it in the database
+	}
+	
+	public void addFriendPair(String friendName) { 
+		friends.add(friendName);
+		dal.addFriendPair(loginName, friendName);
+	}	
+	
+	public void removeFriendPair(String friendName) { //TODO Database?
+		friends.remove(friendName);
+		dal.removeFriendPair(loginName, friendName);
+	}
+	 
+	public void addMessage(User toUser, String type, String message, Quiz quiz) { 
+		if (type.equals(Message.NOTE_MESSAGE)) {
+			NoteMessage nm = new NoteMessage(this.loginName, toUser.getLoginName(), message, dal);
+			messages.add(nm);
+			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.NOTE_MESSAGE, message, null, -1);
+		} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
+			FriendRequestMessage frm = new FriendRequestMessage(this.loginName, toUser.getLoginName(), dal);
+			messages.add(frm);
+			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.FRIEND_REQUEST_MESSAGE, message, null, -1);
+		} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
+			ChallengeMessage cm = new ChallengeMessage(this, toUser, quiz, dal);
+			messages.add(cm);
+			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quiz.getQuizName(), cm.challengingUserBestScore(this));
 		}
 	}
 	
-	public void addFriend(String friend) {
-		friends.add(friend);
-	}	
-	
-	public void removeFriend(String friend) {
-		friends.remove(friend);
-	}
-	
-	public void deleteMessage(Message message) {
+	public void removeMessage(Message message) { //TODO Database?
 		messages.remove(message);
+		dal.removeMessageForUser(loginName);
 	}
 	
 	public void addAchievement(int index) {
-		achievements[index] = true;
+		achievements[index] = true; //Updates the instance variable 
 		String achievementsString = "";
 		for (int i = 0; i < Achievements.NUM_ACHIEVEMENTS; i++) {
 			if (i == index) {
@@ -212,17 +178,11 @@ public class User {
 				achievementsString.concat(achievements[i] + ""); //Leaves the achievement as before
 			}
 		}
-			
-		String update = "UPDATE users SET achievements = \"" + achievementsString + "\"";
-		try {
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		dal.updateUserAchievements(this.loginName, achievementsString);
 	}
 	
 	public void deleteAchievement(int index){
-		achievements[index] = false;
+		achievements[index] = false; //Updates the instance variable
 		String achievementsString = "";
 		for (int i = 0; i < Achievements.NUM_ACHIEVEMENTS; i++) {
 			if (i == index) {
@@ -231,13 +191,7 @@ public class User {
 				achievementsString.concat(achievements[i] + ""); //Leaves the achievement as before
 			}
 		}
-			
-		String update = "UPDATE users SET achievements = \"" + achievementsString + "\"";
-		try {
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		dal.updateUserAchievements(this.loginName, achievementsString);	
 	}
 	
 }
