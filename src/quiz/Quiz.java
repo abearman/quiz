@@ -30,50 +30,27 @@ public class Quiz {
 	private ArrayList<TopScorer> topScorers;
 
 	//connect to database
-	private DBConnection con;
-	private Statement stmt;
+	private DAL dal;
 
-	private void initializeArrayLists(){
+	private void initializeArrayLists() {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = initializeAllHistories();
 	}
 
-	private void setupDB(DBConnection con){
-		this.con = con;
-		this.stmt = con.getStatement();
-	}
-
-
 	private ArrayList<HistoryObject> initializeAllHistories() { 
-		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
-
-		try {
-			String query = "SELECT * FROM histories";
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()) {
-				String loginName = rs.getString(1);
-				String quizName = rs.getString(2);
-				double score = rs.getDouble(3);
-				long timeElapsed = rs.getLong(4);
-				String dateString = rs.getString(5);
-				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, con));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
+		return dal.getAllHistoryLists();
 	}
 
 	//constructor for creating a quiz, adds quiz to database
-
 	
 	//reads database to find this quiz and populates instance variables
-	private void readDatabase(String givenQuizName){
-		try{
+	private void readDatabase(String givenQuizName) { //TODO: Add to DAL
+		//dal.populateQuiz(this, givenQuizName);
+		
+		try {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet != null){
 				quizResultSet.first();
 				this.quizName = (String)quizResultSet.getObject(1);
 				this.descriptionOfQuiz = (String)quizResultSet.getObject(2);
@@ -83,42 +60,34 @@ public class Quiz {
 				this.canBeTakenInPracticeMode = (Boolean) quizResultSet.getObject(6);
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
-	}
-	
-	//TODO remove this constructor
-	public Quiz(DBConnection con){
-		setupDB(con);
-		initializeArrayLists();
-	}
-	
-	//constructor for creating a quiz, adds quiz to database
-	public Quiz(DBConnection con, String quizName, String descriptionOfQuiz,
-			boolean isRandom, boolean isMultiplePage,
-			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode){
-		
-		initializeArrayLists();
-		setupDB(con);
-		
-		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+");";
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 	}
 
-	//constructor for taking a quiz, handles querying of database
-	public Quiz(DBConnection con, String givenQuizName){
+	//TODO: Delete this constructor?
+	public Quiz(DAL dal) {
+		
+	}
+	
+	//constructor for creating a quiz, adds quiz to database
+	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
+			boolean isRandom, boolean isMultiplePage,
+			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode) {
+		
 		initializeArrayLists();
-		setupDB(con);
+		this.dal = new DAL();
+		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode);
+	}
+
+	//constructor for taking a quiz, handles querying of database
+	public Quiz(DBConnection con, String givenQuizName) {
+		initializeArrayLists();
+		this.dal = new DAL();
 		readDatabase(givenQuizName);
 		getQuestionsFromDB(givenQuizName);
 	}
 	
-	private void getQuestionsFromDB(String quizName)
-	{
+	private void getQuestionsFromDB(String quizName) { //TODO: Add to DAL
 		try{
 			//for question response
 			ResultSet qrs = stmt.executeQuery("SELECT * FROM questionResponse WHERE quizName = \"" 
@@ -170,8 +139,7 @@ public class Quiz {
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
 		}
-		if(isRandom)
-		{
+		if (isRandom) {
 			Collections.shuffle(questions);
 		}
 		else 
@@ -187,14 +155,9 @@ public class Quiz {
 
 	/* Getters */
 
-	public String getQuizName(){
+	public String getQuizName() {
 		return quizName;
 	}
-
-	/*
-	public String getQuizLink() {
-		return quizLink;
-	}*/
 
 	public String getDescriptionOfQuiz(){
 		return descriptionOfQuiz;
@@ -228,35 +191,11 @@ public class Quiz {
 		return usersScore;
 	}
 
-	//returns sorted array of topscorers by reading from database
-	public ArrayList<TopScorer> getTopScorers(){
-		
-		try{
-		
-			//query database to get top scorers
-			ResultSet topScorerResultSet = stmt.executeQuery("SELECT * FROM topscorers WHERE quizName = \"" + quizName + "\";");
-			if (topScorerResultSet!=null){
-				topScorerResultSet.beforeFirst(); 
-				
-				while (topScorerResultSet.next()){
-					String loginName = (String)topScorerResultSet.getObject(2);
-					int numCorrectQuestions = (Integer)topScorerResultSet.getObject(3);
-					double timeTaken = (Double)topScorerResultSet.getObject(4);
-					
-					//add top scorer to topscorers array
-					topScorers.add(new TopScorer(loginName, numCorrectQuestions, timeTaken, con));
-				}
-
-			}
-		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
-		
-		
-		//sort the array
-		sortTopScorers();
-		
-		return topScorers;
+	//Returns sorted array of TopScorer's by reading from database
+	public ArrayList<TopScorer> getTopScorers() { 
+		topScorers = dal.getAllTopScorersForQuiz(quizName);
+		sortTopScorers(); //Sort the array
+		return topScorers;		
 	}
 
 	public ArrayList<HistoryObject> getAllHistories() {
@@ -265,7 +204,6 @@ public class Quiz {
 
 	/* Setters */
 
-	
 	/*
 	public void setQuizName(String quizName){
 		this.quizName = quizName;
@@ -297,15 +235,15 @@ public class Quiz {
 
 	}*/
 	
-	public void setLengthOfCompletion(long lengthOfCompletion){
+	public void setLengthOfCompletion(long lengthOfCompletion) { //TODO: Update database?
 		this.lengthOfCompletion = lengthOfCompletion;
 	}
 
-	public void setUsersScore(double usersScore){
+	public void setUsersScore(double usersScore) { //TODO: Update database?
 		this.usersScore = usersScore;
 	}
 
-	public void addQuestion(Question question){
+	public void addQuestion(Question question) { //TODO: Add to DAL 
 		questions.add(question);
 		//adds the question to the corresponding database table
 		try {
@@ -336,28 +274,22 @@ public class Quiz {
 			}
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		
 	}
 
-	public void removeQuestion(Question question){
+	public void removeQuestion(Question question) { //TODO: Update the database?
 		if (questions.contains(question)){
 			questions.remove(question);
 		}
 	}
 
-	public void addTopScorer(TopScorer topScorer){
+	public void addTopScorer(TopScorer topScorer) {
 		
 		//add this top scorer and update database
 		topScorers.add(topScorer);
-		try {
-			String update = "INSERT INTO topscorers VALUES(\""+quizName+"\",\""+topScorer.getLoginName()+"\","+ 
-				topScorer.getNumCorrectQuestions()+","+topScorer.getTimeTaken()+");";
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
+		dal.addTopScorer(topScorer, quizName);
 		
 		//sort top scorers
 		sortTopScorers();
@@ -377,12 +309,7 @@ public class Quiz {
 			//remove this top scorer
 			//update database to delete entry with this quiz and this user
 			topScorers.remove(topScorer);
-			try {
-				String update = "DELETE FROM topscorers WHERE quizName = \"" + quizName + "\" AND loginName = \"" + topScorer.getLoginName() + "\";";
-				stmt.executeUpdate(update);
-			} catch (SQLException e) {
-				e.printStackTrace(); //TODO How do we want to handle this?
-			}
+			dal.removeTopScorer(topScorer.getLoginName(), quizName);
 		}
 	}
 
