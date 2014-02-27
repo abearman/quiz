@@ -194,10 +194,20 @@ public class User {
 		dal.updateUserAchievements(this.loginName, achievementsString);	
 	}
 	
+	/**
+	 * Only users who are administrators can create announcements to display on the homepage
+	 */
 	public void createAnnouncement(String announcement) {
 		if (isAdministrator) {
 			dal.createAnnouncement(announcement);
 		}
+	}
+	
+	/**
+	 * Only users who are administrators can remove user accounts
+	 */
+	public void removeUserAccount(String username) {
+		dal.removeUser(username);
 	}
 	
 }

@@ -147,6 +147,15 @@ public class DAL {
 		}
 	}
 	
+	public void removeUser(String loginName) {
+		try {
+			String update = "DELETE FROM users WHERE loginName = \"" + loginName + "\"";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void updateUserAchievements(String loginName, String achievementsString) {
 		String update = "UPDATE users SET achievements = \"" + achievementsString + "WHERE loginName = " + loginName + "\";";
 		try {
