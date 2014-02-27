@@ -14,9 +14,9 @@ public class HistoryObject {
 	private String userName;
 	private String quizName;
 	private Date date;
-	private DBConnection con;
+	private DAL dal;
 
-	public HistoryObject(String userName, Quiz quiz, DBConnection con) {
+	public HistoryObject(String userName, Quiz quiz, DAL dal) {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		dateString = dateFormat.format(date);
@@ -24,16 +24,17 @@ public class HistoryObject {
 		this.score = quiz.getUsersScore();
 		this.userName = userName;
 		this.quizName = quiz.getQuizName();
-		this.con = con;
+		this.dal = dal;
 		addToHistoryTable();
 	}
 	
-	public HistoryObject(String userName, String quizName, double score, long timeElapsed, String dateString, DBConnection con) {
+	public HistoryObject(String userName, String quizName, double score, long timeElapsed, String dateString, DAL dal) {
 		this.dateString = dateString;
 		this.timeElapsed = timeElapsed;
 		this.score = score;
 		this.userName = userName;
 		this.quizName = quizName;
+		this.dal = dal;
 	}
 	
 	public String getDate() {
@@ -57,15 +58,7 @@ public class HistoryObject {
 	}
 	
 	private void addToHistoryTable() {
-		Statement stmt = con.getStatement();
-		//update MySQL database
-		try {
-			String update = "INSERT INTO histories VALUES(\"" + userName + "\",\"" + quizName + "\","
-										+ "\"" + score + "\",\"" + timeElapsed + "\",\"" + dateString + "\")";
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		dal.addToHistoryListForUser(userName, quizName, score, timeElapsed, dateString);
 	}
 	
 }
