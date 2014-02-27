@@ -31,7 +31,7 @@ CREATE TABLE histories (
     quizName CHAR(64),
     score DOUBLE,
     timeElapsed BIGINT,
-    date CHAR(64)
+    dateString CHAR(64)
 );
 
 
@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS messages;
 CREATE TABLE messages (
     fromUser CHAR(64),
     toUser CHAR(64),
-    type CHAR(64),
+    messageType CHAR(64),
     message CHAR(64),
     quizName CHAR(64),
     quizLink CHAR(64),
