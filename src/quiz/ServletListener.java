@@ -14,7 +14,6 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class ServletListener implements ServletContextListener {
 
-	private AccountManager manager;
 	
     /**
      * Default constructor. 
@@ -31,10 +30,13 @@ public class ServletListener implements ServletContextListener {
     	
     	//create account manager
     	DAL dal = new DAL();
-    	manager = new AccountManager(dal);
+    	AccountManager manager = new AccountManager(dal);
+    	Webpage webpage = new Webpage();
+    	
     	ServletContext context = arg0.getServletContext();
     	context.setAttribute("DAL", dal);
     	context.setAttribute("manager", manager);
+    	context.setAttribute("webpage", webpage);
     	
     	//TODO keep track of announcements array of strings (from database)
     	//TODO keep track of array list of popular quizzes by name
