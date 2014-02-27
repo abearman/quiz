@@ -63,11 +63,6 @@ public class Quiz {
 			e.printStackTrace(); 
 		}
 	}
-
-	//TODO: Delete this constructor?
-	public Quiz(DAL dal) {
-		
-	}
 	
 	//constructor for creating a quiz, adds quiz to database
 	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
@@ -87,7 +82,16 @@ public class Quiz {
 		getQuestionsFromDB(givenQuizName);
 	}
 	
-	private void getQuestionsFromDB(String quizName) { //TODO: Add to DAL
+	//simple constructor only for unit testing
+	//TODO take this out eventually
+	public Quiz(DAL dal){
+		initializeArrayLists();
+		this.dal = dal;
+	}
+	
+	
+	private void getQuestionsFromDB(String quizName)
+	{
 		questions = dal.getQuestionsFromDB(quizName);
 		if (isRandom) {
 			Collections.shuffle(questions);
