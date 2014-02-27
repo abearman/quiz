@@ -115,3 +115,12 @@ CREATE TABLE users (
     password CHAR(64),
     achievements CHAR(64)
 );
+
+
+DROP TABLE IF EXISTS announcements;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE announcements (
+    announcement CHAR(64)
+);
+
