@@ -46,6 +46,8 @@ public class LoginServlet extends HttpServlet {
 		String username = (String)request.getParameter("username");
 		String password = (String)request.getParameter("password");
 		
+		request.getSession().setAttribute("loginName", username);
+		
 		if (manager.accountExists(username) && manager.isPasswordForAccount(username, password)){
 			
 			//display user homepage
