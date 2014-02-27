@@ -9,7 +9,8 @@ CREATE TABLE quizzes (
     isRandom BOOLEAN,
     isMultiplePage BOOLEAN,
     isImmediateCorrection BOOLEAN,
-    canBeTakenInPracticeMode BOOLEAN
+    canBeTakenInPracticeMode BOOLEAN,
+    creatorName CHAR(64)
 );
 
 
