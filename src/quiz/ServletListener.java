@@ -33,6 +33,7 @@ public class ServletListener implements ServletContextListener {
     	DAL dal = new DAL();
     	manager = new AccountManager(dal);
     	ServletContext context = arg0.getServletContext();
+    	context.setAttribute("DAL", dal);
     	context.setAttribute("manager", manager);
     	
     	//TODO keep track of announcements array of strings (from database)
