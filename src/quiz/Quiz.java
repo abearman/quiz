@@ -14,6 +14,7 @@ public class Quiz {
 	private boolean isMultiplePage;
 	private boolean isImmediateCorrection;
 	private boolean canBeTakenInPracticeMode;
+	private String creatorName;
 	private ArrayList<Question> questions;
 	private ArrayList<HistoryObject> allHistories;
 
@@ -47,16 +48,18 @@ public class Quiz {
 		this.isMultiplePage = dal.getIsRandomOfQuiz(givenQuizName);
 		this.isImmediateCorrection = dal.getIsImmediateCorrectionOfQuiz(givenQuizName);
 		this.canBeTakenInPracticeMode = dal.getCanBeTakenInPracticeModeOfQuiz(givenQuizName);
+		this.creatorName = dal.getCreatorName(givenQuizName);
 	}
 	
 	//constructor for creating a quiz, adds quiz to database
 	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
 			boolean isRandom, boolean isMultiplePage,
-			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode) {
+			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode,
+			String creatorName) {
 		
 		initializeArrayLists();
 		this.dal = new DAL();
-		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode);
+		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName);
 	}
 
 	//constructor for taking a quiz, handles querying of database
@@ -100,6 +103,10 @@ public class Quiz {
 
 	public String getDescriptionOfQuiz(){
 		return descriptionOfQuiz;
+	}
+	
+	public String getCreatorName(){
+		return creatorName;
 	}
 
 	public boolean isRandom(){

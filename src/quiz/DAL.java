@@ -230,9 +230,9 @@ public class DAL {
 		}
 	}
 	
-	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode) {
+	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName) {
 		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+");";
+			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -436,6 +436,19 @@ public class DAL {
 			e.printStackTrace(); //TODO How do we want to handle this?
 		}
 		return false;
+	}
+	
+	public String getCreatorName(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (String) quizResultSet.getObject(7);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return "";
 	}
 
 	public void createAnnouncement(String announcement) {
