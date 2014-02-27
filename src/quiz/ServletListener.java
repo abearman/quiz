@@ -30,8 +30,8 @@ public class ServletListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0) {
     	
     	//create account manager
-    	DBConnection conn = new DBConnection();
-    	manager = new AccountManager(conn);
+    	DAL dal = new DAL();
+    	manager = new AccountManager(dal);
     	ServletContext context = arg0.getServletContext();
     	context.setAttribute("manager", manager);
     	
