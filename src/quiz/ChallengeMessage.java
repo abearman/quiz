@@ -8,11 +8,12 @@ public class ChallengeMessage extends Message {
 	private String message;
 	private double bestScore;
 	
-	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DBConnection con) {
-		super(fromUser.getLoginName(), toUser.getLoginName(), con);
+	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DAL dal) {
+		super(fromUser.getLoginName(), toUser.getLoginName(), dal);
 		this.quizName = quiz.getQuizName();
 		this.bestScore = challengingUserBestScore(fromUser);
 		message = fromUser + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
+		dal.addMessageForUser(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
 	}
 	
 	public String getQuizName() {
