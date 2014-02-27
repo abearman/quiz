@@ -248,10 +248,13 @@ public class DAL {
 		}
 	}
 	
-	
-	
-	public void populateQuiz(Quiz quiz, String givenQuizName) {
-	
+	public void removeQuiz(String quizName) {
+		try {
+			String update = "DELETE FROM quizzes WHERE quizName = \"" + quizName + "\"";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void addQuestion(String quizName, Question question) {

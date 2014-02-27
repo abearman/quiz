@@ -210,4 +210,11 @@ public class User {
 		dal.removeUser(username);
 	}
 	
+	/**
+	 * Only users who are administrators can remove quizzes
+	 */
+	public void removeQuiz(String quizName) {
+		dal.removeQuiz(quizName);
+	}
+	
 }
