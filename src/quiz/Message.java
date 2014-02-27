@@ -1,7 +1,5 @@
 package quiz;
 
-import java.sql.Statement;
-
 public class Message {
 	
 	/* Constants representing types of Messages */

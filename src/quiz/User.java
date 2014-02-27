@@ -1,9 +1,6 @@
 package quiz;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 
 public class User {
@@ -228,4 +225,16 @@ public class User {
 		dal.changeIsAdministrator(user.getLoginName(), false); //Changes it in the database
 	}
 	
+	/**
+	 * Only users who are administrators can clear all history information for a particular quiz
+	 */
+	public void clearAllHistoryForQuiz(String quizName) {
+		dal.clearAllHistoryForQuiz(quizName);
+	}
+	
 }
+
+
+
+
+

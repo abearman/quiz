@@ -1,7 +1,5 @@
 package quiz;
 
-import java.util.ArrayList;
-
 public class ChallengeMessage extends Message {
 	
 	private String quizName;

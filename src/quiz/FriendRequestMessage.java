@@ -1,8 +1,5 @@
 package quiz;
 
-import java.sql.SQLException;
-import java.sql.Statement;
-
 public class FriendRequestMessage extends Message {
 	
 	private String message;

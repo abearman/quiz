@@ -1,6 +1,5 @@
 package quiz;
 
-import java.sql.Statement;
 
 public class TopScorer {
 	

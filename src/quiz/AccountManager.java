@@ -2,10 +2,6 @@ package quiz;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
 
 public class AccountManager {
 
@@ -61,7 +57,7 @@ public class AccountManager {
 	
 	/* Given an account name and a password, creates a new account */
 	public void createNewAccount(String loginName, String passwordClear) {
-		User user = new User(loginName, passwordClear, dal); //The constructor handles putting the User in the database
+		new User(loginName, passwordClear, dal); //The constructor handles putting the User in the database
 	}
 	
 }

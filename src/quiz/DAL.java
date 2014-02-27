@@ -485,6 +485,15 @@ public class DAL {
 		}
 		return announcements;
 	}
+
+	public void clearAllHistoryForQuiz(String quizName) {
+		String update = "DELETE FROM histories WHERE quizName = \"" + quizName + "\";";
+		try {
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
 
