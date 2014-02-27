@@ -20,7 +20,7 @@ public class DAL {
 	/* Getters */
 	
 	public boolean accountExists(String loginName) {
-		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\"";
+		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) { //If there exists a record with this loginName in the database return true
@@ -34,7 +34,7 @@ public class DAL {
 	}
 	
 	public boolean isPasswordForAccount(String loginName, String passwordClear, String hashOfAttemptedPassword) {
-		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\"";
+		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			String databasePasswordHash = rs.getString("password"); //Retrieves the stored hash from the Database for this User
@@ -51,7 +51,7 @@ public class DAL {
 	public ArrayList<HistoryObject> getHistoryListForUser(String userName) {
 		ArrayList<HistoryObject> historyList = new ArrayList<HistoryObject>();
 		try {
-			String query = "SELECT * FROM histories WHERE loginName = \"" + userName + "\"";
+			String query = "SELECT * FROM histories WHERE loginName = \"" + userName + "\";";
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()) {
 				String loginName = rs.getString("loginName");
@@ -70,11 +70,11 @@ public class DAL {
 	public ArrayList<String> getFriendListForUser(String loginName) {
 		ArrayList<String> friendList = new ArrayList<String>();
 		try {
-			String query1 = "SELECT * FROM friends WHERE user1 = \"" + loginName + "\"";
+			String query1 = "SELECT * FROM friends WHERE user1 = \"" + loginName + "\";";
 			ResultSet rs1 = stmt.executeQuery(query1);
 			while(rs1.next()) {
 				String user2 = rs1.getString(2);
-				String query2 = "SELECT * FROM users WHERE loginName = \"" + user2 + "\"";
+				String query2 = "SELECT * FROM users WHERE loginName = \"" + user2 + "\";";
 				ResultSet rs2 = stmt.executeQuery(query2);
 				while (rs2.next()) {
 					//add user to result (should friends just be an ArrayList<String>?)
@@ -92,7 +92,7 @@ public class DAL {
 		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
 
 		try {
-			String query = "SELECT * FROM histories";
+			String query = "SELECT * FROM histories;";
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()) {
 				String loginName = rs.getString("loginName");
@@ -148,7 +148,7 @@ public class DAL {
 	}
 	
 	public void updateUserAchievements(String loginName, String achievementsString) {
-		String update = "UPDATE users SET achievements = \"" + achievementsString + "WHERE loginName = " + loginName + "\"";
+		String update = "UPDATE users SET achievements = \"" + achievementsString + "WHERE loginName = " + loginName + "\";";
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -157,7 +157,7 @@ public class DAL {
 	}
 	
 	public void changeIsAdministrator(String loginName, boolean isAdmin) {
-		String update = "UPDATE users SET isAdministrator = \"" + isAdmin + "WHERE loginName = " + loginName + "\"";
+		String update = "UPDATE users SET isAdministrator = \"" + isAdmin + "WHERE loginName = " + loginName + "\";";
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -167,7 +167,7 @@ public class DAL {
 	
 	public void addToHistoryListForUser(String loginName, String quizName, double score, long timeElapsed, String dateString) {
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + score + "," + timeElapsed + ",\"" + dateString + "\")";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + score + "," + timeElapsed + ",\"" + dateString + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -177,7 +177,7 @@ public class DAL {
 	public void addFriendPair(String user1, String user2) {
 		try {
 			String update = "INSERT INTO friends VALUES(\"" + user1 + "\",\"" + user2 + "\") , "
-													+ "(\"" + user2 + "\",\"" + user1 + "\")";
+													+ "(\"" + user2 + "\",\"" + user1 + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -191,11 +191,11 @@ public class DAL {
 	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {
 		String update;
 		if (type.equals(Message.NOTE_MESSAGE)) {
-			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\")";
+			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\");";
 		} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
-			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\")";
+			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\");";
 		} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
-			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ")";
+			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ");";
 		} else {
 			update = ""; //Execution should never get here; just for initialization purposes
 		}
@@ -283,19 +283,19 @@ public class DAL {
 			String update = "";
 			if(question.getQuestionType() == Question.QUESTION_RESPONSE)
 			{
-				update = "DELETE FROM questionResponse WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+				update = "DELETE FROM questionResponse WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\";";
 			}
 			if(question.getQuestionType() == Question.FILL_IN_THE_BLANK)
 			{
-				update = "DELETE FROM fillInTheBlank WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+				update = "DELETE FROM fillInTheBlank WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\";";
 			}
 			if(question.getQuestionType() == Question.MULTIPLE_CHOICE)
 			{
-				update = "DELETE FROM multipleChoice WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+				update = "DELETE FROM multipleChoice WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\";";
 			}
 			if(question.getQuestionType() == Question.PICTURE_RESPONSE)
 			{
-				update = "DELETE FROM pictureResponse WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+				update = "DELETE FROM pictureResponse WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\";";
 			}
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -438,6 +438,29 @@ public class DAL {
 		return false;
 	}
 
+	public void createAnnouncement(String announcement) {
+		try {
+			String update = "INSERT INTO announcements VALUES(\"" + announcement + "\");";
+			stmt.executeUpdate(update);
+		} catch (SQLException e){
+			e.printStackTrace(); 
+		}
+	}
+	
+	public ArrayList<String> getAllAnnouncements() {
+		ArrayList<String> announcements = new ArrayList<String>();
+		String query = "SELECT * FROM announcements;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				announcements.add(rs.getString("announcement"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return announcements;
+	}
+	
 }
 
 

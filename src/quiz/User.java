@@ -194,4 +194,10 @@ public class User {
 		dal.updateUserAchievements(this.loginName, achievementsString);	
 	}
 	
+	public void createAnnouncement(String announcement) {
+		if (isAdministrator) {
+			dal.createAnnouncement(announcement);
+		}
+	}
+	
 }
