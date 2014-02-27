@@ -232,6 +232,27 @@ public class User {
 		dal.clearAllHistoryForQuiz(quizName);
 	}
 	
+	/**
+	 * Administrative site statistics getter: number of users
+	 */
+	public int getNumberOfUsers() {
+		return dal.getNumberOfUsers();
+	}
+	
+	/**
+	 * Administrative site statistics getter: number of quizzes taken
+	 */
+	public int getNumberOfQuizzesTaken() {
+		return dal.getNumberOfQuizzesTaken();
+	}
+
+	/**
+	 * Administrative site statistics getter: number of quizzes created
+	 */
+	public int getNumberOfQuizzesCreated() {
+		return dal.getNumberOfQuizzesCreated();
+	}
+	
 }
 
 

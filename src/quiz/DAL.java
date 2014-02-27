@@ -495,6 +495,51 @@ public class DAL {
 		}
 	}
 	
+	/**
+	 * Administrative site statistics getter: number of users
+	 */
+	public int getNumberOfUsers() {
+		String query = "SELECT * FROM users;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			rs.last();
+			return rs.getRow();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	/**
+	 * Administrative site statistics getter: number of quizzes taken
+	 */
+	public int getNumberOfQuizzesTaken() {
+		String query = "SELECT * FROM histories;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			rs.last();
+			return rs.getRow();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	/**
+	 * Administrative site statistics getter: number of quizzes created
+	 */
+	public int getNumberOfQuizzesCreated() {
+		String query = "SELECT * FROM quizzes;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			rs.last();
+			return rs.getRow();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 }
 
 
