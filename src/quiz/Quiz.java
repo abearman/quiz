@@ -1,10 +1,5 @@
 package quiz;
 import java.util.*;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 
 public class Quiz {
 
@@ -32,17 +27,17 @@ public class Quiz {
 	//connect to database
 	private DAL dal;
 
-	private void initializeArrayLists(){
+	private void initializeArrayLists() {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = initializeAllHistories();
 	}
 
-
 	private ArrayList<HistoryObject> initializeAllHistories() { 
 		return dal.getAllHistoryLists();
 	}
 
+	//constructor for creating a quiz, adds quiz to database
 	
 	//reads database to find this quiz and populates instance variables
 	private void readDatabase(String givenQuizName){
@@ -54,25 +49,20 @@ public class Quiz {
 		this.canBeTakenInPracticeMode = dal.getCanBeTakenInPracticeModeOfQuiz(givenQuizName);
 	}
 	
-	
 	//constructor for creating a quiz, adds quiz to database
 	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
 			boolean isRandom, boolean isMultiplePage,
-			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode){
+			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode) {
 		
 		initializeArrayLists();
-		this.dal = dal;
-		
+		this.dal = new DAL();
 		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode);
-		
 	}
 
 	//constructor for taking a quiz, handles querying of database
-	public Quiz(DAL dal, String givenQuizName){
-		
+	public Quiz(DAL dal, String givenQuizName) {
 		initializeArrayLists();
 		this.dal = dal;
-		
 		readDatabase(givenQuizName);
 		getQuestionsFromDB(givenQuizName);
 	}
@@ -88,8 +78,7 @@ public class Quiz {
 	private void getQuestionsFromDB(String quizName)
 	{
 		questions = dal.getQuestionsFromDB(quizName);
-		if(isRandom)
-		{
+		if (isRandom) {
 			Collections.shuffle(questions);
 		}
 		else 
@@ -105,7 +94,7 @@ public class Quiz {
 
 	/* Getters */
 
-	public String getQuizName(){
+	public String getQuizName() {
 		return quizName;
 	}
 
@@ -141,49 +130,45 @@ public class Quiz {
 		return usersScore;
 	}
 
-	//returns sorted array of topscorers by reading from database
-	public ArrayList<TopScorer> getTopScorers(){
+
+	//Returns sorted array of TopScorer's by reading from database
+	public ArrayList<TopScorer> getTopScorers() { 
 		topScorers = dal.getAllTopScorersForQuiz(quizName);
-		sortTopScorers();
+		sortTopScorers(); //Sort the array
 		return topScorers;
 	}
+
 
 	public ArrayList<HistoryObject> getAllHistories() {
 		return allHistories;
 	}
-
-	/* Setters */
 	
-	public void setLengthOfCompletion(long lengthOfCompletion){
+	public void setLengthOfCompletion(long lengthOfCompletion) { //TODO: Update database?
 		this.lengthOfCompletion = lengthOfCompletion;
 	}
 
-	public void setUsersScore(double usersScore){
+	public void setUsersScore(double usersScore) { //TODO: Update database?
 		this.usersScore = usersScore;
 	}
 
+
 	public void addQuestion(Question question){
-		
 		questions.add(question);
-		
-		//adds the question to the corresponding database table
 		dal.addQuestion(quizName, question);
-		
 	}
 
-	public void removeQuestion(Question question){
+	public void removeQuestion(Question question) { //TODO: Update the database?
 		if (questions.contains(question)){
 			questions.remove(question);
 			dal.removeQuestion(quizName, question);
 		}
 	}
 
-	public void addTopScorer(TopScorer topScorer){
+	public void addTopScorer(TopScorer topScorer) {
 		
 		//add this top scorer and update database
 		topScorers.add(topScorer);
 		dal.addTopScorer(topScorer, quizName);
-		
 		
 		//sort top scorers
 		sortTopScorers();
@@ -199,12 +184,10 @@ public class Quiz {
 
 	public void removeTopScorer(TopScorer topScorer){
 		if (topScorers.contains(topScorer)){
-			
 			//remove this top scorer
 			//update database to delete entry with this quiz and this user
 			topScorers.remove(topScorer);
 			dal.removeTopScorer(topScorer.getLoginName(), quizName);
-			
 		}
 	}
 
