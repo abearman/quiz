@@ -118,9 +118,9 @@ public class DAL {
 				topScorerResultSet.beforeFirst(); 
 				
 				while (topScorerResultSet.next()){
-					String loginName = (String)topScorerResultSet.getObject(2);
-					int numCorrectQuestions = (Integer)topScorerResultSet.getObject(3);
-					double timeTaken = (Double)topScorerResultSet.getObject(4);
+					String loginName = (String)topScorerResultSet.getObject("loginName");
+					int numCorrectQuestions = (Integer)topScorerResultSet.getObject("numCorrectQuestions");
+					double timeTaken = (Double)topScorerResultSet.getObject("timeTaken");
 					
 					//Add top scorer to TopScorer's array
 					topScorers.add(new TopScorer(loginName, numCorrectQuestions, timeTaken, this));
@@ -365,7 +365,7 @@ public class DAL {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
 				quizResultSet.first();
-				return (String)quizResultSet.getObject(1);
+				return (String)quizResultSet.getObject("quizName");
 			}
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
@@ -378,7 +378,7 @@ public class DAL {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
 				quizResultSet.first();
-				return (String)quizResultSet.getObject(2);
+				return (String)quizResultSet.getObject("description");
 			}
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
@@ -391,7 +391,7 @@ public class DAL {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
 				quizResultSet.first();
-				return (Boolean) quizResultSet.getObject(3);
+				return (Boolean) quizResultSet.getObject("isRandom");
 			}
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
@@ -404,7 +404,7 @@ public class DAL {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
 				quizResultSet.first();
-				return (Boolean) quizResultSet.getObject(4);
+				return (Boolean) quizResultSet.getObject("isMultiplePage");
 			}
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
@@ -417,7 +417,7 @@ public class DAL {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
 				quizResultSet.first();
-				return (Boolean) quizResultSet.getObject(5);
+				return (Boolean) quizResultSet.getObject("isImmediateCorrection");
 			}
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
@@ -430,7 +430,7 @@ public class DAL {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
 				quizResultSet.first();
-				return (Boolean) quizResultSet.getObject(6);
+				return (Boolean) quizResultSet.getObject("canBeTakenInPracticeMode");
 			}
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
@@ -443,7 +443,7 @@ public class DAL {
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){
 				quizResultSet.first();
-				return (String) quizResultSet.getObject(7);
+				return (String) quizResultSet.getObject("creatorName");
 			}
 		} catch (SQLException e){
 			e.printStackTrace(); //TODO How do we want to handle this?
