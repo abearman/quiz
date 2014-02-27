@@ -278,6 +278,31 @@ public class DAL {
 		}
 	}
 	
+	public void removeQuestion(String quizName, Question question){
+		try {
+			String update = "";
+			if(question.getQuestionType() == Question.QUESTION_RESPONSE)
+			{
+				update = "DELETE FROM questionResponse WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+			}
+			if(question.getQuestionType() == Question.FILL_IN_THE_BLANK)
+			{
+				update = "DELETE FROM fillInTheBlank WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+			}
+			if(question.getQuestionType() == Question.MULTIPLE_CHOICE)
+			{
+				update = "DELETE FROM multipleChoice WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+			}
+			if(question.getQuestionType() == Question.PICTURE_RESPONSE)
+			{
+				update = "DELETE FROM pictureResponse WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\"";
+			}
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+	}
+	
 	
 	public ArrayList<Question> getQuestionsFromDB(String quizName){
 		ArrayList<Question> questions = new ArrayList<Question>();
@@ -334,6 +359,85 @@ public class DAL {
 		}
 		return questions;
 	}
+	
+	public String getNameOfQuiz(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (String)quizResultSet.getObject(1);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return "";
+	}
+	
+	public String getDescriptionOfQuiz(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (String)quizResultSet.getObject(2);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return "";
+	}
+	
+	public boolean getIsRandomOfQuiz(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (Boolean) quizResultSet.getObject(3);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return false;
+	}
+	
+	public boolean getMultiplePageOfQuiz(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (Boolean) quizResultSet.getObject(4);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return false;
+	}
+	
+	public boolean getIsImmediateCorrectionOfQuiz(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (Boolean) quizResultSet.getObject(5);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return false;
+	}
+	
+	public boolean getCanBeTakenInPracticeModeOfQuiz(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (Boolean) quizResultSet.getObject(6);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return false;
+	}
+
 }
 
 

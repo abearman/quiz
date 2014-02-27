@@ -46,20 +46,12 @@ public class Quiz {
 	
 	//reads database to find this quiz and populates instance variables
 	private void readDatabase(String givenQuizName){
-		try{
-			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
-				quizResultSet.first();
-				this.quizName = (String)quizResultSet.getObject(1);
-				this.descriptionOfQuiz = (String)quizResultSet.getObject(2);
-				this.isRandom = (Boolean) quizResultSet.getObject(3);
-				this.isMultiplePage = (Boolean) quizResultSet.getObject(4);
-				this.isImmediateCorrection = (Boolean) quizResultSet.getObject(5);
-				this.canBeTakenInPracticeMode = (Boolean) quizResultSet.getObject(6);
-			}
-		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
-		}
+		this.quizName = dal.getNameOfQuiz(givenQuizName);
+		this.descriptionOfQuiz = dal.getDescriptionOfQuiz(givenQuizName);
+		this.isRandom = dal.getIsRandomOfQuiz(givenQuizName);
+		this.isMultiplePage = dal.getIsRandomOfQuiz(givenQuizName);
+		this.isImmediateCorrection = dal.getIsImmediateCorrectionOfQuiz(givenQuizName);
+		this.canBeTakenInPracticeMode = dal.getCanBeTakenInPracticeModeOfQuiz(givenQuizName);
 	}
 	
 	
@@ -151,12 +143,8 @@ public class Quiz {
 
 	//returns sorted array of topscorers by reading from database
 	public ArrayList<TopScorer> getTopScorers(){
-		
 		topScorers = dal.getAllTopScorersForQuiz(quizName);
-		
-		//sort the array
 		sortTopScorers();
-		
 		return topScorers;
 	}
 
@@ -175,6 +163,7 @@ public class Quiz {
 	}
 
 	public void addQuestion(Question question){
+		
 		questions.add(question);
 		
 		//adds the question to the corresponding database table
@@ -185,6 +174,7 @@ public class Quiz {
 	public void removeQuestion(Question question){
 		if (questions.contains(question)){
 			questions.remove(question);
+			dal.removeQuestion(quizName, question);
 		}
 	}
 
