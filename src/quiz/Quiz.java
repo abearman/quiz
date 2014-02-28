@@ -15,6 +15,7 @@ public class Quiz {
 	private boolean isImmediateCorrection;
 	private boolean canBeTakenInPracticeMode;
 	private String creatorName;
+	private java.util.Date creationDate;
 	private ArrayList<Question> questions;
 	private ArrayList<HistoryObject> allHistories;
 
@@ -24,7 +25,8 @@ public class Quiz {
 
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
-
+	private int numTimesTaken;
+	
 	//connect to database
 	private DAL dal;
 
@@ -49,17 +51,20 @@ public class Quiz {
 		this.isImmediateCorrection = dal.getIsImmediateCorrectionOfQuiz(givenQuizName);
 		this.canBeTakenInPracticeMode = dal.getCanBeTakenInPracticeModeOfQuiz(givenQuizName);
 		this.creatorName = dal.getCreatorName(givenQuizName);
+		this.creationDate = dal.getCreationDate(givenQuizName);
+		this.numTimesTaken = dal.getNumTimesTaken(givenQuizName);
+		
 	}
 	
 	//constructor for creating a quiz, adds quiz to database
 	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
 			boolean isRandom, boolean isMultiplePage,
 			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode,
-			String creatorName) {
+			String creatorName, java.util.Date dateCreated, int numTimesTaken) {
 		
 		initializeArrayLists();
 		this.dal = new DAL();
-		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName);
+		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName, dateCreated, 0);
 	}
 
 	//constructor for taking a quiz, handles querying of database
@@ -135,6 +140,15 @@ public class Quiz {
 
 	public double getUsersScore(){
 		return usersScore;
+	}
+	
+	public int getNumTimesTaken(){
+		return numTimesTaken;
+	}
+	
+	public void incrementNumTimesTaken(){
+		this.numTimesTaken++;
+		dal.incrementNumTimesTaken(quizName);
 	}
 
 
