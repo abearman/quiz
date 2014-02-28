@@ -139,9 +139,17 @@ public class User {
 	public ArrayList<String> getRecentlyCreatedQuizzes() {
 		return this.recentlyCreatedQuizzes;
 	}
+	
+	public boolean getNewMessages() {
+		return hasNewMessages;
+	}
 	 
 	////////////////////////////////////////////////////////////////
 	/* Setter methods */
+	
+	public void setHasNewMessagesFalse() {
+		hasNewMessages = false;
+	}
 	
 	public void takeQuiz(HistoryObject ho) {
 		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getNumQuestionsCorrect(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
@@ -185,6 +193,7 @@ public class User {
 			messages.add(cm);
 			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quiz.getQuizName(), cm.challengingUserBestScore(this));
 		}
+		hasNewMessages = true;
 	}
 	
 	public void removeMessage(Message message) { //TODO Database?
