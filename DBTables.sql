@@ -10,7 +10,9 @@ CREATE TABLE quizzes (
     isMultiplePage BOOLEAN,
     isImmediateCorrection BOOLEAN,
     canBeTakenInPracticeMode BOOLEAN,
-    creatorName CHAR(64)
+    creatorName CHAR(64),
+    creationDate DATE, 
+    numTimesTaken INT
 );
 
 
@@ -32,7 +34,7 @@ CREATE TABLE histories (
     score DOUBLE,
     timeElapsed BIGINT,
     dateString CHAR(64), 
-    dateValue DATETIME()
+    dateValue DATE
 );
 
 
