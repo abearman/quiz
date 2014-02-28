@@ -11,12 +11,12 @@ public class HistoryObject {
 	private double score;
 	private String userName;
 	private String quizName;
-	private Date date;
+	private java.util.Date date;
 	private DAL dal;
 
 	public HistoryObject(String userName, Quiz quiz, DAL dal) {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
+		date = new Date();
 		dateString = dateFormat.format(date);
 		this.timeElapsed = quiz.getLengthOfCompletion();
 		this.score = quiz.getUsersScore();
@@ -35,8 +35,12 @@ public class HistoryObject {
 		this.dal = dal;
 	}
 	
-	public String getDate() {
+	public String getDateString() {
 		return dateString;
+	}
+	
+	public java.util.Date getDate(){
+		return date; 
 	}
 	
 	public long getElapsedTime() {

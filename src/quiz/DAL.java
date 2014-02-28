@@ -59,7 +59,7 @@ public class DAL {
 				String quizName = rs.getString("quizName");
 				double score = rs.getDouble("score");
 				long timeElapsed = rs.getLong("timeElapsed");
-				String dateString = rs.getString("date");
+				String dateString = rs.getString("dateString");
 				historyList.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
 			}
 		} catch (SQLException e) {
@@ -100,7 +100,7 @@ public class DAL {
 				String quizName = rs.getString("quizName");
 				double score = rs.getDouble("score");
 				long timeElapsed = rs.getLong("timeElapsed");
-				String dateString = rs.getString("date");
+				String dateString = rs.getString("dateString");
 				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
 			}
 

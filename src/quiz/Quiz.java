@@ -18,6 +18,10 @@ public class Quiz {
 	private java.util.Date creationDate;
 	private ArrayList<Question> questions;
 	private ArrayList<HistoryObject> allHistories;
+	
+	//miscellaneous
+	private ArrayList<TopScorer> topScorersPastDay;
+	private ArrayList<User> recentQuizTakers;
 
 	//different across sessions
 	private long lengthOfCompletion;
@@ -34,6 +38,9 @@ public class Quiz {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = initializeAllHistories();
+		
+		topScorersPastDay = new ArrayList<TopScorer>();
+		recentQuizTakers = new ArrayList<User>();
 	}
 
 	private ArrayList<HistoryObject> initializeAllHistories() { 
