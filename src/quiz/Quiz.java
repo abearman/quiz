@@ -275,5 +275,10 @@ public class Quiz {
 			}
 		});
 	}
+	
+	public ArrayList<TopScorer> getTopScorersPastDay(){
+		//TODO populate top scorers in the past day
+		return topScorersPastDay;
+	}
 
 }
