@@ -42,4 +42,57 @@ public class QuizTest {
 		}
 	}
 
+	@Test 
+	//Test database queries
+	public void testQueries() {
+		String loginName = "amy";
+		String quizName = "quiz";
+		boolean isAdministrator = false;
+		String passwordHash = "password1234";
+		String achievementsString = "000000";
+		int numQuestionsCorrect = 5;
+		long timeElapsed = 5000;
+		String dateString = "10:34:00";
+		java.sql.Date sqlDate = null;
+		String user1 = "jacob";
+		String user2 = "alanna";
+		String fromUser = "catherine";
+		String toUser = "biola";
+		String type = Message.CHALLENGE_MESSAGE;
+		String message = "I challenge you!";
+		double bestScore = 10;
+		TopScorer topScorer = new TopScorer(loginName, numQuestionsCorrect, timeElapsed, null);
+		String descriptionOfQuiz = "This is the best quiz ever";
+		boolean isRandom = true;
+		boolean isMultiplePage = false;
+		boolean isImmediateCorrection = true;
+		boolean canBeTakenInPracticeMode = false;
+		String creatorName = "sharon";
+		int numTimesTaken = 10;
+		System.out.println("SELECT * FROM users WHERE loginName = \"" + loginName + "\";");
+		System.out.println("SELECT * FROM histories WHERE loginName = \"" + loginName + "\";");
+		System.out.println("SELECT * FROM friends WHERE user1 = \"" + loginName + "\";");
+		System.out.println("SELECT * FROM histories;");
+		System.out.println("SELECT * FROM topscorers WHERE quizName = \"" + quizName + "\";");
+		System.out.println("INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\");");
+		System.out.println("DELETE FROM users WHERE loginName = \"" + loginName + "\"");
+		System.out.println("UPDATE users SET achievements = \"" + achievementsString + "\" WHERE loginName = \"" + loginName + "\";");
+		System.out.println("UPDATE users SET isAdministrator = " + isAdministrator + " WHERE loginName = \"" + loginName + "\";");
+		System.out.println("INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\"," + sqlDate + ");");
+		System.out.println("INSERT INTO friends VALUES(\"" + user1 + "\",\"" + user2 + "\") , " + "(\"" + user2 + "\",\"" + user1 + "\");");
+		System.out.println("INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ");");
+		System.out.println("INSERT INTO topscorers VALUES(\""+quizName+"\",\""+topScorer.getLoginName()+"\","+ topScorer.getNumCorrectQuestions()+","+topScorer.getTimeTaken()+");");
+		System.out.println("DELETE FROM topscorers WHERE quizName = \"" + quizName + "\" AND loginName = \"" + loginName + "\";");
+		System.out.println("INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + sqlDate + "," + numTimesTaken + ");");
+		System.out.println("DELETE FROM quizzes WHERE quizName = \"" + quizName + "\"");
+		
+		
+		
+	}
 }
+
+
+
+
+
+

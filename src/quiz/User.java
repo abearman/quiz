@@ -15,6 +15,9 @@ public class User {
 	private ArrayList<HistoryObject> historyList;
 	private boolean[] achievements;
 	private ArrayList<Message> messages;
+	private int recentAchievement;
+	private String recentlyCreatedQuiz;
+	private String recentlyTakenQuiz;
 	
 	private ArrayList<String> recentlyTakenQuizzes;
 	private ArrayList<String> recentlyCreatedQuizzes;
@@ -67,9 +70,15 @@ public class User {
 		return dal.getFriendListForUser(this.loginName);
 	}
 	
+	private ArrayList<FriendRecentActivity> initializeFriendsRecentActivity(ArrayList<String> friends)
+	{
+		return dal.getFriendsRecentActivity(friends);
+	}
+	
 		
 	/* Constructor */
 	public User(String loginName, String password, DAL dal) {
+		this.dal = dal;
 		this.loginName = loginName;
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
@@ -77,6 +86,7 @@ public class User {
 		
 		friends = new ArrayList<String>();
 		friends = initializeFriends();
+		friendsRecentActivity = initializeFriendsRecentActivity(friends);
 		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
 		initAchievementsArray();
 		historyList = initializeHistoryList();
@@ -85,7 +95,6 @@ public class User {
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
 		
-		this.dal = dal;
 		dal.insertUser(loginName, isAdministrator, passwordHash, achievements);
 	}
 
@@ -138,12 +147,18 @@ public class User {
 		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getNumQuestionsCorrect(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
 		this.recentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(ho.getUserName());
 		//Update recently taken quizzes, in the database, and the instance variable
+		//Updates recentActivity field for user in database
+		recentlyTakenQuiz = ho.getQuizName();
+		updateRecentActivity(recentAchievement, recentlyTakenQuiz, recentlyCreatedQuiz);
 	}
 	
 	public void createQuiz(Quiz quiz) {
 		dal.insertQuiz(quiz);
 		this.recentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(loginName);
 		//Update recently created quizzes, in the database, and the instance variable 
+		//Updates recentActivity field for user in database
+		recentlyCreatedQuiz = quiz.getQuizName();
+		updateRecentActivity(recentAchievement, recentlyTakenQuiz, recentlyCreatedQuiz);
 	}
 	
 	public void addFriendPair(String friendName) { 
@@ -188,6 +203,9 @@ public class User {
 			}
 		}
 		dal.updateUserAchievements(this.loginName, achievementsString);
+		//updates recentActivity field for user in database
+		recentAchievement = index;
+		updateRecentActivity(recentAchievement, recentlyTakenQuiz, recentlyCreatedQuiz);
 	}
 	
 	public void deleteAchievement(int index){
@@ -201,6 +219,13 @@ public class User {
 			}
 		}
 		dal.updateUserAchievements(this.loginName, achievementsString);	
+	}
+	
+	public void updateRecentActivity(int achievement, String recentQuizTaken, String recentQuizCreated)
+	{
+		String recentActivity = ""+achievement+"\n"+
+			recentQuizTaken+"\n"+recentQuizCreated;
+		//dal method to update recentActivity
 	}
 	
 	////////////////////////////////////////////////////////////////
@@ -277,6 +302,7 @@ public class User {
 	public int getNumberOfQuizzesCreated() {
 		return dal.getNumberOfQuizzesCreated();
 	}
+	
 	
 }
 

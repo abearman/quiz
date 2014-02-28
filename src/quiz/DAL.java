@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.*;
 
 public class DAL {
 
@@ -19,6 +20,10 @@ public class DAL {
 	}
 	
 	/* Getters */
+	
+	public Statement getStatement() {
+		return stmt;
+	}
 	
 	public boolean accountExists(String loginName) {
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
@@ -141,7 +146,8 @@ public class DAL {
 	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
 		try {
-			String update = "INSERT INTO users VALUES(\"" + loginName + " \",\" " + isAdministrator + " \",\" " + passwordHash + " \",\" " + achievementsString + ");";
+			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\");";
+			System.out.println(update);
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -158,7 +164,7 @@ public class DAL {
 	}
 	
 	public void updateUserAchievements(String loginName, String achievementsString) {
-		String update = "UPDATE users SET achievements = \"" + achievementsString + "WHERE loginName = " + loginName + "\";";
+		String update = "UPDATE users SET achievements = \"" + achievementsString + "\" WHERE loginName = \"" + loginName + "\";";
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -167,7 +173,7 @@ public class DAL {
 	}
 	
 	public void changeIsAdministrator(String loginName, boolean isAdmin) {
-		String update = "UPDATE users SET isAdministrator = \"" + isAdmin + "WHERE loginName = " + loginName + "\";";
+		String update = "UPDATE users SET isAdministrator = " + isAdmin + " WHERE loginName = \"" + loginName + "\";";
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -187,7 +193,7 @@ public class DAL {
 	
 	public void addFriendPair(String user1, String user2) {
 		try {
-			String update = "INSERT INTO friends VALUES(\"" + user1 + "\",\"" + user2 + "\") , "
+			String update = "INSERT INTO friends VALUES(\"" + user1 + "\",\"" + user2 + "\"), "
 													+ "(\"" + user2 + "\",\"" + user1 + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -243,7 +249,7 @@ public class DAL {
 	
 	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName, java.util.Date creationDate, int numTimesTaken) {
 		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\",'" + creationDate + "'," + numTimesTaken + ");";
+			String update = "\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -644,6 +650,40 @@ public class DAL {
 		return usersRecentlyCreatedQuizzes;
 	}
 	
+	public void updateRecentUserActivity(String loginName, String recentActivity)
+	{
+		String execute = "UPDATE users SET recentActivity= \""+recentActivity+"\" WHERE loginName= \""+
+		loginName+"\"";
+		try{
+			stmt.executeUpdate(execute);
+		} catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public ArrayList<FriendRecentActivity> getFriendsRecentActivity(ArrayList<String> friends)
+	{
+			ArrayList<FriendRecentActivity> fra = new ArrayList<FriendRecentActivity>();
+			for(String f : friends)
+			{
+				String query = "SELECT * FROM users WHERE loginName = \""+f+"\"";
+				try {
+					ResultSet rs = stmt.executeQuery(query);
+					rs.first();
+					StringTokenizer st = new StringTokenizer(rs.getString(5), "\n");
+					FriendRecentActivity act = new FriendRecentActivity(f);
+					act.setRecentAchievement(Integer.getInteger(st.nextToken()));
+					act.setRecentlyTakenQuiz(st.nextToken());
+					act.setRecentlyCreatedQuiz(st.nextToken());
+					fra.add(act);
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return fra;
+	}
 }
 
 
