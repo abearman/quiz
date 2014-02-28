@@ -5,7 +5,11 @@ public class Quiz {
 
 	public static final int TOPSCORER_MAX = 5;
 	public static final int RECENT_TEST_TAKER_MAX = 5;
+	public static final int TOTAL_STATISTICS = 3;
 
+	public static final int AVERAGE_SCORE = 0;
+	public static final int MEDIAN_SCORE = 1;
+	public static final int AVERAGE_TIME = 2;
 	//instance variables
 
 	//stay the same across sessions, stored in database
@@ -19,7 +23,7 @@ public class Quiz {
 	private java.util.Date creationDate;
 	private ArrayList<Question> questions;
 	private ArrayList<HistoryObject> allHistories;
-	
+
 	//miscellaneous
 	private ArrayList<TopScorer> topScorersPastDay;
 	private ArrayList<String> recentQuizTakers;
@@ -32,7 +36,7 @@ public class Quiz {
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
 	private int numTimesTaken;
-	
+
 	//connect to database
 	private DAL dal;
 
@@ -40,7 +44,7 @@ public class Quiz {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		//allHistories = initializeAllHistories();
-		
+
 		topScorersPastDay = new ArrayList<TopScorer>();
 		recentQuizTakers = new ArrayList<String>();
 	}
@@ -50,7 +54,7 @@ public class Quiz {
 	}
 
 	//constructor for creating a quiz, adds quiz to database
-	
+
 	//reads database to find this quiz and populates instance variables
 	private void readDatabase(String givenQuizName){
 		this.quizName = dal.getNameOfQuiz(givenQuizName);
@@ -62,9 +66,9 @@ public class Quiz {
 		this.creatorName = dal.getCreatorName(givenQuizName);
 		this.creationDate = dal.getCreationDate(givenQuizName);
 		this.numTimesTaken = dal.getNumTimesTaken(givenQuizName);
-		
+
 	}
-	
+
 	//constructor for creating a quiz, adds quiz to database
 	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
 			boolean isRandom, boolean isMultiplePage,
@@ -92,15 +96,48 @@ public class Quiz {
 		readDatabase(givenQuizName);
 		getQuestionsFromDB(givenQuizName);
 	}
-	
+
 	//simple constructor only for unit testing
 	//TODO take this out eventually
 	public Quiz(DAL dal){
 		initializeArrayLists();
 		this.dal = dal;
 	}
-	
-	
+
+	public double[] getStatisticsSummary() {
+		double[] statistics = new double[TOTAL_STATISTICS];
+		double averageScore = 0;
+		double medianScore = 0;
+		double averageTime = 0;
+		ArrayList<Double> scores = new ArrayList<Double>();
+		for (HistoryObject hist : allHistories) {
+			averageScore += hist.getNumQuestionsCorrect();
+			averageTime += hist.getElapsedTime();
+			scores.add(new Double(hist.getNumQuestionsCorrect()));
+		}
+		medianScore = getMedian(scores);
+		averageScore /= allHistories.size();
+		averageTime /= allHistories.size();
+
+		statistics[AVERAGE_SCORE] = averageScore;
+		statistics[MEDIAN_SCORE] = medianScore;
+		statistics[AVERAGE_TIME] = averageTime;
+		return statistics;
+	}
+
+	private double getMedian(ArrayList<Double> scores) {
+		Collections.sort(scores);
+
+		if (scores.size() % 2 == 1) {
+			return scores.get((scores.size()+1)/2 - 1);
+		} else {
+			double lower = scores.get(scores.size()/2 - 1 );
+			double upper = scores.get(scores.size()/2);
+
+			return (lower + upper) / 2.0;
+		}	
+	}
+
 	private void getQuestionsFromDB(String quizName)
 	{
 		questions = dal.getQuestionsFromDB(quizName);
@@ -127,7 +164,7 @@ public class Quiz {
 	public String getDescriptionOfQuiz(){
 		return descriptionOfQuiz;
 	}
-	
+
 	public String getCreatorName(){
 		return creatorName;
 	}
@@ -155,7 +192,7 @@ public class Quiz {
 	public long getLengthOfCompletion(){
 		return lengthOfCompletion;
 	}
-	
+
 	public int getNumQuestionsCorrect(){
 		return numQuestionsCorrect;
 	}
@@ -164,15 +201,15 @@ public class Quiz {
 	public double getUsersScore(){
 		return usersScore;
 	}*/
-	
+
 	public int getNumTimesTaken(){
 		return numTimesTaken;
 	}
-	
+
 	public java.util.Date getCreationDate(){
 		return creationDate;
 	}
-	
+
 	public void incrementNumTimesTaken(){
 		this.numTimesTaken++;
 		dal.incrementNumTimesTaken(quizName);
@@ -190,11 +227,11 @@ public class Quiz {
 	public ArrayList<HistoryObject> getAllHistories() {
 		return allHistories;
 	}
-	
+
 	public void setLengthOfCompletion(long lengthOfCompletion) { //TODO: Update database?
 		this.lengthOfCompletion = lengthOfCompletion;
 	}
-	
+
 	//TODO Update the database?
 	public void setNumQuestionsCorrect(int numQuestionsCorrect){
 		this.numQuestionsCorrect = numQuestionsCorrect;
@@ -219,11 +256,11 @@ public class Quiz {
 	}
 
 	public void addTopScorer(TopScorer topScorer) {
-		
+
 		//add this top scorer and update database
 		topScorers.add(topScorer);
 		dal.addTopScorer(topScorer, quizName);
-		
+
 		//sort top scorers
 		sortTopScorers(topScorers);
 
@@ -270,7 +307,7 @@ public class Quiz {
 			}
 		});
 	}
-	
+
 	public ArrayList<String> getRecentQuizTakers(){
 		sortHistories();
 		for (int i = 0; i < RECENT_TEST_TAKER_MAX; i++){
@@ -278,11 +315,11 @@ public class Quiz {
 		}
 		return recentQuizTakers;
 	}
-	
+
 	//Sort all histories in order of most recent date
 	//history 1 is "less than" history 2 if history 1's date is before history 2's
 	private void sortHistories(){
-		
+
 		Collections.sort(allHistories, new Comparator<HistoryObject>(){
 
 			@Override
@@ -296,44 +333,46 @@ public class Quiz {
 			}
 		});
 	}
-	
+
 	public ArrayList<TopScorer> getTopScorersPastDay(){
-		
+
 		for (int i = 0; i < allHistories.size(); i++){
-			
+
 			HistoryObject history = allHistories.get(i);
-			
+
 			//figure out what the previous day is
 			Date currentDate = new Date();
 			Calendar previousDayCal = Calendar.getInstance();
 			previousDayCal.setTime(currentDate);
 			previousDayCal.add(Calendar.DAY_OF_MONTH, -1);
-			
+
 			//get the history object's day
 			Date historyDate = history.getDate();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(historyDate);
-			
+
 			int historyYear = cal.get(Calendar.YEAR);
 			int historyMonth = cal.get(Calendar.MONTH);
 			int historyDay = cal.get(Calendar.DAY_OF_MONTH);
-			
+
 			int currentYear = previousDayCal.get(Calendar.YEAR);
 			int currentMonth = cal.get(Calendar.MONTH);
 			int currentDay = cal.get(Calendar.DAY_OF_MONTH);
-			
+
 			//found a history in the past day
 			if (historyYear == currentYear && historyMonth == currentMonth 
 					&& historyDay == currentDay){
 				topScorersPastDay.add(new TopScorer(history.getUserName(), history.getNumQuestionsCorrect(), history.getElapsedTime(), dal));
 			}
-			
+
 		}
-		
+
 		//sort top scorers in the past day and cap at 5
 		sortTopScorers(topScorersPastDay);
-		
+
 		return topScorersPastDay;
 	}
+
+
 
 }
