@@ -37,10 +37,10 @@ public class ChallengeMessage extends Message {
 	
 	public double challengingUserBestScore(User user) {
 		//Alternative looping through user's histories
-		double bestScore = 0;
+		int bestScore = 0;
 		for (HistoryObject hist : user.getHistory()) {
 			if (hist.getQuizName().equals(getQuizName())) {
-				double score = hist.getScore();
+				int score = hist.getNumQuestionsCorrect();
 				if (score > bestScore)
 					bestScore = score;
 			}

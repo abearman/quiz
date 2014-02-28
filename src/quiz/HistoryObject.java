@@ -8,7 +8,8 @@ public class HistoryObject {
 	
 	private String dateString;
 	private long timeElapsed;
-	private double score;
+	//private double score;
+	private int numQuestionsCorrect;
 	private String userName;
 	private String quizName;
 	private java.util.Date date;
@@ -19,21 +20,23 @@ public class HistoryObject {
 		date = new Date();
 		dateString = dateFormat.format(date);
 		this.timeElapsed = quiz.getLengthOfCompletion();
-		this.score = quiz.getUsersScore();
+		this.numQuestionsCorrect = quiz.getNumQuestionsCorrect();
+		//this.score = quiz.getUsersScore();
 		this.userName = userName;
 		this.quizName = quiz.getQuizName();
 		this.dal = dal;
-		dal.addToHistoryListForUser(userName, quizName, score, timeElapsed, dateString, date);
+		dal.addToHistoryListForUser(userName, quizName, numQuestionsCorrect, timeElapsed, dateString, date);
 	}
 	
-	public HistoryObject(String userName, String quizName, double score, long timeElapsed, String dateString, DAL dal) {
+	public HistoryObject(String userName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, DAL dal) {
 		this.dateString = dateString;
 		this.timeElapsed = timeElapsed;
-		this.score = score;
+		this.numQuestionsCorrect = numQuestionsCorrect;
+		//this.score = score;
 		this.userName = userName;
 		this.quizName = quizName;
 		this.dal = dal;
-		dal.addToHistoryListForUser(userName, quizName, score, timeElapsed, dateString, date);
+		dal.addToHistoryListForUser(userName, quizName, numQuestionsCorrect, timeElapsed, dateString, date);
 	}
 	
 	public String getDateString() {
@@ -52,9 +55,14 @@ public class HistoryObject {
 		return userName;
 	}
 	
+	public int getNumQuestionsCorrect(){
+		return numQuestionsCorrect;
+	}
+	
+	/*
 	public double getScore() {
 		return score;
-	}
+	}*/
 	
 	public String getQuizName() {
 		return quizName;
