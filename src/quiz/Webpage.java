@@ -15,13 +15,10 @@ public class Webpage {
 	
 	/* Constructor */
 	public Webpage(DAL dal) {
-		recentlyTakenQuizzes = new ArrayList<String>();
-		recentlyCreatedQuizzes = new ArrayList<String>();
-		
-		recentlyTakenQuizzes = dal.getRecentlyTakenQuizzes();
-		announcements = dal.getAllAnnouncements();
-	
 		//Populate instance variables from the database
+		recentlyTakenQuizzes = dal.getRecentlyTakenQuizzes();
+		recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes();
+		announcements = dal.getAllAnnouncements();
 	}
 	
 	/* Getters */

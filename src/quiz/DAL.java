@@ -588,22 +588,31 @@ public class DAL {
 	}
 	
 	public ArrayList<String> getRecentlyTakenQuizzes() {
-		ArrayList<String> rtq = new ArrayList<String>();
-		String query = "SELECT * FROM histories";
+		ArrayList<String> recentlyTakenQuizzes = new ArrayList<String>();
+		String query = "SELECT * FROM histories ORDER BY dateValue LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				//rtq.add();
+				recentlyTakenQuizzes.add(rs.getString("quizName"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rtq;
+		return recentlyTakenQuizzes;
 	}
 	
 	public ArrayList<String> getRecentlyCreatedQuizzes() {
-		ArrayList<String> rcq = new ArrayList<String>();
-		return rcq;
+		ArrayList<String> recentlyCreatedQuizzes = new ArrayList<String>();
+		String query = "SELECT * FROM quizzes ORDER BY creationDate LIMIT 0, 10;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				recentlyCreatedQuizzes.add(rs.getString("quizName"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return recentlyCreatedQuizzes;
 	}
 	
 	public ArrayList<String> getUserRecentlyTakenQuizzes(String username) {
