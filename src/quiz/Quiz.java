@@ -4,6 +4,7 @@ import java.util.*;
 public class Quiz {
 
 	public static final int TOPSCORER_MAX = 5;
+	public static final int RECENT_TEST_TAKER_MAX = 5;
 
 	//instance variables
 
@@ -15,8 +16,13 @@ public class Quiz {
 	private boolean isImmediateCorrection;
 	private boolean canBeTakenInPracticeMode;
 	private String creatorName;
+	private java.util.Date creationDate;
 	private ArrayList<Question> questions;
 	private ArrayList<HistoryObject> allHistories;
+	
+	//miscellaneous
+	private ArrayList<TopScorer> topScorersPastDay;
+	private ArrayList<String> recentQuizTakers;
 
 	//different across sessions
 	private long lengthOfCompletion;
@@ -24,7 +30,8 @@ public class Quiz {
 
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
-
+	private int numTimesTaken;
+	
 	//connect to database
 	private DAL dal;
 
@@ -32,6 +39,9 @@ public class Quiz {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = initializeAllHistories();
+		
+		topScorersPastDay = new ArrayList<TopScorer>();
+		recentQuizTakers = new ArrayList<String>();
 	}
 
 	private ArrayList<HistoryObject> initializeAllHistories() { 
@@ -49,17 +59,20 @@ public class Quiz {
 		this.isImmediateCorrection = dal.getIsImmediateCorrectionOfQuiz(givenQuizName);
 		this.canBeTakenInPracticeMode = dal.getCanBeTakenInPracticeModeOfQuiz(givenQuizName);
 		this.creatorName = dal.getCreatorName(givenQuizName);
+		this.creationDate = dal.getCreationDate(givenQuizName);
+		this.numTimesTaken = dal.getNumTimesTaken(givenQuizName);
+		
 	}
 	
 	//constructor for creating a quiz, adds quiz to database
 	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
 			boolean isRandom, boolean isMultiplePage,
 			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode,
-			String creatorName) {
+			String creatorName, java.util.Date dateCreated, int numTimesTaken) {
 		
 		initializeArrayLists();
 		this.dal = new DAL();
-		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName);
+		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName, dateCreated, 0);
 	}
 
 	//constructor for taking a quiz, handles querying of database
@@ -135,6 +148,19 @@ public class Quiz {
 
 	public double getUsersScore(){
 		return usersScore;
+	}
+	
+	public int getNumTimesTaken(){
+		return numTimesTaken;
+	}
+	
+	public java.util.Date getCreationDate(){
+		return creationDate;
+	}
+	
+	public void incrementNumTimesTaken(){
+		this.numTimesTaken++;
+		dal.incrementNumTimesTaken(quizName);
 	}
 
 
@@ -222,6 +248,37 @@ public class Quiz {
 				}
 			}
 		});
+	}
+	
+	public ArrayList<String> getRecentQuizTakers(){
+		sortHistories();
+		for (int i = 0; i < RECENT_TEST_TAKER_MAX; i++){
+			recentQuizTakers.add(allHistories.get(i).getUserName());
+		}
+		return recentQuizTakers;
+	}
+	
+	//Sort all histories in order of most recent date
+	//history 1 is "less than" history 2 if history 1's date is before history 2's
+	private void sortHistories(){
+		
+		Collections.sort(allHistories, new Comparator<HistoryObject>(){
+
+			@Override
+			public int compare(HistoryObject history1, HistoryObject history2){
+				if (history1.getDate().before(history2.getDate())){
+					return -1;
+				}else if (history2.getDate().before(history1.getDate())){
+					return 1;
+				}
+				return 0;
+			}
+		});
+	}
+	
+	public ArrayList<TopScorer> getTopScorersPastDay(){
+		//TODO populate top scorers in the past day
+		return topScorersPastDay;
 	}
 
 }

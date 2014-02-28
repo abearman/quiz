@@ -11,7 +11,7 @@ public class HistoryObject {
 	private double score;
 	private String userName;
 	private String quizName;
-	private Date date;
+	private java.util.Date date;
 	private DAL dal;
 
 	public HistoryObject(String userName, Quiz quiz, DAL dal) {
@@ -40,8 +40,8 @@ public class HistoryObject {
 		return dateString;
 	}
 	
-	public Date getDate() {
-		return date;
+	public java.util.Date getDate(){
+		return date; 
 	}
 	
 	public long getElapsedTime() {

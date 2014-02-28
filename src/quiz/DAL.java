@@ -1,5 +1,6 @@
 package quiz;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -58,7 +59,7 @@ public class DAL {
 				String quizName = rs.getString("quizName");
 				double score = rs.getDouble("score");
 				long timeElapsed = rs.getLong("timeElapsed");
-				String dateString = rs.getString("date");
+				String dateString = rs.getString("dateString");
 				historyList.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
 			}
 		} catch (SQLException e) {
@@ -99,7 +100,7 @@ public class DAL {
 				String quizName = rs.getString("quizName");
 				double score = rs.getDouble("score");
 				long timeElapsed = rs.getLong("timeElapsed");
-				String dateString = rs.getString("date");
+				String dateString = rs.getString("dateString");
 				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
 			}
 
@@ -240,9 +241,9 @@ public class DAL {
 		}
 	}
 	
-	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName) {
+	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName, java.util.Date creationDate, int numTimesTaken) {
 		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\");";
+			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\",'" + creationDate + "'," + numTimesTaken + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -471,6 +472,42 @@ public class DAL {
 			e.printStackTrace(); //TODO How do we want to handle this?
 		}
 		return "";
+	}
+	
+	public java.util.Date getCreationDate(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (java.util.Date) quizResultSet.getObject("creationDate");
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return null;
+	}
+	
+	public int getNumTimesTaken(String givenQuizName){
+		try{
+			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
+			if (quizResultSet!=null){
+				quizResultSet.first();
+				return (Integer) quizResultSet.getObject("numTimesTaken");
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //TODO How do we want to handle this?
+		}
+		return 0;
+	}
+	
+	public void incrementNumTimesTaken(String quizName){
+		try {
+			int numTimesTaken = getNumTimesTaken(quizName);
+			String update = "UPDATE quizzes SET numTimesTaken = " + (numTimesTaken+1) + " WHERE quizName = \"" + quizName + "\";";
+			stmt.executeUpdate(update);
+		} catch (SQLException e){
+			e.printStackTrace(); 
+		}
 	}
 
 	public void createAnnouncement(String announcement) {
