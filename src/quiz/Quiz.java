@@ -167,7 +167,7 @@ public class Quiz {
 	//Returns sorted array of TopScorer's by reading from database
 	public ArrayList<TopScorer> getTopScorers() { 
 		topScorers = dal.getAllTopScorersForQuiz(quizName);
-		sortTopScorers(); //Sort the array
+		sortTopScorers(topScorers); //Sort the array
 		return topScorers;
 	}
 
@@ -204,7 +204,7 @@ public class Quiz {
 		dal.addTopScorer(topScorer, quizName);
 		
 		//sort top scorers
-		sortTopScorers();
+		sortTopScorers(topScorers);
 
 		//cap top scorers at 5
 		int numExtra = topScorers.size() - TOPSCORER_MAX;
@@ -226,10 +226,10 @@ public class Quiz {
 
 	/** Sort top scorers first by number of correct questions, then by
 	 * amount of time taken. */
-	private void sortTopScorers(){
+	private void sortTopScorers(ArrayList<TopScorer> topScorerList){
 
 		//Sort top scorers
-		Collections.sort(topScorers, new Comparator<TopScorer>(){
+		Collections.sort(topScorerList, new Comparator<TopScorer>(){
 
 			@Override
 			public int compare(TopScorer topScorer1, TopScorer topScorer2){
