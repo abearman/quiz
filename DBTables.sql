@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS histories;
 CREATE TABLE histories (
     loginName CHAR(64),
     quizName CHAR(64),
-    score DOUBLE,
+    numQuestionsCorrect INT,
     timeElapsed BIGINT,
     dateString CHAR(64), 
     dateValue DATE

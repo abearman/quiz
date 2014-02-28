@@ -26,7 +26,8 @@ public class Quiz {
 
 	//different across sessions
 	private long lengthOfCompletion;
-	private double usersScore;
+	private int numQuestionsCorrect;
+	//private double usersScore;
 
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
@@ -145,10 +146,15 @@ public class Quiz {
 	public long getLengthOfCompletion(){
 		return lengthOfCompletion;
 	}
+	
+	public int getNumQuestionsCorrect(){
+		return numQuestionsCorrect;
+	}
 
+	/*
 	public double getUsersScore(){
 		return usersScore;
-	}
+	}*/
 	
 	public int getNumTimesTaken(){
 		return numTimesTaken;
@@ -179,10 +185,16 @@ public class Quiz {
 	public void setLengthOfCompletion(long lengthOfCompletion) { //TODO: Update database?
 		this.lengthOfCompletion = lengthOfCompletion;
 	}
+	
+	//TODO Update the database?
+	public void setNumQuestionsCorrect(int numQuestionsCorrect){
+		this.numQuestionsCorrect = numQuestionsCorrect;
+	}
 
+	/*
 	public void setUsersScore(double usersScore) { //TODO: Update database?
 		this.usersScore = usersScore;
-	}
+	}*/
 
 
 	public void addQuestion(Question question){
@@ -190,7 +202,7 @@ public class Quiz {
 		dal.addQuestion(quizName, question);
 	}
 
-	public void removeQuestion(Question question) { //TODO: Update the database?
+	public void removeQuestion(Question question) { 
 		if (questions.contains(question)){
 			questions.remove(question);
 			dal.removeQuestion(quizName, question);
@@ -277,7 +289,41 @@ public class Quiz {
 	}
 	
 	public ArrayList<TopScorer> getTopScorersPastDay(){
-		//TODO populate top scorers in the past day
+		
+		for (int i = 0; i < allHistories.size(); i++){
+			
+			HistoryObject history = allHistories.get(i);
+			
+			//figure out what the previous day is
+			Date currentDate = new Date();
+			Calendar previousDayCal = Calendar.getInstance();
+			previousDayCal.setTime(currentDate);
+			previousDayCal.add(Calendar.DAY_OF_MONTH, -1);
+			
+			//get the history object's day
+			Date historyDate = history.getDate();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(historyDate);
+			
+			int historyYear = cal.get(Calendar.YEAR);
+			int historyMonth = cal.get(Calendar.MONTH);
+			int historyDay = cal.get(Calendar.DAY_OF_MONTH);
+			
+			int currentYear = previousDayCal.get(Calendar.YEAR);
+			int currentMonth = cal.get(Calendar.MONTH);
+			int currentDay = cal.get(Calendar.DAY_OF_MONTH);
+			
+			//found a history in the past day
+			if (historyYear == currentYear && historyMonth == currentMonth 
+					&& historyDay == currentDay){
+				topScorersPastDay.add(new TopScorer(history.getUserName(), history.getNumQuestionsCorrect(), history.getElapsedTime(), dal));
+			}
+			
+		}
+		
+		//sort top scorers in the past day and cap at 5
+		sortTopScorers(topScorersPastDay);
+		
 		return topScorersPastDay;
 	}
 

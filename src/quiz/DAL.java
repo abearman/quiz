@@ -21,6 +21,10 @@ public class DAL {
 	
 	/* Getters */
 	
+	public Statement getStatement() {
+		return stmt;
+	}
+	
 	public boolean accountExists(String loginName) {
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {
@@ -58,10 +62,10 @@ public class DAL {
 			while(rs.next()) {
 				String loginName = rs.getString("loginName");
 				String quizName = rs.getString("quizName");
-				double score = rs.getDouble("score");
+				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 				long timeElapsed = rs.getLong("timeElapsed");
 				String dateString = rs.getString("dateString");
-				historyList.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
+				historyList.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -99,10 +103,10 @@ public class DAL {
 			while(rs.next()) {
 				String loginName = rs.getString("loginName");
 				String quizName = rs.getString("quizName");
-				double score = rs.getDouble("score");
+				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 				long timeElapsed = rs.getLong("timeElapsed");
 				String dateString = rs.getString("dateString");
-				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
+				result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
 			}
 
 		} catch (SQLException e) {
@@ -142,7 +146,8 @@ public class DAL {
 	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
 		try {
-			String update = "INSERT INTO users VALUES(\"" + loginName + " \",\" " + isAdministrator + " \",\" " + passwordHash + " \",\" " + achievementsString + ");";
+			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\");";
+			System.out.println(update);
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -176,10 +181,10 @@ public class DAL {
 		}
 	}
 	
-	public void addToHistoryListForUser(String loginName, String quizName, double score, long timeElapsed, String dateString, java.util.Date utilDate) {
+	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + score + "," + timeElapsed + ",\"" + dateString + "\"," + sqlDate + ");";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\"," + sqlDate + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -589,22 +594,31 @@ public class DAL {
 	}
 	
 	public ArrayList<String> getRecentlyTakenQuizzes() {
-		ArrayList<String> rtq = new ArrayList<String>();
-		String query = "SELECT * FROM histories";
+		ArrayList<String> recentlyTakenQuizzes = new ArrayList<String>();
+		String query = "SELECT * FROM histories ORDER BY dateValue LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				//rtq.add();
+				recentlyTakenQuizzes.add(rs.getString("quizName"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rtq;
+		return recentlyTakenQuizzes;
 	}
 	
 	public ArrayList<String> getRecentlyCreatedQuizzes() {
-		ArrayList<String> rcq = new ArrayList<String>();
-		return rcq;
+		ArrayList<String> recentlyCreatedQuizzes = new ArrayList<String>();
+		String query = "SELECT * FROM quizzes ORDER BY creationDate LIMIT 0, 10;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				recentlyCreatedQuizzes.add(rs.getString("quizName"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return recentlyCreatedQuizzes;
 	}
 	
 	public ArrayList<String> getUserRecentlyTakenQuizzes(String username) {

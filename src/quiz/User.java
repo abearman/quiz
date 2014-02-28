@@ -78,6 +78,7 @@ public class User {
 		
 	/* Constructor */
 	public User(String loginName, String password, DAL dal) {
+		this.dal = dal;
 		this.loginName = loginName;
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
@@ -94,7 +95,6 @@ public class User {
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
 		
-		this.dal = dal;
 		dal.insertUser(loginName, isAdministrator, passwordHash, achievements);
 	}
 
@@ -144,7 +144,7 @@ public class User {
 	/* Setter methods */
 	
 	public void takeQuiz(HistoryObject ho) {
-		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getScore(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
+		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getNumQuestionsCorrect(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
 		this.recentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(ho.getUserName());
 		//Update recently taken quizzes, in the database, and the instance variable
 		//Updates recentActivity field for user in database

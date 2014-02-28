@@ -1,5 +1,7 @@
 package quiz;
 
+import java.sql.SQLException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -30,6 +32,7 @@ public class ServletListener implements ServletContextListener {
     	
     	//create account manager
     	DAL dal = new DAL();
+    	
     	AccountManager manager = new AccountManager(dal);
     	Webpage webpage = new Webpage(dal);
     	
@@ -37,10 +40,6 @@ public class ServletListener implements ServletContextListener {
     	context.setAttribute("DAL", dal);
     	context.setAttribute("manager", manager);
     	context.setAttribute("webpage", webpage);
-    	
-    	//TODO keep track of announcements array of strings (from database)
-    	//TODO keep track of array list of popular quizzes by name
-    	//TODO keep track of recently created quizzes
     }
 
 	/**
