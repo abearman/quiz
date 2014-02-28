@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.*;
 
 public class DAL {
 
@@ -649,6 +650,40 @@ public class DAL {
 		return usersRecentlyCreatedQuizzes;
 	}
 	
+	public void updateRecentUserActivity(String loginName, String recentActivity)
+	{
+		String execute = "UPDATE users SET recentActivity= \""+recentActivity+"\" WHERE loginName= \""+
+		loginName+"\"";
+		try{
+			stmt.executeUpdate(execute);
+		} catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public ArrayList<FriendRecentActivity> getFriendsRecentActivity(ArrayList<String> friends)
+	{
+			ArrayList<FriendRecentActivity> fra = new ArrayList<FriendRecentActivity>();
+			for(String f : friends)
+			{
+				String query = "SELECT * FROM users WHERE loginName = \""+f+"\"";
+				try {
+					ResultSet rs = stmt.executeQuery(query);
+					rs.first();
+					StringTokenizer st = new StringTokenizer(rs.getString(5), "\n");
+					FriendRecentActivity act = new FriendRecentActivity(f);
+					act.setRecentAchievement(Integer.getInteger(st.nextToken()));
+					act.setRecentlyTakenQuiz(st.nextToken());
+					act.setRecentlyCreatedQuiz(st.nextToken());
+					fra.add(act);
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return fra;
+	}
 }
 
 
