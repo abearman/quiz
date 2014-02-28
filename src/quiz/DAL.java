@@ -163,7 +163,7 @@ public class DAL {
 	}
 	
 	public void updateUserAchievements(String loginName, String achievementsString) {
-		String update = "UPDATE users SET achievements = \"" + achievementsString + "WHERE loginName = " + loginName + "\";";
+		String update = "UPDATE users SET achievements = \"" + achievementsString + "\" WHERE loginName = \"" + loginName + "\";";
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -172,7 +172,7 @@ public class DAL {
 	}
 	
 	public void changeIsAdministrator(String loginName, boolean isAdmin) {
-		String update = "UPDATE users SET isAdministrator = \"" + isAdmin + "WHERE loginName = " + loginName + "\";";
+		String update = "UPDATE users SET isAdministrator = " + isAdmin + " WHERE loginName = \"" + loginName + "\";";
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -192,7 +192,7 @@ public class DAL {
 	
 	public void addFriendPair(String user1, String user2) {
 		try {
-			String update = "INSERT INTO friends VALUES(\"" + user1 + "\",\"" + user2 + "\") , "
+			String update = "INSERT INTO friends VALUES(\"" + user1 + "\",\"" + user2 + "\"), "
 													+ "(\"" + user2 + "\",\"" + user1 + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -248,7 +248,7 @@ public class DAL {
 	
 	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName, java.util.Date creationDate, int numTimesTaken) {
 		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\",'" + creationDate + "'," + numTimesTaken + ");";
+			String update = "\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
