@@ -1,5 +1,7 @@
 package quiz;
 
+import java.util.Date;
+
 import org.junit.*;
 
 
@@ -13,7 +15,12 @@ public class QuizTest {
 		
 		DAL dal = new DAL();
 		
-		thisQuiz = new Quiz(dal);
+		//thisQuiz = new Quiz(dal);
+		
+		//HistoryObject ho = new HistoryObject("testUser",thisQuiz ,dal);
+		Quiz testQuiz = new Quiz(dal, "TestQuizName","testQuizDescription",true,
+				true,true,true,"Pavitra",new Date(),3);
+		HistoryObject ho2 = new HistoryObject("testUser",testQuiz ,dal);
 		
 		topScorer4 = new TopScorer("user4", 10, 0.7, dal);
 		topScorer3 = new TopScorer("user3", 10, 0.5, dal);

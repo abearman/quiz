@@ -39,7 +39,7 @@ public class Quiz {
 	private void initializeArrayLists() {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
-		allHistories = initializeAllHistories();
+		//allHistories = initializeAllHistories();
 		
 		topScorersPastDay = new ArrayList<TopScorer>();
 		recentQuizTakers = new ArrayList<String>();
@@ -70,9 +70,8 @@ public class Quiz {
 			boolean isRandom, boolean isMultiplePage,
 			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode,
 			String creatorName, java.util.Date dateCreated, int numTimesTaken) {
-		
-		initializeArrayLists();
 		this.dal = new DAL();
+		initializeArrayLists();
 		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName, dateCreated, 0);
 	}
 
