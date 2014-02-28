@@ -41,7 +41,7 @@ public class Quiz {
 		allHistories = initializeAllHistories();
 		
 		topScorersPastDay = new ArrayList<TopScorer>();
-		recentQuizTakers = new ArrayList<User>();
+		recentQuizTakers = new ArrayList<String>();
 	}
 
 	private ArrayList<HistoryObject> initializeAllHistories() { 
