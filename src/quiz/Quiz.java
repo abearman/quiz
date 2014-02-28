@@ -146,6 +146,10 @@ public class Quiz {
 		return numTimesTaken;
 	}
 	
+	public java.util.Date getCreationDate(){
+		return creationDate;
+	}
+	
 	public void incrementNumTimesTaken(){
 		this.numTimesTaken++;
 		dal.incrementNumTimesTaken(quizName);
