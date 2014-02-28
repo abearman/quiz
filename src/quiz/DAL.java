@@ -20,6 +20,10 @@ public class DAL {
 	
 	/* Getters */
 	
+	public Statement getStatement() {
+		return stmt;
+	}
+	
 	public boolean accountExists(String loginName) {
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {
@@ -141,7 +145,8 @@ public class DAL {
 	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
 		try {
-			String update = "INSERT INTO users VALUES(\"" + loginName + " \",\" " + isAdministrator + " \",\" " + passwordHash + " \",\" " + achievementsString + ");";
+			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\");";
+			System.out.println(update);
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 

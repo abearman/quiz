@@ -70,6 +70,7 @@ public class User {
 		
 	/* Constructor */
 	public User(String loginName, String password, DAL dal) {
+		this.dal = dal;
 		this.loginName = loginName;
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
@@ -85,7 +86,6 @@ public class User {
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
 		
-		this.dal = dal;
 		dal.insertUser(loginName, isAdministrator, passwordHash, achievements);
 	}
 
