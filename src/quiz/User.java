@@ -135,7 +135,7 @@ public class User {
 	/* Setter methods */
 	
 	public void takeQuiz(HistoryObject ho) {
-		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getScore(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
+		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getNumQuestionsCorrect(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
 		this.recentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(ho.getUserName());
 		//Update recently taken quizzes, in the database, and the instance variable
 	}

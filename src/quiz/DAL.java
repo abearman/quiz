@@ -57,10 +57,10 @@ public class DAL {
 			while(rs.next()) {
 				String loginName = rs.getString("loginName");
 				String quizName = rs.getString("quizName");
-				double score = rs.getDouble("score");
+				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 				long timeElapsed = rs.getLong("timeElapsed");
 				String dateString = rs.getString("dateString");
-				historyList.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
+				historyList.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -98,10 +98,10 @@ public class DAL {
 			while(rs.next()) {
 				String loginName = rs.getString("loginName");
 				String quizName = rs.getString("quizName");
-				double score = rs.getDouble("score");
+				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 				long timeElapsed = rs.getLong("timeElapsed");
 				String dateString = rs.getString("dateString");
-				result.add(new HistoryObject(loginName, quizName, score, timeElapsed, dateString, this));
+				result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
 			}
 
 		} catch (SQLException e) {
@@ -175,10 +175,10 @@ public class DAL {
 		}
 	}
 	
-	public void addToHistoryListForUser(String loginName, String quizName, double score, long timeElapsed, String dateString, java.util.Date utilDate) {
+	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + score + "," + timeElapsed + ",\"" + dateString + "\"," + sqlDate + ");";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\"," + sqlDate + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
