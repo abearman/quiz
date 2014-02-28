@@ -100,7 +100,7 @@ public class DAL {
 		try {
 			String query = "SELECT * FROM histories;";
 			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()) {
+			while(rs!=null && rs.next()) {
 				String loginName = rs.getString("loginName");
 				String quizName = rs.getString("quizName");
 				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
@@ -147,7 +147,6 @@ public class DAL {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
 		try {
 			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\");";
-			System.out.println(update);
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -184,7 +183,7 @@ public class DAL {
 	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\"," + sqlDate + ");";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\",'" + sqlDate + "');";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -247,18 +246,20 @@ public class DAL {
 		}
 	}
 	
+	/*
 	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName, java.util.Date creationDate, int numTimesTaken) {
 		try {
-			String update = "\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
+			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
 		}
-	}
+	}*/
 	
 	public void insertQuiz(Quiz quiz) {
 		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quiz.getQuizName()+"\",\""+quiz.getDescriptionOfQuiz()+"\","+ quiz.isRandom()+","+quiz.isMultiplePage()+","+quiz.isImmediateCorrection()+","+quiz.canBeTakenInPracticeMode()+",\"" + quiz.getCreatorName() + "\");";
+			String update = "INSERT INTO quizzes VALUES(\""+quiz.getQuizName()+"\",\""+quiz.getDescriptionOfQuiz()+"\","+ quiz.isRandom()+","+quiz.isMultiplePage()+","+quiz.isImmediateCorrection()+","+quiz.canBeTakenInPracticeMode()+",\"" + 
+			quiz.getCreatorName() + "\",'" + new java.sql.Date(quiz.getCreationDate().getTime()) + "'," + quiz.getNumTimesTaken() + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 

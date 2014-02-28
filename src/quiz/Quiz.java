@@ -70,9 +70,19 @@ public class Quiz {
 			boolean isRandom, boolean isMultiplePage,
 			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode,
 			String creatorName, java.util.Date dateCreated, int numTimesTaken) {
-		this.dal = new DAL();
+		this.dal = dal;
+		this.quizName = quizName;
+		this.descriptionOfQuiz = descriptionOfQuiz;
+		this.isRandom = isRandom;
+		this.isMultiplePage = isMultiplePage;
+		this.isImmediateCorrection = isImmediateCorrection;
+		this.canBeTakenInPracticeMode = canBeTakenInPracticeMode;
+		this.creatorName = creatorName;
+		this.creationDate = dateCreated;
+		this.numTimesTaken = numTimesTaken;
 		initializeArrayLists();
-		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName, dateCreated, 0);
+		dal.insertQuiz(this);
+//		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName, dateCreated, 0);
 	}
 
 	//constructor for taking a quiz, handles querying of database

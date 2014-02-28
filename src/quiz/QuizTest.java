@@ -15,7 +15,7 @@ public class QuizTest {
 		
 		DAL dal = new DAL();
 		
-		//thisQuiz = new Quiz(dal);
+		thisQuiz = new Quiz(dal);
 		
 		//HistoryObject ho = new HistoryObject("testUser",thisQuiz ,dal);
 		Quiz testQuiz = new Quiz(dal, "TestQuizName","testQuizDescription",true,
