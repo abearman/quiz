@@ -4,6 +4,7 @@ import java.util.*;
 public class Quiz {
 
 	public static final int TOPSCORER_MAX = 5;
+	public static final int RECENT_TEST_TAKER_MAX = 5;
 
 	//instance variables
 
@@ -21,7 +22,7 @@ public class Quiz {
 	
 	//miscellaneous
 	private ArrayList<TopScorer> topScorersPastDay;
-	private ArrayList<User> recentQuizTakers;
+	private ArrayList<String> recentQuizTakers;
 
 	//different across sessions
 	private long lengthOfCompletion;
@@ -245,6 +246,32 @@ public class Quiz {
 					else if (diffTimeTaken > 0) return 1;
 					else return 0;
 				}
+			}
+		});
+	}
+	
+	public ArrayList<String> getRecentQuizTakers(){
+		sortHistories();
+		for (int i = 0; i < RECENT_TEST_TAKER_MAX; i++){
+			recentQuizTakers.add(allHistories.get(i).getUserName());
+		}
+		return recentQuizTakers;
+	}
+	
+	//Sort all histories in order of most recent date
+	//history 1 is "less than" history 2 if history 1's date is before history 2's
+	private void sortHistories(){
+		
+		Collections.sort(allHistories, new Comparator<HistoryObject>(){
+
+			@Override
+			public int compare(HistoryObject history1, HistoryObject history2){
+				if (history1.getDate().before(history2.getDate())){
+					return -1;
+				}else if (history2.getDate().before(history1.getDate())){
+					return 1;
+				}
+				return 0;
 			}
 		});
 	}
