@@ -58,6 +58,15 @@ public class User {
 			ex.printStackTrace(); //TODO: How should we handle this exception?
 		}
 	}
+	
+	private ArrayList<HistoryObject> initializeHistoryList() {
+		return dal.getHistoryListForUser(this.loginName);
+	}
+	
+	private ArrayList<String> initializeFriends() {
+		return dal.getFriendListForUser(this.loginName);
+	}
+	
 		
 	/* Constructor */
 	public User(String loginName, String password, DAL dal) {
@@ -79,15 +88,7 @@ public class User {
 		this.dal = dal;
 		dal.insertUser(loginName, isAdministrator, passwordHash, achievements);
 	}
-	
-	private ArrayList<HistoryObject> initializeHistoryList() {
-		return dal.getHistoryListForUser(this.loginName);
-	}
-	
-	private ArrayList<String> initializeFriends() {
-		return dal.getFriendListForUser(this.loginName);
-	}
-	
+
 	/* Getter methods */
 	
 	public String getLoginName() {
@@ -122,7 +123,28 @@ public class User {
 		return this.friendsRecentActivity;
 	}
 	
+	public ArrayList<String> getRecentlyTakenQuizzes() {
+		return this.recentlyTakenQuizzes;
+	}
+	
+	public ArrayList<String> getRecentlyCreatedQuizzes() {
+		return this.recentlyCreatedQuizzes;
+	}
+	 
+	////////////////////////////////////////////////////////////////
 	/* Setter methods */
+	
+	public void takeQuiz(HistoryObject ho) {
+		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getScore(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
+		this.recentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(ho.getUserName());
+		//Update recently taken quizzes, in the database, and the instance variable
+	}
+	
+	public void createQuiz(Quiz quiz) {
+		dal.insertQuiz(quiz);
+		this.recentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(loginName);
+		//Update recently created quizzes, in the database, and the instance variable 
+	}
 	
 	public void addFriendPair(String friendName) { 
 		friends.add(friendName);
@@ -180,6 +202,9 @@ public class User {
 		}
 		dal.updateUserAchievements(this.loginName, achievementsString);	
 	}
+	
+	////////////////////////////////////////////////////////////////
+	/* Administrative methods */
 	
 	/**
 	 * Only users who are administrators can create announcements to display on the homepage

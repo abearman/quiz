@@ -174,9 +174,10 @@ public class DAL {
 		}
 	}
 	
-	public void addToHistoryListForUser(String loginName, String quizName, double score, long timeElapsed, String dateString) {
+	public void addToHistoryListForUser(String loginName, String quizName, double score, long timeElapsed, String dateString, java.util.Date utilDate) {
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + score + "," + timeElapsed + ",\"" + dateString + "\");";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + score + "," + timeElapsed + ",\"" + dateString + "\"," + sqlDate + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -242,6 +243,15 @@ public class DAL {
 	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName) {
 		try {
 			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\");";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); 
+		}
+	}
+	
+	public void insertQuiz(Quiz quiz) {
+		try {
+			String update = "INSERT INTO quizzes VALUES(\""+quiz.getQuizName()+"\",\""+quiz.getDescriptionOfQuiz()+"\","+ quiz.isRandom()+","+quiz.isMultiplePage()+","+quiz.isImmediateCorrection()+","+quiz.canBeTakenInPracticeMode()+",\"" + quiz.getCreatorName() + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -538,6 +548,54 @@ public class DAL {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public ArrayList<String> getRecentlyTakenQuizzes() {
+		ArrayList<String> rtq = new ArrayList<String>();
+		String query = "SELECT * FROM histories";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				//rtq.add();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rtq;
+	}
+	
+	public ArrayList<String> getRecentlyCreatedQuizzes() {
+		ArrayList<String> rcq = new ArrayList<String>();
+		return rcq;
+	}
+	
+	public ArrayList<String> getUserRecentlyTakenQuizzes(String username) {
+		ArrayList<String> usersRecentlyTakenQuizzes = new ArrayList<String>();
+		String query = "SELECT * FROM histories WHERE loginName = \"" + username + "\" ORDER BY dateValue LIMIT 0, 10;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				usersRecentlyTakenQuizzes.add(rs.getString("quizName"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return usersRecentlyTakenQuizzes;
+	}
+	
+	public ArrayList<String> getUserRecentlyCreatedQuizzes(String username) {
+		ArrayList<String> usersRecentlyCreatedQuizzes = new ArrayList<String>();
+		String query = "SELECT * FROM quizzes WHERE loginName = \"" + username + "\" ORDER BY dateValue LIMIT 0, 10;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				usersRecentlyCreatedQuizzes.add(rs.getString("quizName"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return usersRecentlyCreatedQuizzes;
 	}
 	
 }

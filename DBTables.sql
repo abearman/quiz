@@ -31,7 +31,8 @@ CREATE TABLE histories (
     quizName CHAR(64),
     score DOUBLE,
     timeElapsed BIGINT,
-    dateString CHAR(64)
+    dateString CHAR(64), 
+    dateValue DATETIME()
 );
 
 

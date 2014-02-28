@@ -16,14 +16,14 @@ public class HistoryObject {
 
 	public HistoryObject(String userName, Quiz quiz, DAL dal) {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
+		date = new Date();
 		dateString = dateFormat.format(date);
 		this.timeElapsed = quiz.getLengthOfCompletion();
 		this.score = quiz.getUsersScore();
 		this.userName = userName;
 		this.quizName = quiz.getQuizName();
 		this.dal = dal;
-		addToHistoryTable();
+		dal.addToHistoryListForUser(userName, quizName, score, timeElapsed, dateString, date);
 	}
 	
 	public HistoryObject(String userName, String quizName, double score, long timeElapsed, String dateString, DAL dal) {
@@ -33,10 +33,15 @@ public class HistoryObject {
 		this.userName = userName;
 		this.quizName = quizName;
 		this.dal = dal;
+		dal.addToHistoryListForUser(userName, quizName, score, timeElapsed, dateString, date);
 	}
 	
-	public String getDate() {
+	public String getDateString() {
 		return dateString;
+	}
+	
+	public Date getDate() {
+		return date;
 	}
 	
 	public long getElapsedTime() {
@@ -53,10 +58,6 @@ public class HistoryObject {
 	
 	public String getQuizName() {
 		return quizName;
-	}
-	
-	private void addToHistoryTable() {
-		dal.addToHistoryListForUser(userName, quizName, score, timeElapsed, dateString);
 	}
 	
 }
