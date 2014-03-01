@@ -217,7 +217,7 @@ public class DAL {
 	}
 	
 	//VALUES and not "values"; messages, not users; need number of arguments in insert to be equivalent with number of clumns
-	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {
+	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {		
 		String update;
 		if (type.equals(Message.NOTE_MESSAGE)) {
 			update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
