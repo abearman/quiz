@@ -8,9 +8,7 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
 import java.util.*;
-
 import org.junit.*;
 
 
@@ -19,12 +17,13 @@ public class QuizTest {
 	private Quiz thisQuiz;
 	private TopScorer topScorer1, topScorer2, topScorer3, topScorer4;
 
+	
 	@Before
 	public void setUp() throws Exception {
 
 		DAL dal = new DAL();
 
-		//thisQuiz = new Quiz(dal);
+		thisQuiz = new Quiz(dal);
 
 		//HistoryObject ho = new HistoryObject("testUser",thisQuiz ,dal);
 		Quiz testQuiz = new Quiz(dal, "TestQuizName","testQuizDescription",true,
@@ -50,7 +49,8 @@ public class QuizTest {
 			System.out.println("topScorer is " + thisQuiz.getTopScorers().get(i).getLoginName());
 		}
 	}
-
+	
+	
 	@Test 
 	//Test database queries
 	public void testQueries() {
@@ -95,7 +95,8 @@ public class QuizTest {
 		System.out.println("INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + sqlDate + "," + numTimesTaken + ");");
 		System.out.println("DELETE FROM quizzes WHERE quizName = \"" + quizName + "\"");
 	}
-
+	
+	
 	@Test
 	public void testFriendsTable() throws SQLException {
 		DAL dal = new DAL();
@@ -103,23 +104,40 @@ public class QuizTest {
 		String toUser = "Bruno";
 		for (int i = 1; i <= 10; i++) {
 			String fromUser = "user" + i;
-			new FriendRequestMessage(fromUser, toUser, dal);
+			FriendRequestMessage request = new FriendRequestMessage(fromUser, toUser, dal);
+			//request.acceptRequest(true);
 			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");
 			rs.last();
 			assertEquals(i, rs.getRow());
 			
-			ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + fromUser + "\";");
+			rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + fromUser + "\";");
 			rs.last();
 			assertEquals(1, rs.getRow());
 		}
 	}
 	
+	
 	@Test
 	public void testHistoriesTable() throws SQLException {
 		DAL dal = new DAL();
+		String loginName = "Bruno";
 		Statement stmt = dal.getStatement();
+		for (int i = 1; i <= 10; i++) {
+			Quiz quiz = new Quiz(dal);
+			quiz.setLengthOfCompletion(i);
+			quiz.setNumQuestionsCorrect(i);
+			quiz.setQuizName("quiz" + i);
+			new HistoryObject(loginName, quiz, dal);
+		}
+		for (int i = 1; i <=10; i++) {
+			ResultSet rs = stmt.executeQuery("SELECT * FROM histories WHERE loginName = \"" + loginName + "\";");
+			rs.next();
+			assertEquals(i, rs.getRow());
+			assertEquals("quiz" + i, rs.getString(2));
+		}
 	}
+	
 }
 
 

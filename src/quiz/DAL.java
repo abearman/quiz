@@ -205,19 +205,21 @@ public class DAL {
 		
 	}
 	
+	//VALUES and not "values"; messages, not users; need number of arguments in insert to be equivalent with number of clumns
 	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {
 		String update;
 		if (type.equals(Message.NOTE_MESSAGE)) {
-			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\");";
+			update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
 		} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
-			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\");";
+			update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
 		} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
-			update = "INSERT INTO users values(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ");";
+			update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ");";
 		} else {
 			update = ""; //Execution should never get here; just for initialization purposes
 		}
 		
 		try {
+			System.out.println(update);
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -247,9 +249,10 @@ public class DAL {
 		}
 	}
 	
+	//PROBLEM HERE! StriNG update does not have INSERT
 	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName, java.util.Date creationDate, int numTimesTaken) {
 		try {
-			String update = "\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
+			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
