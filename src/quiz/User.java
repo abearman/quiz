@@ -235,6 +235,7 @@ public class User {
 		String recentActivity = ""+achievement+"\n"+
 			recentQuizTaken+"\n"+recentQuizCreated;
 		//dal method to update recentActivity
+		dal.updateRecentUserActivity(loginName, recentActivity);
 	}
 	
 	////////////////////////////////////////////////////////////////
