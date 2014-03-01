@@ -145,8 +145,9 @@ public class DAL {
 	
 	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
+		String usersActivity = "took a quiz";
 		try {
-			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\");";
+			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\",\"" + usersActivity + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
