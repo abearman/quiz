@@ -85,7 +85,6 @@ public class Quiz {
 		this.creationDate = dateCreated;
 		this.numTimesTaken = numTimesTaken;
 		initializeArrayLists();
-		System.out.println("INSERTING QUIZ");
 		dal.insertQuiz(this);
 //		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName, dateCreated, 0);
 	}
