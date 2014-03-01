@@ -47,7 +47,6 @@ CREATE TABLE messages (
     messageType CHAR(64),
     message CHAR(64),
     quizName CHAR(64),
-    quizLink CHAR(64),
     bestScore DOUBLE
 );
 
