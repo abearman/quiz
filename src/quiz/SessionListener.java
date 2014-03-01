@@ -22,8 +22,8 @@ public class SessionListener implements HttpSessionListener {
 	 * Creates a cart associated with this session.	
 	 */
 	@Override
-	public void sessionCreated(HttpSessionEvent arg0) {
-		
+	public void sessionCreated(HttpSessionEvent hse) {
+		System.out.println("Session created");
 	}
 
 	@Override

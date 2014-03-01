@@ -9,11 +9,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<%
-	String username = (String) request.getParameter("username");
-	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
-	ArrayList<String> announcements = dal.getAllAnnouncements();
-	String achievements = dal.getUserAchievements(username);
-	%> 
+	//String username = (String) request.getParameter("username");
+	User user = (User)session.getAttribute("user");
+	String username = user.getLoginName();
+	Webpage webpage = (Webpage)getServletContext().getAttribute("webpage");
+	
+	//DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
+	//ArrayList<String> announcements = dal.getAllAnnouncements();
+	//String achievements = dal.getUserAchievements(username);
+	
+	boolean[] achievements = user.getAchievements();
+	ArrayList<String> announcements = webpage.getAnnouncements();
+	%>  
 	
 	<title>Welcome <%= username %></title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -34,13 +41,20 @@
 	<h2> Achievements: </h2>
 	<ul>
 		<% 
-		for (int i = 0; i < achievements.length(); i++) {
-			if (achievements.charAt(i) == '1') {
+		for (int i = 0; i < achievements.length; i++) {
+			if (achievements[i]) {
 				%> <li> <%= Achievements.achievements[i] %></li> <% ;	
 			}
 		}
 		%> 
 	</ul>
+	
 
 </body>
 </html>
+
+
+
+
+
+

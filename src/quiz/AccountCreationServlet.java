@@ -54,7 +54,9 @@ public class AccountCreationServlet extends HttpServlet {
 			
 			//If username is not already in use
 			//Create account with given username and password
-			manager.createNewAccount(username, password);
+			DAL dal = (DAL)getServletContext().getAttribute("DAL");
+			User user = new User(username, password, dal); //The constructor handles putting the User in the database
+			request.getSession().setAttribute("user", user); //Sets the user as an attribute on the session
 			
 			//display user homepage
 			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");

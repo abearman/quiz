@@ -25,6 +25,27 @@ public class DAL {
 		return stmt;
 	}
 	
+	public User getUser(String loginName) {
+		User user = new User(loginName);
+		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			user.setNewPassword(rs.getString("password"));
+			
+			user.isAdministrator = (rs.getBoolean("isAdministrator")) ? true : false;
+			
+			String achievements = rs.getString("achievements");
+			for (int i = 0; i < achievements.length(); i++) {
+				if (achievements.charAt(i) == '1') user.achievements[i] = true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
 	public boolean accountExists(String loginName) {
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {

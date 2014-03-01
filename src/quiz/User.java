@@ -6,14 +6,14 @@ import java.util.*;
 public class User {
 	
 	/* Instance variables*/
-	private boolean isAdministrator;
+	public boolean isAdministrator;
 	private String loginName;
 	private String passwordHash;
 	private boolean hasNewMessages;
 	
 	private ArrayList<String> friends;
 	private ArrayList<HistoryObject> historyList;
-	private boolean[] achievements;
+	public boolean[] achievements;
 	private ArrayList<Message> messages;
 	private int recentAchievement;
 	private String recentlyCreatedQuiz;
@@ -25,8 +25,8 @@ public class User {
 	
 	private DAL dal; //Handles connection to Database
 	
-	/* Private helper method to set all achievements to false */
-	private void initAchievementsArray() {
+	/* Helper method to set all achievements to false */
+	public void initAchievementsArray() {
 		for (int i = 0; i < achievements.length; i++) {
 			achievements[i] = false;
 		}
@@ -75,7 +75,7 @@ public class User {
 		return dal.getFriendsRecentActivity(friends);
 	}
 	
-		
+	
 	/* Constructor */
 	public User(String loginName, String password, DAL dal) {
 		this.dal = dal;
@@ -97,7 +97,14 @@ public class User {
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
 	}
-
+	
+	/* Alternate constructor for not inserting User in database */
+	public User(String loginName) {
+		this.loginName = loginName;
+		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
+		initAchievementsArray();
+	}
+	
 	/* Getter methods */
 	
 	public String getLoginName() {
@@ -146,6 +153,10 @@ public class User {
 	 
 	////////////////////////////////////////////////////////////////
 	/* Setter methods */
+	
+	public void setNewPassword(String newPasswordHash) {
+		this.passwordHash = newPasswordHash;
+	}
 	
 	public void setHasNewMessagesFalse() {
 		hasNewMessages = false;
@@ -268,6 +279,7 @@ public class User {
 	private void updateAdminInstanceVariable(boolean value) {
 		this.isAdministrator = value; //Updates the admin instance variable
 	}
+
 	
 	/**
 	 * Only users who are administrators can promote user accounts to administration accounts
