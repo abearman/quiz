@@ -9,8 +9,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<%
-	String username = (String)request.getParameter("username");
-	%>
+	String username = (String) request.getParameter("username");
+	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
+	ArrayList<String> announcements = dal.getAllAnnouncements();
+	String achievements = dal.getUserAchievements(username);
+	%> 
 	
 	<title>Welcome <%= username %></title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">

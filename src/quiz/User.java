@@ -83,19 +83,19 @@ public class User {
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
 		this.hasNewMessages = false;
+		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
+		initAchievementsArray();
+		dal.insertUser(loginName, isAdministrator, passwordHash, achievements, null);
 		
 		friends = new ArrayList<String>();
 		friends = initializeFriends();
 		friendsRecentActivity = initializeFriendsRecentActivity(friends);
-		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
-		initAchievementsArray();
+		
 		historyList = initializeHistoryList();
 		messages = new ArrayList<Message>();
 		
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
-		
-		dal.insertUser(loginName, isAdministrator, passwordHash, achievements);
 	}
 
 	/* Getter methods */

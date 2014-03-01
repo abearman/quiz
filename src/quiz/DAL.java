@@ -43,6 +43,7 @@ public class DAL {
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
 			String databasePasswordHash = rs.getString("password"); //Retrieves the stored hash from the Database for this User
 			if (hashOfAttemptedPassword.equals(databasePasswordHash)) {
 				return true;
@@ -52,6 +53,17 @@ public class DAL {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public String getUserAchievements(String userName) {
+		try {
+			String query = "SELECT * FROM users WHERE loginName = \"" + userName + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			return rs.getString("achievements");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public ArrayList<HistoryObject> getHistoryListForUser(String userName) {
@@ -143,10 +155,10 @@ public class DAL {
 	
 	/* Setters */
 	
-	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements) {
+	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements, String recentActivity) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
 		try {
-			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\");";
+			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\", \"" + recentActivity + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
