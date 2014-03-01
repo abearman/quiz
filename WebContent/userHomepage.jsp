@@ -22,6 +22,25 @@
 <body>
 
 	<h2>Welcome <%= username %></h2>
+	<h2> Announcements: </h2>
+	<ul> 
+		<% 
+		for (String s : announcements) {
+			%> <li> <%=s%></li> <%	
+		}
+		%> 
+	</ul>
+
+	<h2> Achievements: </h2>
+	<ul>
+		<% 
+		for (int i = 0; i < achievements.length(); i++) {
+			if (achievements.charAt(i) == '1') {
+				%> <li> <%= Achievements.achievements[i] %></li> <% ;	
+			}
+		}
+		%> 
+	</ul>
 
 </body>
 </html>

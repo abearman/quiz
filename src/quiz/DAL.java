@@ -59,6 +59,7 @@ public class DAL {
 		try {
 			String query = "SELECT * FROM users WHERE loginName = \"" + userName + "\";";
 			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
 			return rs.getString("achievements");
 		} catch (SQLException e) {
 			e.printStackTrace();
