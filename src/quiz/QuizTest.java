@@ -22,15 +22,8 @@ public class QuizTest {
 	public void setUp() throws Exception {
 
 		DAL dal = new DAL();
-<<<<<<< HEAD
-		
-		thisQuiz = new Quiz(dal);
-		
-=======
-
 		thisQuiz = new Quiz(dal);
 
->>>>>>> fridayTasks
 		//HistoryObject ho = new HistoryObject("testUser",thisQuiz ,dal);
 		Quiz testQuiz = new Quiz(dal, "TestQuizName","testQuizDescription",true,
 				true,true,true,"Pavitra",new Date(),3);

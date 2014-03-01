@@ -247,12 +247,8 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
-	
-<<<<<<< HEAD
+
 	/*
-=======
-	//PROBLEM HERE! StriNG update does not have INSERT
->>>>>>> fridayTasks
 	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName, java.util.Date creationDate, int numTimesTaken) {
 		try {
 			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
