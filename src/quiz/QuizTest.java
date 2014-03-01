@@ -16,18 +16,14 @@ public class QuizTest {
 
 	private Quiz thisQuiz;
 	private TopScorer topScorer1, topScorer2, topScorer3, topScorer4;
+	private DAL dal;
 
 	
 	@Before
 	public void setUp() throws Exception {
 
-		DAL dal = new DAL();
+		dal = new DAL();
 		thisQuiz = new Quiz(dal);
-
-		//HistoryObject ho = new HistoryObject("testUser",thisQuiz ,dal);
-		Quiz testQuiz = new Quiz(dal, "TestQuizName","testQuizDescription",true,
-				true,true,true,"Pavitra",new Date(),3);
-		HistoryObject ho2 = new HistoryObject("testUser",testQuiz ,dal);
 
 		topScorer4 = new TopScorer("user4", 10, 0.7, dal);
 		topScorer3 = new TopScorer("user3", 10, 0.5, dal);
@@ -36,6 +32,15 @@ public class QuizTest {
 
 	}
 
+	@Test
+	public void testInsertQuiz() {
+		//HistoryObject ho = new HistoryObject("testUser",thisQuiz ,dal);
+		Quiz testQuiz = new Quiz(dal, "TestQuizName","testQuizDescription",true,
+				true,true,true,"Pavitra",new Date(),3);
+		HistoryObject ho2 = new HistoryObject("testUser",testQuiz ,dal);
+	}
+	
+	
 	//order should be 1, 2, 3, 4
 	@Test
 	public void testSortOrder() {
@@ -104,7 +109,7 @@ public class QuizTest {
 		for (int i = 1; i <= 10; i++) {
 			String fromUser = "user" + i;
 			FriendRequestMessage request = new FriendRequestMessage(fromUser, toUser, dal);
-			//request.acceptRequest(true);
+			request.acceptRequest(true);
 			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");
 			rs.last();
@@ -116,7 +121,27 @@ public class QuizTest {
 		}
 	}
 	
+	@Test
+	public void testMessages() throws SQLException {
+		DAL dal = new DAL();
+		Statement stmt = dal.getStatement();
+		String toUser = "Bruno";
+		for (int i = 1; i <= 10; i++) {
+			String fromUser = "user" + i;
+			NoteMessage request = new NoteMessage(fromUser, toUser, "I love you", dal);
+			//request.acceptRequest(true);
+			
+			/*ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");
+			rs.last();
+			assertEquals(i, rs.getRow());
+			
+			rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + fromUser + "\";");
+			rs.last();
+			assertEquals(1, rs.getRow());*/
+		}
+	}
 	
+	/*
 	@Test
 	public void testHistoriesTable() throws SQLException {
 		DAL dal = new DAL();
@@ -134,13 +159,9 @@ public class QuizTest {
 			rs.next();
 			assertEquals(i, rs.getRow());
 			assertEquals("quiz" + i, rs.getString(2));
+			System.out.println(i);
 		}
-	}
+	}*/
 	
 }
-
-
-
-
-
 
