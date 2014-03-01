@@ -372,6 +372,11 @@ public class Quiz {
 
 		return topScorersPastDay;
 	}
+	
+	//for testing
+	public void setQuizName(String quizName) {
+		this.quizName = quizName;
+	}
 
 
 
