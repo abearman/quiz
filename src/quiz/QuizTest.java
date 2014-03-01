@@ -104,7 +104,7 @@ public class QuizTest {
 		for (int i = 1; i <= 10; i++) {
 			String fromUser = "user" + i;
 			FriendRequestMessage request = new FriendRequestMessage(fromUser, toUser, dal);
-			//request.acceptRequest(true);
+			request.acceptRequest(true);
 			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");
 			rs.last();
@@ -116,7 +116,27 @@ public class QuizTest {
 		}
 	}
 	
+	@Test
+	public void testMessages() throws SQLException {
+		DAL dal = new DAL();
+		Statement stmt = dal.getStatement();
+		String toUser = "Bruno";
+		for (int i = 1; i <= 10; i++) {
+			String fromUser = "user" + i;
+			NoteMessage request = new NoteMessage(fromUser, toUser, "I love you", dal);
+			//request.acceptRequest(true);
+			
+			/*ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");
+			rs.last();
+			assertEquals(i, rs.getRow());
+			
+			rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + fromUser + "\";");
+			rs.last();
+			assertEquals(1, rs.getRow());*/
+		}
+	}
 	
+	/*
 	@Test
 	public void testHistoriesTable() throws SQLException {
 		DAL dal = new DAL();
@@ -134,8 +154,9 @@ public class QuizTest {
 			rs.next();
 			assertEquals(i, rs.getRow());
 			assertEquals("quiz" + i, rs.getString(2));
+			System.out.println(i);
 		}
-	}
+	}*/
 	
 }
 
