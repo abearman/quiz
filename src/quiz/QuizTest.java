@@ -14,7 +14,7 @@ import org.junit.*;
 
 public class QuizTest {
 
-	private Quiz thisQuiz;
+	private Quiz testQuiz2, testQuiz3;
 	private TopScorer topScorer1, topScorer2, topScorer3, topScorer4;
 	private DAL dal;
 
@@ -23,7 +23,7 @@ public class QuizTest {
 	public void setUp() throws Exception {
 
 		dal = new DAL();
-		thisQuiz = new Quiz(dal);
+		//testQuiz1 = new Quiz(dal, "TestQuizName","testQuizDescription",true,true,true,true,"Pavitra",new Date(),3);
 
 		topScorer4 = new TopScorer("user4", 10, 0.7, dal);
 		topScorer3 = new TopScorer("user3", 10, 0.5, dal);
@@ -34,25 +34,32 @@ public class QuizTest {
 
 	@Test
 	public void testInsertQuiz() {
-		//HistoryObject ho = new HistoryObject("testUser",thisQuiz ,dal);
-		Quiz testQuiz = new Quiz(dal, "TestQuizName","testQuizDescription",true,
-				true,true,true,"Pavitra",new Date(),3);
-		HistoryObject ho2 = new HistoryObject("testUser",testQuiz ,dal);
+		testQuiz2 = new Quiz(dal, "quiz10","another quiz",true,
+				true,true,true,"Pavitra",new Date(),5);
+		testQuiz3 = new Quiz(dal, "quiz11","another quiz",true,
+				true,true,true,"Pavitra",new Date(),5);
+		HistoryObject ho = new HistoryObject("testUser",testQuiz2 ,dal);
+	}
+	
+	@Test
+	public void testRemoveQuiz() {
+		dal.removeQuiz("quiz10");
 	}
 	
 	
 	//order should be 1, 2, 3, 4
+	/*
 	@Test
 	public void testSortOrder() {
-		thisQuiz.addTopScorer(topScorer1);
-		thisQuiz.addTopScorer(topScorer3);
-		thisQuiz.addTopScorer(topScorer2);
-		thisQuiz.addTopScorer(topScorer4);
+		testQuiz1.addTopScorer(topScorer1);
+		testQuiz1.addTopScorer(topScorer3);
+		testQuiz1.addTopScorer(topScorer2);
+		testQuiz1.addTopScorer(topScorer4);
 
-		for (int i = 0; i < thisQuiz.getTopScorers().size(); i++){
-			System.out.println("topScorer is " + thisQuiz.getTopScorers().get(i).getLoginName());
+		for (int i = 0; i < testQuiz1.getTopScorers().size(); i++){
+			System.out.println("topScorer is " + testQuiz1.getTopScorers().get(i).getLoginName());
 		}
-	}
+	}*/
 	
 	
 	@Test 

@@ -10,6 +10,7 @@ public class Quiz {
 	public static final int AVERAGE_SCORE = 0;
 	public static final int MEDIAN_SCORE = 1;
 	public static final int AVERAGE_TIME = 2;
+	
 	//instance variables
 
 	//stay the same across sessions, stored in database
@@ -43,7 +44,7 @@ public class Quiz {
 	private void initializeArrayLists() {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
-		//allHistories = initializeAllHistories();
+		allHistories = initializeAllHistories();
 
 		topScorersPastDay = new ArrayList<TopScorer>();
 		recentQuizTakers = new ArrayList<String>();
@@ -52,8 +53,6 @@ public class Quiz {
 	private ArrayList<HistoryObject> initializeAllHistories() { 
 		return dal.getAllHistoryLists();
 	}
-
-	//constructor for creating a quiz, adds quiz to database
 
 	//reads database to find this quiz and populates instance variables
 	private void readDatabase(String givenQuizName){
@@ -86,13 +85,12 @@ public class Quiz {
 		this.numTimesTaken = numTimesTaken;
 		initializeArrayLists();
 		dal.insertQuiz(this);
-//		dal.insertQuiz(quizName, descriptionOfQuiz, isRandom, isMultiplePage, isImmediateCorrection, canBeTakenInPracticeMode, creatorName, dateCreated, 0);
 	}
 
 	//constructor for taking a quiz, handles querying of database
 	public Quiz(DAL dal, String givenQuizName) {
-		initializeArrayLists();
 		this.dal = dal;
+		initializeArrayLists();
 		readDatabase(givenQuizName);
 		getQuestionsFromDB(givenQuizName);
 	}
