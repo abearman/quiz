@@ -52,6 +52,7 @@
 	</ul>
 	
 	${hasNewMessages ? "You have new messages!" : "No new messages."}
+	<p>See my <a href="messages.jsp"> messages </a></p>
 
 </body>
 </html>
