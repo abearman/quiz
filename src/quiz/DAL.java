@@ -632,7 +632,7 @@ public class DAL {
 	
 	public ArrayList<String> getRecentlyTakenQuizzes() {
 		ArrayList<String> recentlyTakenQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM histories ORDER BY dateValue LIMIT 0, 10;";
+		String query = "SELECT * FROM histories ORDER BY dateValue DESC LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -646,7 +646,7 @@ public class DAL {
 	
 	public ArrayList<String> getRecentlyCreatedQuizzes() {
 		ArrayList<String> recentlyCreatedQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM quizzes ORDER BY creationDate LIMIT 0, 10;";
+		String query = "SELECT * FROM quizzes ORDER BY creationDate DESC LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -660,7 +660,7 @@ public class DAL {
 	
 	public ArrayList<String> getUserRecentlyTakenQuizzes(String username) {
 		ArrayList<String> usersRecentlyTakenQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM histories WHERE loginName = \"" + username + "\" ORDER BY dateValue LIMIT 0, 10;";
+		String query = "SELECT * FROM histories WHERE loginName = \"" + username + "\" ORDER BY dateValue DESC LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -674,7 +674,7 @@ public class DAL {
 	
 	public ArrayList<String> getUserRecentlyCreatedQuizzes(String username) {
 		ArrayList<String> usersRecentlyCreatedQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM quizzes WHERE loginName = \"" + username + "\" ORDER BY dateValue LIMIT 0, 10;";
+		String query = "SELECT * FROM quizzes WHERE loginName = \"" + username + "\" ORDER BY dateValue DESC LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {

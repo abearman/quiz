@@ -13,6 +13,8 @@
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
 	Webpage webpage = (Webpage)getServletContext().getAttribute("webpage");
+	ArrayList<String> recentlyCreatedQuizzes = webpage.getRecentlyCreatedQuizzes();
+	ArrayList<String> popularQuizzes = webpage.getPopularQuizzes();
 	
 	//DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	//ArrayList<String> announcements = dal.getAllAnnouncements();
@@ -31,29 +33,39 @@
 <body>
 
 	<h2>Welcome <%= username %></h2>
+	
 	<h2> Announcements: </h2>
 	<ul> 
 		<% 
-		for (String s : announcements) {
-			%> <li> <%=s%></li> <%	
-		}
+			for (String s : announcements) {
+				%> <li> <%=s%></li> <%	
+			}
 		%> 
 	</ul>
 
 	<h2> Achievements: </h2>
 	<ul>
 		<% 
-		for (int i = 0; i < achievements.length; i++) {
-			if (achievements[i]) {
-				%> <li> <%= Achievements.achievements[i] %></li> <% ;	
+			for (int i = 0; i < achievements.length; i++) {
+				if (achievements[i]) {
+					%> <li> <%= Achievements.achievements[i] %></li> <% ;	
+				}
 			}
-		}
-		%> 
+			%> 
 	</ul>
 	
 	<i>${hasNewMessages ? "You have new messages!" : "No new messages."}</i>
 	<p>See my <a href="messages.jsp"> messages </a></p>
 	<p> See my <a href="friends.jsp"> friends </a></p>
+
+	<h2> Recently Created Quizzes: </h2>
+	<ul>
+		<%
+			for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
+				%> <li> Quiz: <%= recentlyCreatedQuizzes.get(i) %></li> <% 
+			}
+		%>
+	</ul>
 
 </body>
 </html>
