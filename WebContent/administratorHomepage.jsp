@@ -13,7 +13,8 @@
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
 	Webpage webpage = (Webpage)getServletContext().getAttribute("webpage");
-	ArrayList<String> recentlyCreatedQuizzes = webpage.getRecentlyCreatedQuizzes();
+	
+	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes();
 	ArrayList<String> popularQuizzes = webpage.getPopularQuizzes();
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
@@ -65,7 +66,7 @@
 		%>
 	</ul>
 	
-	<h2> My Recently Created Quizzes: </h2>
+	<h2> My Recently Created Quizzes: </h2> 
 	<ul>
 		<%
 			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
@@ -91,7 +92,13 @@
 	
 	<!-- > Ability for administrator to remove accounts -->
 	<form name="removeUserAccount" action="RemoveUserAccountServlet" method="post">
-		Remove user: <input type="text" name="user">
+		Remove User: <input type="text" name="user">
+		<input type="submit" value="Submit">
+	</form>
+	
+	<!-- > Ability for administrator to remove quizzes -->
+	<form name="removeQuiz" action="RemoveQuizServlet" method="post">
+		Remove Quiz: <input type="text" name="quiz">
 		<input type="submit" value="Submit">
 	</form>
 

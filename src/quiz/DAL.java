@@ -257,7 +257,6 @@ public class DAL {
 		}
 		
 		try {
-			System.out.println(update);
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -680,7 +679,6 @@ public class DAL {
 	public ArrayList<String> getUserRecentlyCreatedQuizzes(String username) {
 		ArrayList<String> usersRecentlyCreatedQuizzes = new ArrayList<String>();
 		String query = "SELECT * FROM quizzes WHERE creatorName = \"" + username + "\" ORDER BY creationDate DESC LIMIT 0, 10;";
-		System.out.println(query);
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
