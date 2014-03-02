@@ -88,6 +88,12 @@
 		Announcement: <input type="text" name="announcement">
 		<input type="submit" value="Submit">
 	</form>
+	
+	<!-- > Ability for administrator to remove accounts -->
+	<form name="removeUserAccount" action="RemoveUserAccountServlet" method="post">
+		Remove user: <input type="text" name="user">
+		<input type="submit" value="Submit">
+	</form>
 
 </body>
 </html>
