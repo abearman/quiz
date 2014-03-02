@@ -20,6 +20,8 @@
 	
 	boolean[] achievements = user.getAchievements();
 	ArrayList<String> announcements = webpage.getAnnouncements();
+	boolean hasNewMessages = user.getNewMessages();
+	
 	%>  
 	
 	<title>Welcome <%= username %></title>
@@ -49,6 +51,7 @@
 		%> 
 	</ul>
 	
+	${hasNewMessages ? "You have new messages!" : "No new messages."}
 
 </body>
 </html>
