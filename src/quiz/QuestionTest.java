@@ -2,6 +2,7 @@ package quiz;
 
 import java.util.*;
 import org.junit.*;
+import static org.junit.Assert.*;
 
 public class QuestionTest {
 
@@ -42,6 +43,19 @@ public class QuestionTest {
 		}
 	}
 	
+	@Test
+	public void testRemovingQuestionsFromDB()
+	{
+		Quiz quiz2 = new Quiz(dal, "bhaven's quiz");
+		ArrayList<Question> questions = quiz2.getQuestions();
+		for(Question q : questions)
+		{
+			dal.removeQuestion(quiz2.getQuizName(), q);
+		}
+		dal.removeQuiz("bhaven's quiz");
+		Quiz quiz3 = new Quiz(dal, "bhaven's quiz");
+		assertEquals("", quiz3.getQuizName());
+	}
 	
 
 }

@@ -374,7 +374,7 @@ public class DAL {
 			//for question response
 			ResultSet qrs = stmt.executeQuery("SELECT * FROM questionResponse WHERE quizName = \"" 
 				+ quizName + "\";");
-			if (qrs!=null){
+			if (qrs.next()){
 				qrs.beforeFirst();
 				while(qrs.next())
 				{
@@ -386,7 +386,7 @@ public class DAL {
 			//for fill-in-the-blank
 			qrs = stmt.executeQuery("SELECT * FROM fillInTheBlank WHERE quizName = \"" 
 				+ quizName + "\";");
-			if (qrs!=null){
+			if (qrs.next()){
 				qrs.beforeFirst();
 				while(qrs.next())
 				{
@@ -398,7 +398,7 @@ public class DAL {
 			//for multiple choice
 			qrs = stmt.executeQuery("SELECT * FROM multipleChoice WHERE quizName = \"" 
 				+ quizName + "\";");
-			if (qrs!=null){
+			if (qrs.next()){
 				qrs.beforeFirst();
 				while(qrs.next())
 				{
@@ -410,7 +410,7 @@ public class DAL {
 			//for picture response
 			qrs = stmt.executeQuery("SELECT * FROM pictureResponse WHERE quizName = \"" 
 				+ quizName + "\";");
-			if (qrs!=null){
+			if (qrs.next()){
 				qrs.beforeFirst();
 				while(qrs.next())
 				{
@@ -427,7 +427,7 @@ public class DAL {
 	public String getNameOfQuiz(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (String)quizResultSet.getObject("quizName");
 			}
@@ -440,7 +440,7 @@ public class DAL {
 	public String getDescriptionOfQuiz(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (String)quizResultSet.getObject("description");
 			}
@@ -453,7 +453,7 @@ public class DAL {
 	public boolean getIsRandomOfQuiz(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (Boolean) quizResultSet.getObject("isRandom");
 			}
@@ -466,7 +466,7 @@ public class DAL {
 	public boolean getIsMultiplePageOfQuiz(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (Boolean) quizResultSet.getObject("isMultiplePage");
 			}
@@ -479,7 +479,7 @@ public class DAL {
 	public boolean getIsImmediateCorrectionOfQuiz(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (Boolean) quizResultSet.getObject("isImmediateCorrection");
 			}
@@ -492,7 +492,7 @@ public class DAL {
 	public boolean getCanBeTakenInPracticeModeOfQuiz(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (Boolean) quizResultSet.getObject("canBeTakenInPracticeMode");
 			}
@@ -505,7 +505,7 @@ public class DAL {
 	public String getCreatorName(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (String) quizResultSet.getObject("creatorName");
 			}
@@ -518,7 +518,7 @@ public class DAL {
 	public java.util.Date getCreationDate(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (java.util.Date) quizResultSet.getObject("creationDate");
 			}
@@ -531,7 +531,7 @@ public class DAL {
 	public int getNumTimesTaken(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
-			if (quizResultSet!=null){
+			if (quizResultSet.next()){
 				quizResultSet.first();
 				return (Integer) quizResultSet.getObject("numTimesTaken");
 			}
