@@ -9,21 +9,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<%
-	//String username = (String) request.getParameter("username");
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
-	Webpage webpage = (Webpage)getServletContext().getAttribute("webpage");
-	ArrayList<String> recentlyCreatedQuizzes = webpage.getRecentlyCreatedQuizzes();
-	ArrayList<String> popularQuizzes = webpage.getPopularQuizzes();
+	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes();
+	ArrayList<String> popularQuizzes = dal.getRecentlyTakenQuizzes(); //TODO
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
 	
-	//ArrayList<String> announcements = dal.getAllAnnouncements();
-	//String achievements = dal.getUserAchievements(username);
-	
 	boolean[] achievements = user.getAchievements();
-	ArrayList<String> announcements = webpage.getAnnouncements();
+	ArrayList<String> announcements = dal.getAllAnnouncements();
 	boolean hasNewMessages = user.getNewMessages();
 	
 	%>  

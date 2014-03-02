@@ -34,12 +34,10 @@ public class ServletListener implements ServletContextListener {
     	DAL dal = new DAL();
     	
     	AccountManager manager = new AccountManager(dal);
-    	Webpage webpage = new Webpage(dal);
     	
     	ServletContext context = arg0.getServletContext();
     	context.setAttribute("DAL", dal);
     	context.setAttribute("manager", manager);
-    	context.setAttribute("webpage", webpage);
     }
 
 	/**

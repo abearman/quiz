@@ -12,10 +12,9 @@
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
-	Webpage webpage = (Webpage)getServletContext().getAttribute("webpage");
 	
 	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes();
-	ArrayList<String> popularQuizzes = webpage.getPopularQuizzes();
+	ArrayList<String> popularQuizzes = dal.getRecentlyTakenQuizzes(); //TODO
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
 	
