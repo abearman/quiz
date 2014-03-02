@@ -102,6 +102,12 @@
 		<input type="submit" value="Submit">
 	</form>
 
+	<!-- > Ability for administrator to promote user to administrator -->
+	<form name="promoteUserToAdmin" action="PromoteUserToAdminServlet" method="post">
+		Promote User to Administrator: <input type="text" name="user">
+		<input type="submit" value="Submit">
+	</form>
+
 </body>
 </html>
 
