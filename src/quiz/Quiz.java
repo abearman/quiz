@@ -59,7 +59,7 @@ public class Quiz {
 		this.quizName = dal.getNameOfQuiz(givenQuizName);
 		this.descriptionOfQuiz = dal.getDescriptionOfQuiz(givenQuizName);
 		this.isRandom = dal.getIsRandomOfQuiz(givenQuizName);
-		this.isMultiplePage = dal.getIsRandomOfQuiz(givenQuizName);
+		this.isMultiplePage = dal.getIsMultiplePageOfQuiz(givenQuizName);
 		this.isImmediateCorrection = dal.getIsImmediateCorrectionOfQuiz(givenQuizName);
 		this.canBeTakenInPracticeMode = dal.getCanBeTakenInPracticeModeOfQuiz(givenQuizName);
 		this.creatorName = dal.getCreatorName(givenQuizName);

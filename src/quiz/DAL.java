@@ -134,14 +134,17 @@ public class DAL {
 		try {
 			String query = "SELECT * FROM histories;";
 			ResultSet rs = stmt.executeQuery(query);
-			while(rs!=null && rs.next()) {
-				String loginName = rs.getString("loginName");
-				String quizName = rs.getString("quizName");
-				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
-				long timeElapsed = rs.getLong("timeElapsed");
-				String dateString = rs.getString("dateString");
-				result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
+			if (rs!=null){
+				while(rs.next()) {
+					String loginName = rs.getString("loginName");
+					String quizName = rs.getString("quizName");
+					int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
+					long timeElapsed = rs.getLong("timeElapsed");
+					String dateString = rs.getString("dateString");
+					result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
+				}
 			}
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -216,6 +219,7 @@ public class DAL {
 	}
 	
 	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
+		System.out.println("in addToHistoryListForUser");
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		try {
 			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\",'" + sqlDate + "');";
@@ -466,7 +470,7 @@ public class DAL {
 		return false;
 	}
 	
-	public boolean getMultiplePageOfQuiz(String givenQuizName){
+	public boolean getIsMultiplePageOfQuiz(String givenQuizName){
 		try{
 			ResultSet quizResultSet = stmt.executeQuery("SELECT * FROM quizzes WHERE quizName = \"" + givenQuizName + "\";");
 			if (quizResultSet!=null){

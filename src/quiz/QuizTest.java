@@ -14,7 +14,7 @@ import org.junit.*;
 
 public class QuizTest {
 
-	private Quiz testQuiz2, testQuiz3;
+	private Quiz testQuiz10, testQuiz11;
 	private TopScorer topScorer1, topScorer2, topScorer3, topScorer4;
 	private DAL dal;
 
@@ -34,16 +34,32 @@ public class QuizTest {
 
 	@Test
 	public void testInsertQuiz() {
-		testQuiz2 = new Quiz(dal, "quiz10","another quiz",true,
-				true,true,true,"Pavitra",new Date(),5);
-		testQuiz3 = new Quiz(dal, "quiz11","another quiz",true,
-				true,true,true,"Pavitra",new Date(),5);
-		HistoryObject ho = new HistoryObject("testUser",testQuiz2 ,dal);
+		testQuiz10 = new Quiz(dal, "quiz10","another quiz",true,true,true,true,"Pavitra",new Date(),5);
+		testQuiz11 = new Quiz(dal, "quiz11","another quiz",true,true,true,true,"Pavitra",new Date(),5);
 	}
 	
 	@Test
 	public void testRemoveQuiz() {
 		dal.removeQuiz("quiz10");
+	}
+	
+	@Test
+	public void testGettingQuiz() {
+		Quiz getTestQuiz11 = new Quiz(dal, "quiz11");
+		assertEquals(getTestQuiz11.getCreatorName(),"Pavitra");
+		assertEquals(getTestQuiz11.canBeTakenInPracticeMode(),true);
+		assertEquals(getTestQuiz11.isRandom(),true);
+		assertEquals(getTestQuiz11.isImmediateCorrection(),true);
+		assertEquals(getTestQuiz11.isMultiplePage(),true);
+		assertEquals(getTestQuiz11.getNumTimesTaken(),5);
+		getTestQuiz11.incrementNumTimesTaken();
+		assertEquals(getTestQuiz11.getNumTimesTaken(),6);
+	}
+	
+	@Test
+	public void testAddTopScorer(){
+		Quiz testQuiz12 = new Quiz(dal, "quiz12","another quiz",true,true,true,true,"Pavitra",new Date(),5);
+		testQuiz12.addTopScorer(topScorer1);
 	}
 	
 	
