@@ -65,6 +65,13 @@
 			}
 		%>
 	</ul>
+	
+	<%
+	if (user.getIsAdministrator()) {
+		%> Go back <a href="administratorHomepage.jsp">home</a><% 
+	} else {
+		%> Go back <a href="userHomepage.jsp">home</a><% 
+	}%>
 
 </body>
 </html>
