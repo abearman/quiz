@@ -107,6 +107,14 @@
 		Promote User to Administrator: <input type="text" name="user">
 		<input type="submit" value="Submit">
 	</form>
+	
+	<!-- Ability for administrator to display site statistics -->
+	<h2> Site Statistics </h2>
+	<ul>
+		<li> Number of users: <%=dal.getNumberOfUsers() %></li>
+		<li> Number of quizzes created: <%=dal.getNumberOfQuizzesCreated() %></li>
+		<li> Number of quizzes taken: <%=dal.getNumberOfQuizzesTaken() %></li>
+	</ul>
 
 </body>
 </html>
