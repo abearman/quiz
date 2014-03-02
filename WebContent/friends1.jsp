@@ -28,9 +28,12 @@
 	}%>
 	
 	<ul>
-		<% for (int i = 0; i < friends.size(); i++) {
-			%> <li> <%= friends.get(i) %> </li> <%
-		} %>
+		<% 
+		for (int i = 0; i < friends.size(); i++) {
+			String friend = friends.get(i);
+			%> <li> <a href="friendProfile.jsp?friendName=<%=friend%>"> <%= friend %> </a> </li> <%
+		} 
+		%>
 	</ul>
 
 </body>

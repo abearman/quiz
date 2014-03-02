@@ -9,13 +9,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<%
-	String name = (String)request.getParameter("friendProfile");
+	String name = request.getParameter("friendName");
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	User user = dal.getUser(name);
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(name);
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(name);
 	boolean[] achievements = user.getAchievements();
-	
+	ArrayList<String> friends = dal.getFriendListForUser(name);
 	%>  
 	
 	<title> <%= name %>'s Profile </title>
@@ -56,7 +56,22 @@
 		%>
 	</ul>
 	
-	<p> See <%=name%>'s <a href="friends1.jsp"> Friends </a></p>
+	<h2> <%=name%>'s Friends: </h2>
+	<ul>
+		<%
+			for (int i = 0; i < friends.size(); i++) {
+				String friend = friends.get(i);
+				%> <li> <a href="friendProfile.jsp?friendName=<%=friend%>"> <%=friend%> </a> </li> <%
+			}
+		%>
+	</ul>
+	
+	<%
+	if (user.getIsAdministrator()) {
+		%> Go back <a href="administratorHomepage.jsp">home</a><% 
+	} else {
+		%> Go back <a href="userHomepage.jsp">home</a><% 
+	}%>
 
 </body>
 </html>
