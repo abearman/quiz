@@ -51,8 +51,9 @@
 		%> 
 	</ul>
 	
-	${hasNewMessages ? "You have new messages!" : "No new messages."}
+	<i>${hasNewMessages ? "You have new messages!" : "No new messages."}</i>
 	<p>See my <a href="messages.jsp"> messages </a></p>
+	<p> See my <a href="friends.jsp"> friends </a></p>
 
 </body>
 </html>
