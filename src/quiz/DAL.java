@@ -109,19 +109,13 @@ public class DAL {
 	
 	public ArrayList<String> getFriendListForUser(String loginName) {
 		ArrayList<String> friendList = new ArrayList<String>();
+		String query = "SELECT * FROM friends WHERE user1 = \"" + loginName + "\";";
 		try {
-			String query1 = "SELECT * FROM friends WHERE user1 = \"" + loginName + "\";";
-			ResultSet rs1 = stmt.executeQuery(query1);
-			while(rs1.next()) {
-				String user2 = rs1.getString(2);
-				String query2 = "SELECT * FROM users WHERE loginName = \"" + user2 + "\";";
-				ResultSet rs2 = stmt.executeQuery(query2);
-				while (rs2.next()) {
-					//add user to result (should friends just be an ArrayList<String>?)
-					friendList.add(rs2.getString(1));
-				}
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String friend = rs.getString("user2");
+				friendList.add(friend);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

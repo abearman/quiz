@@ -11,10 +11,12 @@
 <head>
 	<%
 		User user = (User)session.getAttribute("user");
+		DAL dal = (DAL)getServletContext().getAttribute("DAL");
 		String username = user.getLoginName();
+		ArrayList<String> friends = dal.getFriendListForUser(username);
 	%>
 	<title><%= username %>'s Friends</title>
-	
+	<link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -24,6 +26,12 @@
 	} else {
 		%> Go back <a href="userHomepage.jsp">home</a><% 
 	}%>
+	
+	<ul>
+		<% for (int i = 0; i < friends.size(); i++) {
+			%> <li> <%= friends.get(i) %> </li> <%
+		} %>
+	</ul>
 
 </body>
 </html>

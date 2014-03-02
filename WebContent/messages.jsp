@@ -13,7 +13,7 @@
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>
-	
+	<link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
