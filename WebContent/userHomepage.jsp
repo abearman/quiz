@@ -31,6 +31,10 @@
 
 	<h2>Welcome <%= username %></h2>
 	
+	<form name="logOut" action="LogOutServlet" method="post">
+		<input type="submit" value="Log Out"> 
+	</form>
+	
 	<h2> Announcements: </h2>
 	<ul> 
 		<% 

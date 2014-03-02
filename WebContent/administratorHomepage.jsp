@@ -32,6 +32,10 @@
 
 	<h2>Welcome, admin <%= username %></h2>
 	
+	<form name="logOut" action="LogOutServlet" method="post">
+		<input type="submit" value="Log Out"> 
+	</form>
+	
 	<h2> Announcements: </h2>
 	<ul> 
 		<% 
@@ -94,7 +98,7 @@
 	
 	<!-- > Ability for administrator to create announcements -->
 	<form name="createAnnouncement" action="CreateAnnouncementServlet" method="post">
-		Announcement: <input type="text" name="announcement">
+		Create Announcement: <input type="text" name="announcement">
 		<input type="submit" value="Submit">
 	</form>
 	

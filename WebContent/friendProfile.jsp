@@ -38,7 +38,7 @@
 			%> 
 	</ul>
 	
-	<h2> <%=name%>'s %> Recently Created Quizzes: </h2>
+	<h2> <%=name%>'s Recently Created Quizzes: </h2>
 	<ul>
 		<%
 			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
