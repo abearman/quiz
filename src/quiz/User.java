@@ -6,14 +6,14 @@ import java.util.*;
 public class User {
 	
 	/* Instance variables*/
-	private boolean isAdministrator;
+	public boolean isAdministrator;
 	private String loginName;
 	private String passwordHash;
 	private boolean hasNewMessages;
 	
 	private ArrayList<String> friends;
 	private ArrayList<HistoryObject> historyList;
-	private boolean[] achievements;
+	public boolean[] achievements;
 	private ArrayList<Message> messages;
 	private int recentAchievement;
 	private String recentlyCreatedQuiz;
@@ -25,8 +25,8 @@ public class User {
 	
 	private DAL dal; //Handles connection to Database
 	
-	/* Private helper method to set all achievements to false */
-	private void initAchievementsArray() {
+	/* Helper method to set all achievements to false */
+	public void initAchievementsArray() {
 		for (int i = 0; i < achievements.length; i++) {
 			achievements[i] = false;
 		}
@@ -75,7 +75,7 @@ public class User {
 		return dal.getFriendsRecentActivity(friends);
 	}
 	
-		
+	
 	/* Constructor */
 	public User(String loginName, String password, DAL dal) {
 		this.dal = dal;
@@ -83,21 +83,28 @@ public class User {
 		hashPassword(password);
 		this.isAdministrator = false; //By default, a user is not an administrator
 		this.hasNewMessages = false;
+		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
+		initAchievementsArray();
+		dal.insertUser(loginName, isAdministrator, passwordHash, achievements, null);
 		
 		friends = new ArrayList<String>();
 		friends = initializeFriends();
 		friendsRecentActivity = initializeFriendsRecentActivity(friends);
-		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
-		initAchievementsArray();
+		
 		historyList = initializeHistoryList();
 		messages = new ArrayList<Message>();
 		
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();
-		
-		dal.insertUser(loginName, isAdministrator, passwordHash, achievements);
 	}
-
+	
+	/* Alternate constructor for not inserting User in database */
+	public User(String loginName) {
+		this.loginName = loginName;
+		achievements = new boolean[Achievements.NUM_ACHIEVEMENTS];
+		initAchievementsArray();
+	}
+	
 	/* Getter methods */
 	
 	public String getLoginName() {
@@ -146,6 +153,10 @@ public class User {
 	 
 	////////////////////////////////////////////////////////////////
 	/* Setter methods */
+	
+	public void setNewPassword(String newPasswordHash) {
+		this.passwordHash = newPasswordHash;
+	}
 	
 	public void setHasNewMessagesFalse() {
 		hasNewMessages = false;
@@ -235,6 +246,7 @@ public class User {
 		String recentActivity = ""+achievement+"\n"+
 			recentQuizTaken+"\n"+recentQuizCreated;
 		//dal method to update recentActivity
+		dal.updateRecentUserActivity(loginName, recentActivity);
 	}
 	
 	////////////////////////////////////////////////////////////////
@@ -267,6 +279,7 @@ public class User {
 	private void updateAdminInstanceVariable(boolean value) {
 		this.isAdministrator = value; //Updates the admin instance variable
 	}
+
 	
 	/**
 	 * Only users who are administrators can promote user accounts to administration accounts

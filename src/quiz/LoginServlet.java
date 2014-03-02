@@ -50,6 +50,10 @@ public class LoginServlet extends HttpServlet {
 		
 		if (manager.accountExists(username) && manager.isPasswordForAccount(username, password)){
 			
+			DAL dal = (DAL)getServletContext().getAttribute("DAL");
+			User user = dal.getUser(username); //Gets User from database to store on session 
+			request.getSession().setAttribute("user", user); //Sets the user as an attribute on the session
+			
 			//display user homepage
 			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");
 			dispatch.forward(request,response);

@@ -11,7 +11,7 @@ CREATE TABLE quizzes (
     isImmediateCorrection BOOLEAN,
     canBeTakenInPracticeMode BOOLEAN,
     creatorName CHAR(64),
-    creationDate DATE, 
+    creationDate DATETIME, 
     numTimesTaken INT
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE histories (
     numQuestionsCorrect INT,
     timeElapsed BIGINT,
     dateString CHAR(64), 
-    dateValue DATE
+    dateValue DATETIME
 );
 
 

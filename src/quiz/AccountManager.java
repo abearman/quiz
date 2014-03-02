@@ -55,9 +55,4 @@ public class AccountManager {
 		return dal.isPasswordForAccount(loginName, passwordClear, hashOfAttemptedPassword);
 	}
 	
-	/* Given an account name and a password, creates a new account */
-	public void createNewAccount(String loginName, String passwordClear) {
-		new User(loginName, passwordClear, dal); //The constructor handles putting the User in the database
-	}
-	
 }

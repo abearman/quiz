@@ -109,6 +109,7 @@ public class QuizTest {
 		for (int i = 1; i <= 10; i++) {
 			String fromUser = "user" + i;
 			FriendRequestMessage request = new FriendRequestMessage(fromUser, toUser, dal);
+			NoteMessage nm = new NoteMessage(fromUser, "amy", "hello!", dal);
 			request.acceptRequest(true);
 			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");

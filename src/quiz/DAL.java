@@ -25,6 +25,27 @@ public class DAL {
 		return stmt;
 	}
 	
+	public User getUser(String loginName) {
+		User user = new User(loginName);
+		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			user.setNewPassword(rs.getString("password"));
+			
+			user.isAdministrator = (rs.getBoolean("isAdministrator")) ? true : false;
+			
+			String achievements = rs.getString("achievements");
+			for (int i = 0; i < achievements.length(); i++) {
+				if (achievements.charAt(i) == '1') user.achievements[i] = true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
 	public boolean accountExists(String loginName) {
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {
@@ -43,6 +64,7 @@ public class DAL {
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
 			String databasePasswordHash = rs.getString("password"); //Retrieves the stored hash from the Database for this User
 			if (hashOfAttemptedPassword.equals(databasePasswordHash)) {
 				return true;
@@ -52,6 +74,18 @@ public class DAL {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public String getUserAchievements(String userName) {
+		try {
+			String query = "SELECT * FROM users WHERE loginName = \"" + userName + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			return rs.getString("achievements");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public ArrayList<HistoryObject> getHistoryListForUser(String userName) {
@@ -143,11 +177,11 @@ public class DAL {
 	
 	/* Setters */
 	
-	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements) {
+	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements, String recentActivity) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
 		String usersActivity = "took a quiz";
 		try {
-			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\",\"" + usersActivity + "\");";
+			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\", \"" + recentActivity + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -599,7 +633,7 @@ public class DAL {
 	
 	public ArrayList<String> getRecentlyTakenQuizzes() {
 		ArrayList<String> recentlyTakenQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM histories ORDER BY dateValue LIMIT 0, 10;";
+		String query = "SELECT * FROM histories ORDER BY dateValue DESC LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -613,7 +647,7 @@ public class DAL {
 	
 	public ArrayList<String> getRecentlyCreatedQuizzes() {
 		ArrayList<String> recentlyCreatedQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM quizzes ORDER BY creationDate LIMIT 0, 10;";
+		String query = "SELECT * FROM quizzes ORDER BY creationDate DESC LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -627,7 +661,7 @@ public class DAL {
 	
 	public ArrayList<String> getUserRecentlyTakenQuizzes(String username) {
 		ArrayList<String> usersRecentlyTakenQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM histories WHERE loginName = \"" + username + "\" ORDER BY dateValue LIMIT 0, 10;";
+		String query = "SELECT * FROM histories WHERE loginName = \"" + username + "\" ORDER BY dateValue DESC LIMIT 0, 10;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -641,7 +675,8 @@ public class DAL {
 	
 	public ArrayList<String> getUserRecentlyCreatedQuizzes(String username) {
 		ArrayList<String> usersRecentlyCreatedQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM quizzes WHERE loginName = \"" + username + "\" ORDER BY dateValue LIMIT 0, 10;";
+		String query = "SELECT * FROM quizzes WHERE creatorName = \"" + username + "\" ORDER BY creationDate DESC LIMIT 0, 10;";
+		System.out.println(query);
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
