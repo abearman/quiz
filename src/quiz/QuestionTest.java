@@ -12,6 +12,11 @@ public class QuestionTest {
 	@Before
 	public void setUp() throws Exception {
 		dal = new DAL();
+	}
+	
+	@Test
+	public void testSetUp()
+	{
 		quiz = new Quiz(dal, "bhaven's quiz", "i like chocolate", false, false, false, false, 
 				"Bhaven", new Date() ,0);
 		ArrayList<String> answers = new ArrayList<String>();
@@ -23,12 +28,18 @@ public class QuestionTest {
 		choices.add("choice2");
 		quiz.addQuestion(new MultipleChoice("new multiple choice", answers, 3, choices));
 		quiz.addQuestion(new PictureResponse("new picture response", answers, 4, "url.com"));
+		System.out.println("setup worked!");
 	}
 	
 	@Test
-	public void test1()
+	public void testGettingQuestionsFromDB()
 	{
-		System.out.println("setup worked!");
+		Quiz quiz2 = new Quiz(dal, "bhaven's quiz");
+		ArrayList<Question> questions = quiz2.getQuestions();
+		for(Question q : questions)
+		{
+			System.out.println("question: "+q.getQuestion()+"type: "+ q.getQuestionType());
+		}
 	}
 	
 	

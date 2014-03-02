@@ -65,7 +65,24 @@ public class Quiz {
 		this.creatorName = dal.getCreatorName(givenQuizName);
 		this.creationDate = dal.getCreationDate(givenQuizName);
 		this.numTimesTaken = dal.getNumTimesTaken(givenQuizName);
-
+	}
+	
+	//retrieves the questions associated with the quiz from the database
+	private void getQuestionsFromDB(String quizName)
+	{
+		questions = dal.getQuestionsFromDB(quizName);
+		if (isRandom) {
+			Collections.shuffle(questions);
+		}
+		else 
+		{
+			//sorts according to question number
+			Collections.sort(questions, new Comparator<Question>(){
+				public int compare(Question q1, Question q2){
+					return q1.getQuestionNumber()-q2.getQuestionNumber();
+				}
+			});
+		}
 	}
 
 	//constructor for creating a quiz, adds quiz to database
@@ -136,22 +153,6 @@ public class Quiz {
 		}	
 	}
 
-	private void getQuestionsFromDB(String quizName)
-	{
-		questions = dal.getQuestionsFromDB(quizName);
-		if (isRandom) {
-			Collections.shuffle(questions);
-		}
-		else 
-		{
-			//sorts according to question number
-			Collections.sort(questions, new Comparator<Question>(){
-				public int compare(Question q1, Question q2){
-					return q1.getQuestionNumber()-q2.getQuestionNumber();
-				}
-			});
-		}
-	}
 
 	/* Getters */
 
