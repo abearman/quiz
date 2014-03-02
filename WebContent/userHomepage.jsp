@@ -10,13 +10,15 @@
 	
 	<%
 	//String username = (String) request.getParameter("username");
+	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
 	Webpage webpage = (Webpage)getServletContext().getAttribute("webpage");
 	ArrayList<String> recentlyCreatedQuizzes = webpage.getRecentlyCreatedQuizzes();
 	ArrayList<String> popularQuizzes = webpage.getPopularQuizzes();
+	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
+	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
 	
-	//DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	//ArrayList<String> announcements = dal.getAllAnnouncements();
 	//String achievements = dal.getUserAchievements(username);
 	
@@ -63,6 +65,15 @@
 		<%
 			for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
 				%> <li> Quiz: <%= recentlyCreatedQuizzes.get(i) %></li> <% 
+			}
+		%>
+	</ul>
+	
+	<h2> My Recently Created Quizzes: </h2>
+	<ul>
+		<%
+			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
+				%> <li> Quiz: <%= userRecentlyCreatedQuizzes.get(i) %></li> <% 
 			}
 		%>
 	</ul>
