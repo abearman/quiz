@@ -108,6 +108,12 @@
 		<input type="submit" value="Submit">
 	</form>
 	
+	<!-- > Ability for administrator to promote clear history for particular quiz -->
+	<form name="clearHistoryForQuiz" action="ClearHistoryForQuizServlet" method="post">
+		Clear History For Quiz: <input type="text" name="quiz">
+		<input type="submit" value="Submit">
+	</form>
+	
 	<!-- Ability for administrator to display site statistics -->
 	<h2> Site Statistics </h2>
 	<ul>
