@@ -674,7 +674,7 @@ public class DAL {
 	
 	public ArrayList<String> getUserRecentlyCreatedQuizzes(String username) {
 		ArrayList<String> usersRecentlyCreatedQuizzes = new ArrayList<String>();
-		String query = "SELECT * FROM quizzes WHERE loginName = \"" + username + "\" ORDER BY dateValue DESC LIMIT 0, 10;";
+		String query = "SELECT * FROM quizzes WHERE creatorName = \"" + username + "\" ORDER BY creationDate DESC LIMIT 0, 10;";
 		System.out.println(query);
 		try {
 			ResultSet rs = stmt.executeQuery(query);

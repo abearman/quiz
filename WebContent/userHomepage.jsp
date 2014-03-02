@@ -77,6 +77,15 @@
 			}
 		%>
 	</ul>
+	
+	<h2> My Recently Taken Quizzes: </h2>
+	<ul>
+		<%
+			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
+				%> <li> Quiz: <%= userRecentlyTakenQuizzes.get(i) %></li> <% 
+			}
+		%>
+	</ul>
 
 </body>
 </html>
