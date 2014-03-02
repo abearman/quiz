@@ -7,12 +7,13 @@
 	<meta content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
 	<%
 		User user = (User)session.getAttribute("user");
 		String username = user.getLoginName();
 	%>
-	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-	<title><%= username %>'s Messages</title>
+	<title><%= username %>'s Friends</title>
 	
 </head>
 <body>

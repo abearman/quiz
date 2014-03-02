@@ -54,7 +54,7 @@
 	
 	<i>${hasNewMessages ? "You have new messages!" : "No new messages."}</i>
 	<p>See my <a href="messages.jsp"> messages </a></p>
-	<p> See my <a href="friends.jsp"> friends </a></p>
+	<p> See my <a href="friends1.jsp"> friends </a></p>
 
 	<h2> Recently Created Quizzes: </h2>
 	<ul>
