@@ -13,7 +13,7 @@
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
 	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes();
-	ArrayList<String> popularQuizzes = dal.getRecentlyTakenQuizzes(); //TODO
+	ArrayList<String> popularQuizzes = dal.getPopularQuizzes(); 
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
 	
@@ -60,6 +60,15 @@
 		<%
 			for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
 				%> <li> Quiz: <%= recentlyCreatedQuizzes.get(i) %></li> <% 
+			}
+		%>
+	</ul>
+	
+	<h2> Popular Quizzes: </h2>
+	<ul>
+		<%
+			for (int i = 0; i < popularQuizzes.size(); i++) {
+				%> <li> Quiz: <%= popularQuizzes.get(i) %></li> <% 
 			}
 		%>
 	</ul>

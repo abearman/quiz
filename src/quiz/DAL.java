@@ -634,6 +634,21 @@ public class DAL {
 		return 0;
 	}
 	
+	/* Sorted by the number of times each quiz has been taken */
+	public ArrayList<String> getPopularQuizzes() {
+		ArrayList<String> popularQuizzes = new ArrayList<String>();
+		String query = "SELECT * FROM quizzes ORDER BY numTimesTaken DESC LIMIT 0, 10;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				popularQuizzes.add(rs.getString("quizName"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return popularQuizzes;
+	}
+	
 	public ArrayList<String> getRecentlyTakenQuizzes() {
 		ArrayList<String> recentlyTakenQuizzes = new ArrayList<String>();
 		String query = "SELECT * FROM histories ORDER BY dateValue DESC LIMIT 0, 10;";
