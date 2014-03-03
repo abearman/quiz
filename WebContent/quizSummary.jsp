@@ -9,14 +9,18 @@
 	
 	<%
 	
+	
 	String quizName = request.getParameter("quizName");
 	DAL dal = (DAL)request.getServletContext().getAttribute("dal");
 	Quiz quiz = new Quiz(dal,quizName);
 	
 	
 	//TODO need to access the quiz in place of this dummy quiz for testing
-	/*Quiz quiz = new Quiz(new DAL(), "dummyQuiz","good for nothing",true,true,true,true,"Pavitra",new Date(),5); 
-	String quizName = quiz.getQuizName();*/
+	/*
+	DAL dal = (DAL)request.getServletContext().getAttribute("dal");
+	Quiz quiz = new Quiz(new DAL(), "dummyQuiz","good for nothing",true,true,true,true,"Pavitra",new Date(),5); 
+	String quizName = quiz.getQuizName();
+	*/
 	%>
 	
 	<title><%= quizName %></title>
@@ -104,6 +108,11 @@
 	<li>Median Score: <%= medianScore %></li>
 	<li>Average Time: <%= averageTime %></li>
 	</ul>
+	
+	<form action="TakeQuizServlet" method="post">
+	<input type="hidden" name="quizName" value="<%= quizName %>"/>
+	<input type = "submit" value = "Take This Quiz">
+	</form>
 	
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
