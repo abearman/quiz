@@ -213,7 +213,6 @@ public class DAL {
 	}
 	
 	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
-		System.out.println("in addToHistoryListForUser");
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		try {
 			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\",'" + sqlDate + "');";
