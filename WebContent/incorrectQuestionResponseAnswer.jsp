@@ -18,7 +18,8 @@ int questionNum = quiz.getCurrentQuestionNum();
 Question thisQuestion = quiz.getQuestions().get(questionNum);
 %>
 
-<h4><%= thisQuestion.getQuestion() %></h4>
+<h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
+<h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
 
 <form action="" method="post">
 	Your Answer: <input type="text" name="answer" />
