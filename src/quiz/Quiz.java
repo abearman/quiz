@@ -61,6 +61,10 @@ public class Quiz {
 		usersAnswers.add(answer);
 	}
 	
+	public ArrayList<String> getAnswers(){
+		return usersAnswers;
+	}
+	
 	private void initializeArrayLists() {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();

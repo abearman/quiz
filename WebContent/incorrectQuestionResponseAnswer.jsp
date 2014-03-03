@@ -27,6 +27,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 </form>
 
 <h4>Sorry, your answer was incorrect.</h4>
+<h4>Your Answer: <%= quiz.getAnswers().get(quiz.getCurrentQuestionNum()) %></h4>
 <h4>Correct Answer: <%= thisQuestion.getAnswer().get(0) %></h4>
 
 <%
