@@ -44,6 +44,7 @@ public class TakeQuizServlet extends HttpServlet {
 		quiz.initializeUsersAnswers();
 		
 		request.getSession().setAttribute("quiz", quiz);
+		request.getSession().setAttribute("startTime", System.currentTimeMillis());
 		
 		if (quiz.isMultiplePage()){
 			int questionType = questions.get(0).getQuestionType();
@@ -51,7 +52,7 @@ public class TakeQuizServlet extends HttpServlet {
 				RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
 				dispatch.forward(request,response);
 			}else if (questionType == Question.FILL_IN_THE_BLANK){
-				RequestDispatcher dispatch = request.getRequestDispatcher("singleFillInTheBlank.jsp");
+				RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
 				dispatch.forward(request,response);
 			}else if (questionType == Question.MULTIPLE_CHOICE){
 				RequestDispatcher dispatch = request.getRequestDispatcher("singleMultipleChoice.jsp");

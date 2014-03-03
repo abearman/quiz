@@ -11,16 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class NextQuestionServlet
+ * Servlet implementation class DoneWithQuizServlet
  */
-@WebServlet("/NextQuestionServlet")
-public class NextQuestionServlet extends HttpServlet {
+@WebServlet("/DoneWithQuizServlet")
+public class DoneWithQuizServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NextQuestionServlet() {
+    public DoneWithQuizServlet() {
         super();
     }
 
@@ -39,23 +39,25 @@ public class NextQuestionServlet extends HttpServlet {
 		String quizName = (String)request.getParameter("quizName");
 		Quiz quiz = new Quiz(dal, quizName);
 		ArrayList<Question> questions = quiz.getQuestions();
+		ArrayList<String> answers = quiz.getAnswers();
 		
-		Question nextQuestion = questions.get(quiz.getNextQuestionNum());
-		int questionType = nextQuestion.getQuestionType();
+		long endTime = System.currentTimeMillis();
+		long startTime = (Long)request.getSession().getAttribute("startTime");
+		long elapsedTime = endTime - startTime;
+		quiz.setLengthOfCompletion(elapsedTime);
+		request.getSession().setAttribute("elapsedTime", elapsedTime);
 		
-		if (questionType == Question.QUESTION_RESPONSE){
-			RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
-			dispatch.forward(request,response);
-		}else if (questionType == Question.FILL_IN_THE_BLANK){
-			RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
-			dispatch.forward(request,response);
-		}else if (questionType == Question.MULTIPLE_CHOICE){
-			RequestDispatcher dispatch = request.getRequestDispatcher("singleMultipleChoice.jsp");
-			dispatch.forward(request,response);
-		}else if (questionType == Question.PICTURE_RESPONSE){
-			RequestDispatcher dispatch = request.getRequestDispatcher("singlePictureResponse.jsp");
-			dispatch.forward(request,response);
+		int numQuestionsCorrect = 0;
+		for (int i = 0; i < questions.size(); i++){
+			if (questions.get(i).answerIsCorrect(answers.get(i))){
+				numQuestionsCorrect++;
+			}
 		}
+		quiz.setNumQuestionsCorrect(numQuestionsCorrect);
+		request.getSession().setAttribute("numQuestionsCorrect", numQuestionsCorrect);
+		
+		RequestDispatcher dispatch = request.getRequestDispatcher("quizResults.jsp");
+		dispatch.forward(request,response);
 	}
 
 }

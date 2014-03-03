@@ -1,3 +1,4 @@
+<%@ page import="java.util.*, quiz.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
@@ -10,6 +11,23 @@
 </head>
 
 <body>
+
+<%
+
+Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+int questionNum = quiz.getCurrentQuestionNum();
+Question thisQuestion = quiz.getQuestions().get(questionNum);
+
+%>
+
+<h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
+<h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
+<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>">
+
+<form action="UpdateAnswersServlet" method="post">
+	Your Answer: <input type="text" name="answer" />
+	<input type = "submit" />
+</form>
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

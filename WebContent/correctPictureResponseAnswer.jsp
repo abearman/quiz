@@ -13,13 +13,21 @@
 <body>
 
 <%
-Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+//Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+Quiz quiz = new Quiz(new DAL(), "dummyQuiz","another quiz",true,true,true,true,"Pavitra",new Date(),5);
+ArrayList<String> answers = new ArrayList<String>();
+answers.add("answer1"); answers.add("answer2"); answers.add("answer3");
+quiz.addQuestion(new Question("Who was the first president?",answers,0));
+quiz.addQuestion(new Question("Who was the second president?",answers,1));
+quiz.addQuestion(new Question("Who was the third president?",answers,2));
+
 int questionNum = quiz.getCurrentQuestionNum();
 Question thisQuestion = quiz.getQuestions().get(questionNum);
 %>
 
 <h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
 <h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
+<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>">
 
 <form action="" method="post">
 	Your Answer: <input type="text" name="answer" />
