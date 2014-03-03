@@ -47,7 +47,7 @@ public class NextQuestionServlet extends HttpServlet {
 			RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
 			dispatch.forward(request,response);
 		}else if (questionType == Question.FILL_IN_THE_BLANK){
-			RequestDispatcher dispatch = request.getRequestDispatcher("singleFillInTheBlank.jsp");
+			RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
 			dispatch.forward(request,response);
 		}else if (questionType == Question.MULTIPLE_CHOICE){
 			RequestDispatcher dispatch = request.getRequestDispatcher("singleMultipleChoice.jsp");

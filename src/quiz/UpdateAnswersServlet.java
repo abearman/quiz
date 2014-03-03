@@ -38,20 +38,38 @@ public class UpdateAnswersServlet extends HttpServlet {
 		quiz.addAnswers(answer);
 		
 		if (quiz.isImmediateCorrection()){
-			boolean answerCorrect = false;
 			Question question = quiz.getQuestions().get(quiz.getCurrentQuestionNum());
-			for (int i = 0; i < question.getAnswer().size(); i++){
-				if (question.equals(question.getAnswer().get(i))){
-					answerCorrect = true;
-				}
-			}
+			int questionType = question.getQuestionType();
+			boolean answerCorrect = question.answerIsCorrect(answer);
 			
 			if (answerCorrect){
-				RequestDispatcher dispatch = request.getRequestDispatcher("correctQuestionResponseAnswer.jsp");
-				dispatch.forward(request,response);
+				if (questionType == Question.QUESTION_RESPONSE){
+					RequestDispatcher dispatch = request.getRequestDispatcher("correctQuestionResponseAnswer.jsp");
+					dispatch.forward(request,response);
+				}else if (questionType == Question.FILL_IN_THE_BLANK){
+					RequestDispatcher dispatch = request.getRequestDispatcher("correctQuestionResponseAnswer.jsp");
+					dispatch.forward(request,response);
+				}else if (questionType == Question.MULTIPLE_CHOICE){
+					RequestDispatcher dispatch = request.getRequestDispatcher("correctMultipleChoiceAnswer.jsp");
+					dispatch.forward(request,response);
+				}else if (questionType == Question.PICTURE_RESPONSE){
+					RequestDispatcher dispatch = request.getRequestDispatcher("correctPictureResponseAnswer.jsp");
+					dispatch.forward(request,response);
+				}
 			}else{
-				RequestDispatcher dispatch = request.getRequestDispatcher("incorrectQuestionResponseAnswer.jsp");
-				dispatch.forward(request,response);
+				if (questionType == Question.QUESTION_RESPONSE){
+					RequestDispatcher dispatch = request.getRequestDispatcher("incorrectQuestionResponseAnswer.jsp");
+					dispatch.forward(request,response);
+				}else if (questionType == Question.FILL_IN_THE_BLANK){
+					RequestDispatcher dispatch = request.getRequestDispatcher("incorrectQuestionResponseAnswer.jsp");
+					dispatch.forward(request,response);
+				}else if (questionType == Question.MULTIPLE_CHOICE){
+					RequestDispatcher dispatch = request.getRequestDispatcher("incorrectMultipleChoiceAnswer.jsp");
+					dispatch.forward(request,response);
+				}else if (questionType == Question.PICTURE_RESPONSE){
+					RequestDispatcher dispatch = request.getRequestDispatcher("incorrectPictureResponseAnswer.jsp");
+					dispatch.forward(request,response);
+				}
 			}
 		}else{
 			Question nextQuestion = quiz.getQuestions().get(quiz.getNextQuestionNum());
@@ -61,7 +79,7 @@ public class UpdateAnswersServlet extends HttpServlet {
 				RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
 				dispatch.forward(request,response);
 			}else if (questionType == Question.FILL_IN_THE_BLANK){
-				RequestDispatcher dispatch = request.getRequestDispatcher("singleFillInTheBlank.jsp");
+				RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
 				dispatch.forward(request,response);
 			}else if (questionType == Question.MULTIPLE_CHOICE){
 				RequestDispatcher dispatch = request.getRequestDispatcher("singleMultipleChoice.jsp");
