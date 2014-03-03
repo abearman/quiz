@@ -24,7 +24,7 @@ function displayQuestion()
 	{
 		var display = "<h3>Question Response</h3> ";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"></p>";
+		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =1></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var instructions = "<b>An example of a Question Response question is \"Who was the first president of the United States?\"</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
@@ -33,7 +33,7 @@ function displayQuestion()
 	{
 		var display = "<h3>Fill in the Blank</h3> ";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"></p>";
+		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =2></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var instructions = "<b>An example of a Fill in the Blank question is \"______ was the first president of the United States.\"</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
@@ -42,22 +42,22 @@ function displayQuestion()
 	{
 		var display = "<h3>Multiple Choice</h3> ";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"></p>";
+		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =3></p>";
 		display+= "<p>Choices:<input type = \"text\" name=\"choices\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var instructions = "<b>An example of a Multiple Choice question is \"Who was the first president of the United States?\"<br>";
-		instructions+= "Choices for the question need to be separated by the \"\n\" character. For the question above, answer formatting would look like \"Abraham Lincoln\n George Washington\n John Adams\"</b>";
+		instructions+= "Choices for the question need to be separated by the \"\\n\" character. For the question above, answer formatting would look like \"Abraham Lincoln\\nGeorge Washington\\nJohn Adams\"</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
 	if (options[selected].value == "PictureResponse")
 	{
 		var display = "<h3>Picture Response</h3> ";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"></p>";
+		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =4></p>";
 		display+= "<p>Image URL:<input type = \"text\" name=\"imageURL\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
-		var instructions = "<b>An example of a Picture Response question is would be a picture of George Washinton with the accompanying question \"Who is this President of the United States?\"<br>";
-		instructions+= "The question field may be left blank for this question and only a picture will be shown. The URL for the image should be the exact URL to find the image at.</b>";
+		var instructions = "<b>An example of a Picture Response question is a picture of George Washinton with the accompanying question \"Who is this President of the United States?\"<br>";
+		instructions+= "The question field may be left blank for this type of question and only a picture will be shown. The URL for the image should be the exact URL to find the image at.</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
 }
@@ -73,25 +73,25 @@ function displayQuestion()
 </div>
 
 <div>
-	<form action ="AddQuestionServlet" method = "post">
+	<form action ="AddQuestionsServlet" method = post>
 		<div id ="displayArea">
 			<h3>Question Response</h3>
 			<p>Question:<input type = "text" name="question"></p>
-			<p>Answers:<input type = "text" name="question"></p>
+			<p>Answers:<input type = "text" name="answers"><input type="hidden" name="questionType" value =1></p>
 		</div>
 		
 		<input type = "submit" value = "Add Question"/> 
 	</form>
 	
-	<form action="QuizCompleted?" method = "post">
+	<form action="QuizCreationCompletedServlet" method = "post">
 		<input type = "submit" value = "Done"/>
 	</form>
 </div>
 
-<hr noshade size=3>
+<hr noshade size=4>
 <p id = "specialInstructions"><b>An example of a Question Response question is "Who was the first president of the United States?"</b></p>
 <br>
-<p><b>Please separate the possible answers for the question in the text box by the "\n" character. An example would be "apple\n orange\n banana".</b></p>
+<p><b>Please separate the possible answers for the question in the text box by the "\n" character. An example would be "apple\norange\nbanana".</b></p>
 
 
 
