@@ -53,7 +53,23 @@ public class UpdateAnswersServlet extends HttpServlet {
 				RequestDispatcher dispatch = request.getRequestDispatcher("incorrectQuestionResponseAnswer.jsp");
 				dispatch.forward(request,response);
 			}
+		}else{
+			Question nextQuestion = quiz.getQuestions().get(quiz.getNextQuestionNum());
+			int questionType = nextQuestion.getQuestionType();
 			
+			if (questionType == Question.QUESTION_RESPONSE){
+				RequestDispatcher dispatch = request.getRequestDispatcher("singleQuestionResponse.jsp");
+				dispatch.forward(request,response);
+			}else if (questionType == Question.FILL_IN_THE_BLANK){
+				RequestDispatcher dispatch = request.getRequestDispatcher("singleFillInTheBlank.jsp");
+				dispatch.forward(request,response);
+			}else if (questionType == Question.MULTIPLE_CHOICE){
+				RequestDispatcher dispatch = request.getRequestDispatcher("singleMultipleChoice.jsp");
+				dispatch.forward(request,response);
+			}else if (questionType == Question.PICTURE_RESPONSE){
+				RequestDispatcher dispatch = request.getRequestDispatcher("singlePictureResponse.jsp");
+				dispatch.forward(request,response);
+			}
 		}
 	}
 
