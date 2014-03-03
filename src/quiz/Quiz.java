@@ -142,6 +142,8 @@ public class Quiz {
 
 	private double getMedian(ArrayList<Double> scores) {
 		Collections.sort(scores);
+		
+		if (scores.size() == 0) return 0;
 
 		if (scores.size() % 2 == 1) {
 			return scores.get((scores.size()+1)/2 - 1);
