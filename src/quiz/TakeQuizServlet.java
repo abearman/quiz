@@ -44,6 +44,7 @@ public class TakeQuizServlet extends HttpServlet {
 		quiz.initializeUsersAnswers();
 		
 		request.getSession().setAttribute("quiz", quiz);
+		request.getSession().setAttribute("startTime", System.currentTimeMillis());
 		
 		if (quiz.isMultiplePage()){
 			int questionType = questions.get(0).getQuestionType();
