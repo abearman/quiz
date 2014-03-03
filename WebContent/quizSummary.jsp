@@ -75,17 +75,28 @@
 	ArrayList<TopScorer> topScorersPastDay = quiz.getTopScorersPastDay();
 	out.println("<ul>");
 	for (int i = 0; i < topScorersPastDay.size(); i++){
-		TopScorer topScorer = topScorersPastDay.get(i);
-		out.println("<li>Name: " + topScorer.getLoginName() + 
-				"Time taken: " + topScorer.getTimeTaken() + 
-				"Number of Correct Questions: " + topScorer.getNumCorrectQuestions() + 
+		TopScorer topScorerPastDay = topScorersPastDay.get(i);
+		out.println("<li>Name: " + topScorerPastDay.getLoginName() + 
+				"Time taken: " + topScorerPastDay.getTimeTaken() + 
+				"Number of Correct Questions: " + topScorerPastDay.getNumCorrectQuestions() + 
 				"</li>");
 	}
 	out.println("</ul>");
 	%>
 	
 	<h3>Recent Test Takers of  <%= quizName %></h3>
-	
+	<%
+	ArrayList<HistoryObject> quizHistory = dal.getAllHistoryLists(quizName);
+	out.println("<ul>");
+	for (int i = 0; i < quizHistory.size(); i++){
+		HistoryObject history = quizHistory.get(i);
+		out.println("<li>Date: " + history.getDateString() + 
+				"Time Taken: " + history.getElapsedTime() + 
+				"Number of Questions Correct: " + history.getNumQuestionsCorrect()
+				+ "</li>");
+	}
+	out.println("</ul>");
+	%>
 	
 	<h3>Statistics Summary</h3>
 	<ul>
