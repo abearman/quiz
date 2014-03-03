@@ -13,9 +13,11 @@
 <body>
 
 <%
+
 Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 int questionNum = quiz.getCurrentQuestionNum();
 Question thisQuestion = quiz.getQuestions().get(questionNum);
+
 %>
 
 <h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
