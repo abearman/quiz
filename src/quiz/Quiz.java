@@ -51,7 +51,7 @@ public class Quiz {
 	}
 
 	private ArrayList<HistoryObject> initializeAllHistories() { 
-		return dal.getAllHistoryLists();
+		return dal.getAllHistoryLists(quizName);
 	}
 
 	//reads database to find this quiz and populates instance variables

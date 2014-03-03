@@ -122,13 +122,14 @@ public class DAL {
 		return friendList;
 	}
 	
-	public ArrayList<HistoryObject> getAllHistoryLists() {
+	public ArrayList<HistoryObject> getAllHistoryLists(String quizTitle) {
 		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
 
 		try {
-			String query = "SELECT * FROM histories;";
+			String query = "SELECT * FROM histories WHERE quizName =\""+quizTitle+"\";";
 			ResultSet rs = stmt.executeQuery(query);
-			if (rs!=null){
+			if (rs.next()){
+				rs.beforeFirst();
 				while(rs.next()) {
 					String loginName = rs.getString("loginName");
 					String quizName = rs.getString("quizName");
@@ -700,10 +701,11 @@ public class DAL {
 		return usersRecentlyCreatedQuizzes;
 	}
 	
+	//updates a user's most recent activity
 	public void updateRecentUserActivity(String loginName, String recentActivity)
 	{
 		String execute = "UPDATE users SET recentActivity= \""+recentActivity+"\" WHERE loginName= \""+
-		loginName+"\"";
+		loginName+"\";";
 		try{
 			stmt.executeUpdate(execute);
 		} catch(SQLException ex)
@@ -711,13 +713,13 @@ public class DAL {
 			ex.printStackTrace();
 		}
 	}
-	
+	//retrieves all of the user's friends' most recent activity
 	public ArrayList<FriendRecentActivity> getFriendsRecentActivity(ArrayList<String> friends)
 	{
 			ArrayList<FriendRecentActivity> fra = new ArrayList<FriendRecentActivity>();
 			for(String f : friends)
 			{
-				String query = "SELECT * FROM users WHERE loginName = \""+f+"\"";
+				String query = "SELECT * FROM users WHERE loginName = \""+f+"\";";
 				try {
 					ResultSet rs = stmt.executeQuery(query);
 					rs.first();
@@ -733,6 +735,27 @@ public class DAL {
 				}
 			}
 			return fra;
+	}
+	
+	//check if a quiz exists in the database
+	public boolean doesQuizExist(String quizName)
+	{
+		String query = "SELECT * FROM quizzes WHERE quizName = \""+quizName+"\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			if(rs.next())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
 

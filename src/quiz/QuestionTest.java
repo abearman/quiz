@@ -39,7 +39,22 @@ public class QuestionTest {
 		ArrayList<Question> questions = quiz2.getQuestions();
 		for(Question q : questions)
 		{
-			System.out.println("question: "+q.getQuestion()+"type: "+ q.getQuestionType());
+			System.out.print("question: "+q.getQuestion()+" type: "+ q.getQuestionType());
+			if(q.getQuestionType()==Question.MULTIPLE_CHOICE)
+			{
+				ArrayList<String> options = ((MultipleChoice)q).getChoices();
+				System.out.print(" options: ");
+				for(int i = 0; i < options.size(); i++)
+				{
+					System.out.print(options.get(i)+", ");
+				}
+			}
+			if(q.getQuestionType()==Question.PICTURE_RESPONSE)
+			{
+				String url = ((PictureResponse)q).getImageURL();
+				System.out.print(" url: "+url);
+			}
+			System.out.println();
 		}
 	}
 	
@@ -52,8 +67,10 @@ public class QuestionTest {
 		{
 			dal.removeQuestion(quiz2.getQuizName(), q);
 		}
+		assertTrue(dal.doesQuizExist("bhaven's quiz"));
 		dal.removeQuiz("bhaven's quiz");
 		Quiz quiz3 = new Quiz(dal, "bhaven's quiz");
+		assertFalse(dal.doesQuizExist("bhaven's quiz"));
 		assertEquals("", quiz3.getQuizName());
 	}
 	
