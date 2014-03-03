@@ -50,6 +50,21 @@ public class Question {
 	}
 	
 	/**
+	 * Returns boolean whether or not the given
+	 * answer is correct.
+	 */
+	public boolean answerIsCorrect(String answer)
+	{
+		boolean answerCorrect = false;
+		for (int i = 0; i < answers.size(); i++){
+			if (answer.equals(answers.get(i))){
+				answerCorrect = true;
+			}
+		}
+		return answerCorrect;
+	}
+	
+	/**
 	 * Takes in the user's answer,
 	 * compares it to the answers for the question,
 	 * and returns true if there is a match or false,
@@ -85,6 +100,7 @@ public class Question {
 	{
 		return questionNumber;
 	}
+	
 	/**
 	 * Returns a String that contains all of the answers
 	 * separated by endline escape sequences ("\n").

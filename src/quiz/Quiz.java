@@ -32,6 +32,8 @@ public class Quiz {
 	//different across sessions
 	private long lengthOfCompletion;
 	private int numQuestionsCorrect;
+	private ArrayList<String> usersAnswers;
+	private int currentQuestionNumIndex = 0;
 	//private double usersScore;
 
 	//updated across different sessions, stored in database
@@ -40,7 +42,29 @@ public class Quiz {
 
 	//connect to database
 	private DAL dal;
+	
+	public int getNextQuestionNum() {
+		currentQuestionNumIndex++;
+		return currentQuestionNumIndex;
+	}
+	
+	public int getCurrentQuestionNum() {
+		return currentQuestionNumIndex;
+	}
 
+
+	public void initializeUsersAnswers() {
+		usersAnswers = new ArrayList<String>();
+	}
+	
+	public void addAnswers(String answer) {
+		usersAnswers.add(answer);
+	}
+	
+	public ArrayList<String> getAnswers(){
+		return usersAnswers;
+	}
+	
 	private void initializeArrayLists() {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
