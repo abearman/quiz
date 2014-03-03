@@ -39,7 +39,7 @@ public class DoneWithQuizServlet extends HttpServlet {
 		String quizName = (String)request.getParameter("quizName");
 		Quiz quiz = new Quiz(dal, quizName);
 		ArrayList<Question> questions = quiz.getQuestions();
-		ArrayList<String> answers = quiz.getAnswers();
+		ArrayList<String> answers = quiz.getAnswers(); //TODO i dont think this works because the answers ArrayList is specific to each quiz object
 		
 		long endTime = System.currentTimeMillis();
 		long startTime = (Long)request.getSession().getAttribute("startTime");
