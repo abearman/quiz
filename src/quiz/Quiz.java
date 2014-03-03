@@ -142,6 +142,8 @@ public class Quiz {
 
 	private double getMedian(ArrayList<Double> scores) {
 		Collections.sort(scores);
+		
+		if (scores.size() == 0) return 0;
 
 		if (scores.size() % 2 == 1) {
 			return scores.get((scores.size()+1)/2 - 1);
@@ -339,10 +341,16 @@ public class Quiz {
 
 			HistoryObject history = allHistories.get(i);
 
-			//figure out what the previous day is
 			Date currentDate = new Date();
 			Calendar previousDayCal = Calendar.getInstance();
 			previousDayCal.setTime(currentDate);
+			
+			//keep track of current day, month, and year
+			int currentYear = previousDayCal.get(Calendar.YEAR);
+			int currentMonth = previousDayCal.get(Calendar.MONTH);
+			int currentDay = previousDayCal.get(Calendar.DAY_OF_MONTH);
+			
+			//figure out what the previous day is
 			previousDayCal.add(Calendar.DAY_OF_MONTH, -1);
 
 			//get the history object's day
@@ -354,13 +362,13 @@ public class Quiz {
 			int historyMonth = cal.get(Calendar.MONTH);
 			int historyDay = cal.get(Calendar.DAY_OF_MONTH);
 
-			int currentYear = previousDayCal.get(Calendar.YEAR);
-			int currentMonth = cal.get(Calendar.MONTH);
-			int currentDay = cal.get(Calendar.DAY_OF_MONTH);
+			int yesterdayYear = previousDayCal.get(Calendar.YEAR);
+			int yesterdayMonth = previousDayCal.get(Calendar.MONTH);
+			int yesterdayDay = previousDayCal.get(Calendar.DAY_OF_MONTH);
 
 			//found a history in the past day
-			if (historyYear == currentYear && historyMonth == currentMonth 
-					&& historyDay == currentDay){
+			if ((historyYear == currentYear && historyMonth == currentMonth && historyDay == currentDay) || 
+					(historyYear == yesterdayYear && historyMonth == yesterdayMonth && historyDay == yesterdayDay)){
 				topScorersPastDay.add(new TopScorer(history.getUserName(), history.getNumQuestionsCorrect(), history.getElapsedTime(), dal));
 			}
 
