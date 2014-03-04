@@ -103,7 +103,16 @@
 		<%
 			for (int i = 0; i < friendRecentActivities.size(); i++) {
 				FriendRecentActivity fra = friendRecentActivities.get(i);
-				%> <li> Your friend, <%=fra.getFriendName()%> recently created quiz <%=fra.getRecentlyCreatedQuiz()%>, recently took quiz <%=fra.getRecentlyCreatedQuiz()%>, and earned the achievement <%=Achievements.achievements[fra.getRecentAchievement()] %> </li> 
+				String friendName = fra.getFriendName();
+				String rcq = fra.getRecentlyCreatedQuiz();
+				String rtq = fra.getRecentlyTakenQuiz();
+				int achievement = fra.getRecentAchievement();
+				%> <li> 
+					Your friend, <a href="friendProfile.jsp?friendName=<%=friendName%>"><%=friendName%></a> 
+					recently created quiz <a href="quizSummary.jsp?quizName=<%=rcq%>"><%=rcq%></a>, 
+					recently took quiz <a href="quizSummary.jsp?=<%=rtq%>"><%=rtq%></a>, 
+					and earned the achievement <%=Achievements.achievements[achievement] %> 
+				</li> 
 			<%}
 		%>
 	</ul>
