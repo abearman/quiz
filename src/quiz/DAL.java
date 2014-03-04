@@ -250,11 +250,11 @@ public class DAL {
 	}
 	
 	//Used for testing, might be useful later!
-	public void removeFriendPair(String user1, String user2) { //Do we need?
+	public void removeFriendPair(String user1, String user2) { 
 		try {
-			String update = "DELETE FROM friends WHERE user1 = \"" + user1 + "\";";
+			String update = "DELETE FROM friends WHERE user1 = \"" + user1 + "\" AND user2 = \"" + user2 + "\";";
 			stmt.executeUpdate(update);
-			update = "DELETE FROM friends WHERE user1 = \"" + user2 + "\";";
+			update = "DELETE FROM friends WHERE user1 = \"" + user2 + "\" AND user2 = \"" + user1 + "\";";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
