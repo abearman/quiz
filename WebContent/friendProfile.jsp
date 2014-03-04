@@ -28,17 +28,20 @@
 	<h2><%= name %>'s Profile</h2>
 	
 	<%
-	if(dal.getFriendListForUser(userName).contains(name)) {%> 
-		<form name="removeFriend" action ="RemoveFriendServlet" method="post">
-			<input type="hidden" name="user2" value="<%=name%>">
-			<input type="submit" value="Remove friend">
-		</form>
-	<%} else {%>
-		<form name="addFriend" action ="AddFriendServlet" method="post">
-			<input type="hidden" name="user2" value="<%=name%>">
-			<input type="submit" value="Add friend!">
-		</form>
-	<%}%>
+	if (!name.equals(userName)) {
+		if(dal.getFriendListForUser(userName).contains(name)) {%> 
+			<form name="removeFriend" action ="RemoveFriendServlet" method="post">
+				<input type="hidden" name="user2" value="<%=name%>">
+				<input type="submit" value="Remove friend">
+			</form>
+		<%} else {%>
+			<form name="addFriend" action ="AddFriendServlet" method="post">
+				<input type="hidden" name="user2" value="<%=name%>">
+				<input type="submit" value="Add friend!">
+			</form>
+		<%}
+	}
+	%>
 
 	<h2> Achievements: </h2>
 	<ul>
