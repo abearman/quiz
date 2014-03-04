@@ -26,9 +26,16 @@
 	String quizCreator = quiz.getCreatorName();
 	
 	double statistics[] = quiz.getStatisticsSummary();
-	double averageScore = statistics[0];
-	double medianScore = statistics[1];
-	double averageTime = statistics[2];
+	double averageScore, medianScore, averageTime;
+	if (Double.isNaN(statistics[0])){
+		averageScore = 0.0;
+		medianScore = 0.0;
+		averageTime = 0.0;
+	}else{
+		averageScore = statistics[0];
+		medianScore = statistics[1];
+		averageTime = statistics[2];
+	}
 	%>
 	
 	<h3><%= quizName %> by <%= quizCreator %></h3>
