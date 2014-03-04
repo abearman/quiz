@@ -112,6 +112,31 @@ public class DAL {
 		}
 		return 0;
 	}
+	
+	public int getNumberQuizzesTakenForUser(String userName) {
+		try {
+			String query = "SELECT * FROM histories WHERE loginName = \"" + userName + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.last();
+			return rs.getRow();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public boolean isHighestScorerForQuiz(String userName, String quizName) {
+		try {
+			String query = "SELECT * FROM histories WHERE quizName = \"" + quizName + "\" ORDER BY numQuestionsCorrect DESC;";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.first();
+			if (rs.getString("loginName").equals(userName)) return true;
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public ArrayList<HistoryObject> getHistoryListForUser(String userName) {
 		ArrayList<HistoryObject> historyList = new ArrayList<HistoryObject>();
