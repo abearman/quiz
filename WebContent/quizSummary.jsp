@@ -32,7 +32,7 @@
 	%>
 	
 	<h3><%= quizName %> by <%= quizCreator %></h3>
-	<h4><%= descriptionOfQuiz %></h4>
+	<h5><%= descriptionOfQuiz %></h5>
 	
 	<h4>Your Past Performance on <%= quizName %>:</h4>
 	<%
