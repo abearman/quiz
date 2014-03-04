@@ -10,6 +10,8 @@
 	<%
 		User user = (User)session.getAttribute("user");
 		String username = user.getLoginName();
+		DAL dal = (DAL)getServletContext().getAttribute("DAL");
+		ArrayList<Message> messages = dal.getMessagesForUser(username);
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>
@@ -23,6 +25,21 @@
 	} else {
 		%> Go back <a href="userHomepage.jsp">home</a><% 
 	}%>
+	
+	<%for (int i = 0; i < messages.size(); i++) {
+		FriendRequestMessage message = (FriendRequestMessage)messages.get(i);
+		String messageStr = message.getMessage();
+		String requestor = message.getFromUser();
+		String acceptor = message.getToUser(); %> 
+		<p><%=messageStr%></p>
+		<form name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
+			<input type="hidden" name="requestor" value="<%=requestor%>">
+			<input type="hidden" name="acceptor" value="<%=acceptor%>">
+			<input type="submit" value="Accept">
+		</form>
+	<%}%>
 
+
+	
 </body>
 </html>

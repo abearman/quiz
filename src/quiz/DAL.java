@@ -294,13 +294,35 @@ public class DAL {
 	}
 	
 	// Being used for testing
-	public void removeMessageForUser(String toUser) { //Do we need?
+	public void removeMessageForUser(String toUser) { 
 		try {
 			String update = "DELETE FROM messages WHERE toUser = \"" + toUser + "\";";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
 		}
+	}
+	
+	public ArrayList<Message> getMessagesForUser(String user) {
+		ArrayList<Message> messages = new ArrayList<Message>();
+		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String messageType = rs.getString("messageType");
+				if (messageType.equals(Message.FRIEND_REQUEST_MESSAGE)) {
+					FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, this);
+					messages.add(frm);
+				} else if (messageType.equals(Message.CHALLENGE_MESSAGE)) {
+					
+				} else if (messageType.equals(Message.NOTE_MESSAGE)) {
+					
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(); 
+		}
+		return messages;
 	}
 	
 	public void addTopScorer(TopScorer topScorer, String quizName) {
