@@ -188,6 +188,21 @@ public class DAL {
 		Quiz quiz = new Quiz(this, quizName);
 		return quiz;
 	}
+	
+	public ArrayList<Message> getFriendRequestMessages(String user) {
+		ArrayList<Message> messages = new ArrayList<Message>();
+		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, this);
+		 		messages.add(frm);
+			}
+		 } catch (SQLException e) {
+			 e.printStackTrace(); 
+		 }
+		 return messages;
+	}
 
 	public ArrayList<Message> getUserMessages(User user) {
 		ArrayList<Message> result = new ArrayList<Message>();
