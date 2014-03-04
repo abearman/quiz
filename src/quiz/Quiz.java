@@ -64,7 +64,8 @@ public class Quiz {
 		return usersAnswers;
 	}
 	
-	private void initializeArrayLists() {
+	//This needs to be public
+	public void initializeArrayLists() {
 		questions = new ArrayList<Question>();
 		topScorers = new ArrayList<TopScorer>();
 		allHistories = initializeAllHistories();
@@ -127,6 +128,23 @@ public class Quiz {
 		dal.insertQuiz(this);
 	}
 
+	//Used for building
+	public Quiz(DAL dal, String quizName, String descriptionOfQuiz,
+			boolean isRandom, boolean isMultiplePage,
+			boolean isImmediateCorrection, boolean canBeTakenInPracticeMode,
+			String creatorName, java.util.Date dateCreated, int numTimesTaken, boolean building) {
+		this.dal = dal;
+		this.quizName = quizName;
+		this.descriptionOfQuiz = descriptionOfQuiz;
+		this.isRandom = isRandom;
+		this.isMultiplePage = isMultiplePage;
+		this.isImmediateCorrection = isImmediateCorrection;
+		this.canBeTakenInPracticeMode = canBeTakenInPracticeMode;
+		this.creatorName = creatorName;
+		this.creationDate = dateCreated;
+		this.numTimesTaken = numTimesTaken;
+	}
+	
 	//constructor for taking a quiz, handles querying of database
 	public Quiz(DAL dal, String givenQuizName) {
 		this.dal = dal;

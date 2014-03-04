@@ -33,7 +33,6 @@ public class HistoryObject {
 		this.userName = userName;
 		this.quizName = quizName;
 		this.dal = dal;
-		dal.addToHistoryListForUser(userName, quizName, numQuestionsCorrect, timeElapsed, dateString, new Date());
 	}
 	
 	public String getDateString() {

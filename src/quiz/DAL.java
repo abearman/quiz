@@ -258,11 +258,11 @@ public class DAL {
 				if (messageType.equals(Message.CHALLENGE_MESSAGE)) {
 					quizName = rs.getString("quizName");
 					bestScore = rs.getDouble("bestScore");
-					result.add(new ChallengeMessage(getUser(fromUser), user, getQuiz(quizName) ,this));
+					result.add(new ChallengeMessage(fromUser, toUser, quizName, this, bestScore));
 				} else if (messageType.equals(Message.FRIEND_REQUEST_MESSAGE)) {
 					result.add(new FriendRequestMessage(fromUser, toUser, this));
 				} else {
-					result.add(new NoteMessage(fromUser, toUser, message, this));
+					result.add(new NoteMessage(fromUser, toUser, message, this, true));
 				}				
 			}
 
@@ -273,17 +273,47 @@ public class DAL {
 
 	}
 	
+//	public ArrayList<Quiz> getAllQuizzes() {
+//		ArrayList<Quiz> allQuizzes = new ArrayList<Quiz>();
+//		
+//		try {
+//			String query = "SELECT * FROM quizzes;";
+//			ResultSet rs = stmt.executeQuery(query);
+//			while (rs.next()) {
+//				Quiz q = new Quiz(this, rs.getString("quizName"));
+//				allQuizzes.add(q);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return allQuizzes;
+//	}
+	
 	public ArrayList<Quiz> getAllQuizzes() {
 		ArrayList<Quiz> allQuizzes = new ArrayList<Quiz>();
-		String query = "SELECT * FROM quizzes;";
+		
 		try {
+			String query = "SELECT * FROM quizzes;";
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				Quiz q = new Quiz(this, rs.getString("quizName"));
-				allQuizzes.add(q);
+				String quizName = rs.getString("quizName");
+				String description = rs.getString("description");
+				boolean isRandom = (Boolean) rs.getObject("isRandom");
+				boolean isMultiplePage = (Boolean) rs.getObject("isMultiplePage");
+				boolean isImmediateCorrection = (Boolean) rs.getObject("isImmediateCorrection");
+				boolean canBeTakenInPracticeMode = (Boolean) rs.getObject("canBeTakenInPracticeMode");
+				String creatorName = rs.getString("creatorName");
+				java.util.Date creationDate = rs.getDate("creationDate");
+				int numTimesTaken = rs.getInt("numTimesTaken");
+				
+				allQuizzes.add(new Quiz(this, quizName, description, isRandom, isMultiplePage, isImmediateCorrection, 
+						canBeTakenInPracticeMode, creatorName, creationDate, numTimesTaken, true));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		for (Quiz q : allQuizzes) {
+			q.initializeArrayLists();
 		}
 		return allQuizzes;
 	}

@@ -14,14 +14,12 @@ public class ChallengeMessage extends Message {
 		dal.addMessageForUser(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
 	}
 	
-	//Used for testing
-	//TODO delete this method
-	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DAL dal, double bestScore) {
-		super(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE,dal);
-		this.quizName = quiz.getQuizName();
+	//Used for building
+	public ChallengeMessage(String fromUserString, String toUserString, String quizName, DAL dal, double bestScore) {
+		super(toUserString, toUserString, Message.CHALLENGE_MESSAGE,dal);
+		this.quizName = quizName;
 		this.bestScore = bestScore;
-		message = fromUser.getLoginName() + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
-		dal.addMessageForUser(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quizName, this.bestScore);
+		message = fromUserString + "is challenging you to take the " + toUserString + "quiz!";
 	}
 	
 	public String getQuizName() {

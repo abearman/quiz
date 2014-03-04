@@ -164,7 +164,7 @@ public class QuizTest {
 			Quiz quiz = new Quiz(dal);
 			quiz.setQuizName("quiz" + i);
 			NoteMessage note = new NoteMessage(fromUser.getLoginName(), toUser.getLoginName(), "I love you", dal);
-			ChallengeMessage challenge = new ChallengeMessage(fromUser, toUser, quiz, dal, i);
+			ChallengeMessage challenge = new ChallengeMessage(fromUser.getLoginName(), toUser.getLoginName(), quiz.getQuizName(), dal, i);
 			FriendRequestMessage request = new FriendRequestMessage(fromUser.getLoginName(), toUser.getLoginName(), dal);
 		}
 
