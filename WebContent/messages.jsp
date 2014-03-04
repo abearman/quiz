@@ -49,8 +49,9 @@
 		<%} else if (message.getMessageType().equals(Message.CHALLENGE_MESSAGE)) {
 			ChallengeMessage challenge = (ChallengeMessage) message;
 			String fromUser = challenge.getFromUser();
-			String messageString = challenge.getMessage(); %>
-			<p> <%= fromUser %>: <%= messageString %> </p>
+			String messageString = challenge.getMessage(); 
+			String quizName = challenge.getQuizName(); %>
+			<p> <%= fromUser %>: <%= messageString %> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!</p>
 		<%}
 	}%>
 

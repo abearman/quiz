@@ -32,7 +32,7 @@
 		for (Quiz quiz : allQuizzes) {
 			String quizName = quiz.getQuizName();
 			String creator = quiz.getCreatorName();
-			%> <li> Quiz: <%=quizName%>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <%
+			%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <%
 		} 
 		%>
 	</ul>

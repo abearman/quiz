@@ -232,7 +232,7 @@ public class DAL {
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, this);
+				FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, this, true);
 		 		messages.add(frm);
 			}
 		 } catch (SQLException e) {
@@ -260,7 +260,7 @@ public class DAL {
 					bestScore = rs.getDouble("bestScore");
 					result.add(new ChallengeMessage(fromUser, toUser, quizName, this, bestScore));
 				} else if (messageType.equals(Message.FRIEND_REQUEST_MESSAGE)) {
-					result.add(new FriendRequestMessage(fromUser, toUser, this));
+					result.add(new FriendRequestMessage(fromUser, toUser, this, true));
 				} else {
 					result.add(new NoteMessage(fromUser, toUser, message, this, true));
 				}				
@@ -785,6 +785,15 @@ public class DAL {
 
 	public void clearAllHistoryForQuiz(String quizName) {
 		String update = "DELETE FROM histories WHERE quizName = \"" + quizName + "\";";
+		try {
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeUserHistory(String loginName) {
+		String update = "DELETE FROM histories WHERE loginName = \"" + loginName + "\";";
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {

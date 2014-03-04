@@ -10,8 +10,17 @@ public class ChallengeMessage extends Message {
 		super(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, dal);
 		this.quizName = quiz.getQuizName();
 		this.bestScore = challengingUserBestScore(fromUser);
-		message = fromUser.getLoginName() + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
+		message = fromUser.getLoginName() + " is challenging you to take the " + quiz.getQuizName() + " quiz!";
 		dal.addMessageForUser(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
+	}
+	
+	//Used for testing
+	public ChallengeMessage(String fromUserString, String toUserString, Quiz quiz, DAL dal, double bestScore) {
+		super(fromUserString, toUserString, Message.CHALLENGE_MESSAGE, dal);
+		this.quizName = quiz.getQuizName();
+		this.bestScore = bestScore;
+		message = fromUserString + " is challenging you to take the " + quiz.getQuizName() + " quiz!";
+		dal.addMessageForUser(fromUserString, toUserString, Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
 	}
 	
 	//Used for building
@@ -19,7 +28,7 @@ public class ChallengeMessage extends Message {
 		super(toUserString, toUserString, Message.CHALLENGE_MESSAGE,dal);
 		this.quizName = quizName;
 		this.bestScore = bestScore;
-		message = fromUserString + "is challenging you to take the " + toUserString + "quiz!";
+		message = fromUserString + " is challenging you to take the " + quizName + " quiz!";
 	}
 	
 	public String getQuizName() {

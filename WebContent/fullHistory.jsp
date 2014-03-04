@@ -32,8 +32,9 @@
 	<ul>
 		<% 
 		for (HistoryObject hist : allHistories) {
+			String quizName = hist.getQuizName();
 			%> <li> 
-					<p>Quiz Name: <%= hist.getQuizName() %></p>
+					<p>Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a></p>
 					<p>Score: <%= hist.getNumQuestionsCorrect() %></p> 
 					<p>Time Elapsed: <%= hist.getElapsedTime() %></p>
 					<p>Date: <%= hist.getDate() %></p>
