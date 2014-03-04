@@ -341,6 +341,15 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
+	
+	public void removeFriendRequestMessage(String toUser, String fromUser) {
+		try {
+			String update = "DELETE FROM messages WHERE toUser = \"" + toUser + "\" AND fromUser = \"" + fromUser + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	
 	public ArrayList<Message> getMessagesForUser(String user) {
