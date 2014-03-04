@@ -424,7 +424,15 @@ public class DAL {
 
 	public void removeQuiz(String quizName) {
 		try {
-			String update = "DELETE FROM quizzes WHERE quizName = \"" + quizName + "\"";
+			String update = "DELETE FROM quizzes WHERE quizName = \"" + quizName + "\";";
+			stmt.executeUpdate(update);
+			update = "DELETE FROM questionResponse WHERE quizName = \"" + quizName + "\";";
+			stmt.executeUpdate(update);
+			update = "DELETE FROM fillInTheBlank WHERE quizName = \"" + quizName + "\";";
+			stmt.executeUpdate(update);
+			update = "DELETE FROM multipleChoice WHERE quizName = \"" + quizName + "\";";
+			stmt.executeUpdate(update);
+			update = "DELETE FROM pictureResponse WHERE quizName = \"" + quizName + "\";";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
