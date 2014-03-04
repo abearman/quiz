@@ -38,6 +38,8 @@
 		<input type="submit" value="Log Out"> 
 	</form>
 	
+	<a href="createQuizPage.jsp"><button> Create quiz </button></a> 
+	
 	<h2> Announcements: </h2>
 	<ul> 
 		<% 
