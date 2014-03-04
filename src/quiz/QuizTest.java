@@ -18,7 +18,7 @@ public class QuizTest {
 	private TopScorer topScorer1, topScorer2, topScorer3, topScorer4;
 	private DAL dal;
 
-	
+
 	@Before
 	public void setUp() throws Exception {
 
@@ -37,12 +37,12 @@ public class QuizTest {
 		testQuiz10 = new Quiz(dal, "quiz10","another quiz",true,true,true,true,"Pavitra",new Date(),5);
 		testQuiz11 = new Quiz(dal, "quiz11","another quiz",true,true,true,true,"Pavitra",new Date(),5);
 	}
-	
+
 	@Test
 	public void testRemoveQuiz() {
 		dal.removeQuiz("quiz10");
 	}
-	
+
 	@Test
 	public void testGettingQuiz() {
 		Quiz getTestQuiz11 = new Quiz(dal, "quiz11");
@@ -55,14 +55,14 @@ public class QuizTest {
 		getTestQuiz11.incrementNumTimesTaken();
 		assertEquals(getTestQuiz11.getNumTimesTaken(),6);
 	}
-	
+
 	@Test
 	public void testAddTopScorer(){
 		Quiz testQuiz12 = new Quiz(dal, "quiz12","another quiz",true,true,true,true,"Pavitra",new Date(),5);
 		testQuiz12.addTopScorer(topScorer1);
 	}
-	
-	
+
+
 	//order should be 1, 2, 3, 4
 	/*
 	@Test
@@ -76,8 +76,8 @@ public class QuizTest {
 			System.out.println("topScorer is " + testQuiz1.getTopScorers().get(i).getLoginName());
 		}
 	}*/
-	
-	
+
+
 	@Test 
 	//Test database queries
 	public void testQueries() {
@@ -122,50 +122,78 @@ public class QuizTest {
 		System.out.println("INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + sqlDate + "," + numTimesTaken + ");");
 		System.out.println("DELETE FROM quizzes WHERE quizName = \"" + quizName + "\"");
 	}
-	
-	
+
+
 	@Test
 	public void testFriendsTable() throws SQLException {
 		DAL dal = new DAL();
 		Statement stmt = dal.getStatement();
-		String toUser = "Bruno";
+		String toUserName = "Bruno";
 		for (int i = 1; i <= 10; i++) {
-			String fromUser = "user" + i;
-			FriendRequestMessage request = new FriendRequestMessage(fromUser, toUser, dal);
-			NoteMessage nm = new NoteMessage(fromUser, "amy", "hello!", dal);
+			String fromUserName = "user" + i;
+
+			FriendRequestMessage request = new FriendRequestMessage(fromUserName, toUserName, dal);
 			request.acceptRequest(true);
-			
-			ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");
-			rs.last();
-			assertEquals(i, rs.getRow());
-			
-			rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + fromUser + "\";");
-			rs.last();
-			assertEquals(1, rs.getRow());
+
+			// check if toUser has i friends so far
+			ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUserName + "\";");
+			while (rs.next()) {
+				assertEquals(fromUserName, rs.getString(2));
+			}
+
+			//check if fromUser only has one friend toUser
+			rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + fromUserName + "\";");
+			while (rs.next()) {
+				assertEquals(toUserName, rs.getString(2));
+			}
+
+			//Remove what was added to the database
+			dal.removeFriendPair(toUserName, fromUserName);
+			dal.removeMessageForUser(toUserName);
+
 		}
 	}
-	
+
 	@Test
 	public void testMessages() throws SQLException {
 		DAL dal = new DAL();
 		Statement stmt = dal.getStatement();
-		String toUser = "Bruno";
+		User toUser = new User("Bruno");
 		for (int i = 1; i <= 10; i++) {
-			String fromUser = "user" + i;
-			NoteMessage request = new NoteMessage(fromUser, toUser, "I love you", dal);
-			//request.acceptRequest(true);
-			
-			/*ResultSet rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + toUser + "\";");
-			rs.last();
-			assertEquals(i, rs.getRow());
-			
-			rs = stmt.executeQuery("SELECT * FROM friends WHERE user1 = \"" + fromUser + "\";");
-			rs.last();
-			assertEquals(1, rs.getRow());*/
+			User fromUser = new User ("user" + i);
+			Quiz quiz = new Quiz(dal);
+			quiz.setQuizName("quiz" + i);
+			NoteMessage note = new NoteMessage(fromUser.getLoginName(), toUser.getLoginName(), "I love you", dal);
+			ChallengeMessage challenge = new ChallengeMessage(fromUser, toUser, quiz, dal, i);
+			FriendRequestMessage request = new FriendRequestMessage(fromUser.getLoginName(), toUser.getLoginName(), dal);
 		}
+
+		ResultSet rs = stmt.executeQuery("SELECT * FROM messages WHERE toUser = \"" + toUser.getLoginName() + "\" ORDER BY messageType;");
+		rs.last();
+		//check that all 30 messages where added
+		assertEquals(3*10, rs.getRow());
+		
+		//check if we have 10 of each type
+		rs.beforeFirst();
+		for (int i = 1; i <= 10; i++) {
+			rs.next();
+			assertEquals(Message.CHALLENGE_MESSAGE, rs.getString("messageType"));
+		}
+		for (int i = 1; i <= 10; i++) {
+			rs.next();
+			assertEquals(Message.FRIEND_REQUEST_MESSAGE, rs.getString("messageType"));
+		}
+		for (int i = 1; i <= 10; i++) {
+			rs.next();
+			assertEquals(Message.NOTE_MESSAGE, rs.getString("messageType"));
+		}
+
+		//Remove what we added to the database
+		dal.removeMessageForUser(toUser.getLoginName());
+
 	}
+
 	
-	/*
 	@Test
 	public void testHistoriesTable() throws SQLException {
 		DAL dal = new DAL();
@@ -173,19 +201,25 @@ public class QuizTest {
 		Statement stmt = dal.getStatement();
 		for (int i = 1; i <= 10; i++) {
 			Quiz quiz = new Quiz(dal);
+			quiz.setQuizName("quiz" + i);
 			quiz.setLengthOfCompletion(i);
 			quiz.setNumQuestionsCorrect(i);
-			quiz.setQuizName("quiz" + i);
 			new HistoryObject(loginName, quiz, dal);
 		}
+		
+		//See if we have the correct number of histories
+		ResultSet rs = stmt.executeQuery("SELECT * FROM histories WHERE loginName = \"" + loginName + "\";");
+		rs.last();
+		assertEquals(10, rs.getRow());
+		rs.beforeFirst();
+		
+		//See if the name is correct;
 		for (int i = 1; i <=10; i++) {
-			ResultSet rs = stmt.executeQuery("SELECT * FROM histories WHERE loginName = \"" + loginName + "\";");
 			rs.next();
 			assertEquals(i, rs.getRow());
-			assertEquals("quiz" + i, rs.getString(2));
-			System.out.println(i);
+			assertEquals("quiz" + i, rs.getString("quizName"));
 		}
-	}*/
-	
+	}
+
 }
 

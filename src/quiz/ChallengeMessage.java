@@ -10,8 +10,18 @@ public class ChallengeMessage extends Message {
 		super(fromUser.getLoginName(), toUser.getLoginName(), dal);
 		this.quizName = quiz.getQuizName();
 		this.bestScore = challengingUserBestScore(fromUser);
-		message = fromUser + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
+		message = fromUser.getLoginName() + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
 		dal.addMessageForUser(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
+	}
+	
+	//Used for testing
+	//TODO delete this method
+	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DAL dal, double bestScore) {
+		super(fromUser.getLoginName(), toUser.getLoginName(), dal);
+		this.quizName = quiz.getQuizName();
+		this.bestScore = bestScore;
+		message = fromUser.getLoginName() + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
+		dal.addMessageForUser(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quizName, this.bestScore);
 	}
 	
 	public String getQuizName() {
@@ -21,19 +31,6 @@ public class ChallengeMessage extends Message {
 	public String getMessage() {
 		return message;
 	}
-	
-//	public double challengingUserBestScore(ArrayList<HistoryObject> allHistories) {
-//		//is this worth it? Seems too costly.
-//		double bestScore = 0;
-//		for (HistoryObject hist : allHistories) {
-//			if (hist.getUserName().equals(getFromUser())) {
-//				double score = hist.getScore();
-//				if (score > bestScore)
-//					bestScore = score;
-//			}
-//		}
-//		return bestScore;
-//	}
 	
 	public double challengingUserBestScore(User user) {
 		//Alternative looping through user's histories

@@ -6,12 +6,12 @@ public class NoteMessage extends Message {
 
 	public NoteMessage(String fromUser, String toUser, String message, DAL dal) {
 		super(fromUser, toUser, dal);
-		dal.addMessageForUser(fromUser, toUser, Message.NOTE_MESSAGE, message, null, -1);
 		this.message = message;
+		dal.addMessageForUser(fromUser, toUser, Message.NOTE_MESSAGE, message, null, -1);
 	}
-	
+
 	public String getMessage() {
 		return message;
 	}
-	
+
 }

@@ -139,8 +139,8 @@ public class Quiz {
 	//simple constructor only for unit testing
 	//TODO take this out eventually
 	public Quiz(DAL dal){
-		initializeArrayLists();
 		this.dal = dal;
+		initializeArrayLists();
 	}
 
 	public double[] getStatisticsSummary() {

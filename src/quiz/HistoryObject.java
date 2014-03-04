@@ -8,7 +8,6 @@ public class HistoryObject {
 	
 	private String dateString;
 	private long timeElapsed;
-	//private double score;
 	private int numQuestionsCorrect;
 	private String userName;
 	private String quizName;
@@ -16,12 +15,11 @@ public class HistoryObject {
 	private DAL dal;
 
 	public HistoryObject(String userName, Quiz quiz, DAL dal) {
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd HH:mm:ss");
 		date = new Date();
 		dateString = dateFormat.format(date);
 		this.timeElapsed = quiz.getLengthOfCompletion();
 		this.numQuestionsCorrect = quiz.getNumQuestionsCorrect();
-		//this.score = quiz.getUsersScore();
 		this.userName = userName;
 		this.quizName = quiz.getQuizName();
 		this.dal = dal;
@@ -32,7 +30,6 @@ public class HistoryObject {
 		this.dateString = dateString;
 		this.timeElapsed = timeElapsed;
 		this.numQuestionsCorrect = numQuestionsCorrect;
-		//this.score = score;
 		this.userName = userName;
 		this.quizName = quizName;
 		this.dal = dal;

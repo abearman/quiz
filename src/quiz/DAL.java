@@ -214,7 +214,7 @@ public class DAL {
 	}
 	
 	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
-		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // I think this is wrong
 		try {
 			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\",'" + sqlDate + "');";
 			stmt.executeUpdate(update);
@@ -233,7 +233,16 @@ public class DAL {
 		}
 	}
 	
+	//Used for testing, might be useful later!
 	public void removeFriendPair(String user1, String user2) { //Do we need?
+		try {
+			String update = "DELETE FROM friends WHERE user1 = \"" + user1 + "\";";
+			stmt.executeUpdate(update);
+			update = "DELETE FROM friends WHERE user1 = \"" + user2 + "\";";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); 
+		}
 		
 	}
 	
@@ -249,7 +258,7 @@ public class DAL {
 		} else {
 			update = ""; //Execution should never get here; just for initialization purposes
 		}
-		
+				
 		try {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
@@ -257,8 +266,14 @@ public class DAL {
 		}
 	}
 	
-	public void removeMessageForUser(String loginName) { //Do we need?
-		
+	// Being used for testing
+	public void removeMessageForUser(String toUser) { //Do we need?
+		try {
+			String update = "DELETE FROM messages WHERE toUser = \"" + toUser + "\";";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace(); 
+		}
 	}
 	
 	public void addTopScorer(TopScorer topScorer, String quizName) {
