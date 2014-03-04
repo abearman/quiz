@@ -11,7 +11,7 @@
 		User user = (User)session.getAttribute("user");
 		String username = user.getLoginName();
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
-		ArrayList<Message> messages = dal.getUserMessages(user);
+		ArrayList<Message> messages = dal.getFriendRequestMessages(username);
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>
