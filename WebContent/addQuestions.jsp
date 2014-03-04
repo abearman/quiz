@@ -8,8 +8,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Add Questions for 
-		<% Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
-			out.print(quizCreated.getQuizName());
+		<% /*Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
+			out.print(quizCreated.getQuizName());*/
 		%>
 	</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -17,9 +17,11 @@
 
 <body>
 	<h5><i>Choose a question type from the drop down menu and fill out the necessary fields. Press "Add Question" to add another
-question or press "Done" if you are complete.</i></h5>
+question or press "Done" if you are complete. Press "Add Answers" to add another possible answer to the question.</i></h5>
 
 <script type="text/javascript">
+
+//displays the corresponding question type and its fields.
 function displayQuestion()
 {
 	var selected = document.getElementById("optionsBox").selectedIndex;
@@ -27,8 +29,10 @@ function displayQuestion()
 	if (options[selected].value == "QuestionResponse")
 	{
 		var display = "<h3>Question Response</h3> ";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =1/>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =1></p>";
+		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var instructions = "<b>An example of a Question Response question is \"Who was the first president of the United States?\"</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
@@ -36,8 +40,10 @@ function displayQuestion()
 	if (options[selected].value == "FillInTheBlank")
 	{
 		var display = "<h3>Fill in the Blank</h3> ";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =2/>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =2></p>";
+		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var instructions = "<b>An example of a Fill in the Blank question is \"______ was the first president of the United States.\"</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
@@ -45,8 +51,10 @@ function displayQuestion()
 	if (options[selected].value == "MultipleChoice")
 	{
 		var display = "<h3>Multiple Choice</h3> ";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =3/>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =3></p>";
+		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		display+= "<p>Choices:<input type = \"text\" name=\"choices\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var instructions = "<b>An example of a Multiple Choice question is \"Who was the first president of the United States?\"<br>";
@@ -56,8 +64,10 @@ function displayQuestion()
 	if (options[selected].value == "PictureResponse")
 	{
 		var display = "<h3>Picture Response</h3> ";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =4/>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
-		display+= "<p>Answers:<input type = \"text\" name=\"answers\"><input type=\"hidden\" name=\"questionType\" value =4></p>";
+		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		display+= "<p>Image URL:<input type = \"text\" name=\"imageURL\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var instructions = "<b>An example of a Picture Response question is a picture of George Washinton with the accompanying question \"Who is this President of the United States?\"<br>";
@@ -65,7 +75,18 @@ function displayQuestion()
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
 }
+
+
+function addAnswerBox()
+{
+	document.frm.numAnswers.value = parseInt(document.frm.numAnswers.value)+1;
+	var answers = document.getElementById("answers");
+	answers.appendChild(document.createElement('div')).innerHTML = "<input type =\"text\" name =\"answer"+document.frm.numAnswers.value+ "\"/>";
+}
+
 </script>
+
+
 
 <div>
 	<select id = "optionsBox" onchange="displayQuestion()">
@@ -77,19 +98,23 @@ function displayQuestion()
 </div>
 
 <div>
-	<form action ="AddQuestionsServlet" method = "post">
+	<form name ="frm" action ="AddQuestionsServlet" method = "post">
 		<div id ="displayArea">
 			<h3>Question Response</h3>
+			<input type="hidden" name="questionType" value =1>
+			<input type="hidden" name="numAnswers" value= 1/>
 			<p>Question:<input type = "text" name="question"></p>
-			<p>Answers:<input type = "text" name="answers"><input type="hidden" name="questionType" value =1></p>
+			<p id="answers">Answers:<input type = "text" name="answer1" ></p>
 		</div>
 		
+		<input type ="button" value = "Add Answer" onclick ="addAnswerBox()"/>
 		<input type = "submit" value = "Add Question"/> 
 	</form>
 	
 	<form action="QuizCreationCompletedServlet" method = "post">
 		<input type = "submit" value = "Done"/>
 	</form>
+	
 </div>
 
 <hr noshade size=4>
