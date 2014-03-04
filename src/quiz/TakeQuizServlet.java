@@ -63,14 +63,8 @@ public class TakeQuizServlet extends HttpServlet {
 			}
 			
 		}else{
-			
-			
-			
-			//TODO display single page jsp
-			
-			
-			
-			
+			RequestDispatcher dispatch = request.getRequestDispatcher("singlePageQuiz.jsp");
+			dispatch.forward(request,response);
 		}
 	}
 

@@ -56,11 +56,6 @@ public class HistoryObject {
 		return numQuestionsCorrect;
 	}
 	
-	/*
-	public double getScore() {
-		return score;
-	}*/
-	
 	public String getQuizName() {
 		return quizName;
 	}
