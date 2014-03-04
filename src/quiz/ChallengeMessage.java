@@ -7,7 +7,7 @@ public class ChallengeMessage extends Message {
 	private double bestScore;
 	
 	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DAL dal) {
-		super(fromUser.getLoginName(), toUser.getLoginName(), dal);
+		super(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, dal);
 		this.quizName = quiz.getQuizName();
 		this.bestScore = challengingUserBestScore(fromUser);
 		message = fromUser.getLoginName() + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
@@ -17,7 +17,7 @@ public class ChallengeMessage extends Message {
 	//Used for testing
 	//TODO delete this method
 	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DAL dal, double bestScore) {
-		super(fromUser.getLoginName(), toUser.getLoginName(), dal);
+		super(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE,dal);
 		this.quizName = quiz.getQuizName();
 		this.bestScore = bestScore;
 		message = fromUser.getLoginName() + "is challenging you to take the " + quiz.getQuizName() + "quiz!";
