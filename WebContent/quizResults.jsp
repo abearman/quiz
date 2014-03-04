@@ -18,6 +18,7 @@ Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 ArrayList<Question> questions = quiz.getQuestions();
 ArrayList<String> usersAnswers = quiz.getAnswers();
 long elapsedTime = (Long)request.getSession().getAttribute("elapsedTime");
+double elapsedTimeInSeconds = ((Long)elapsedTime).doubleValue()/1000;
 int numQuestionsCorrect = (Integer)request.getSession().getAttribute("numQuestionsCorrect");
 int totalNumQuestions = questions.size();
 
@@ -26,18 +27,20 @@ int totalNumQuestions = questions.size();
 <h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
 
 <h4>Score: <%= numQuestionsCorrect %>/<%= totalNumQuestions %></h4>
-<h4>Time Taken: <%= elapsedTime %></h4>
+<h4>Time Taken: <%= elapsedTimeInSeconds %> seconds</h4>
 
 <h4>Details:</h4>
 <ul>
 <%
 for (int i = 0; i < questions.size(); i++){
-	String correctAnswer = questions.get(i).getAnswer().get(i);
+	String correctAnswer = questions.get(i).getAnswer().get(0);
 	String usersAnswer = usersAnswers.get(i);
-	out.println("<li>Your Answer: " + usersAnswer + " Correct Answer: " + correctAnswer + " </li>");
+	out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
 }
 %>
 </ul>
+
+Go back to your <a href="userHomepage.jsp">homepage</a>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

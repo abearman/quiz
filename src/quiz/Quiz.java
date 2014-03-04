@@ -34,7 +34,6 @@ public class Quiz {
 	private int numQuestionsCorrect;
 	private ArrayList<String> usersAnswers;
 	private int currentQuestionNumIndex = 0;
-	//private double usersScore;
 
 	//updated across different sessions, stored in database
 	private ArrayList<TopScorer> topScorers;
@@ -222,11 +221,6 @@ public class Quiz {
 		return numQuestionsCorrect;
 	}
 
-	/*
-	public double getUsersScore(){
-		return usersScore;
-	}*/
-
 	public int getNumTimesTaken(){
 		return numTimesTaken;
 	}
@@ -261,12 +255,6 @@ public class Quiz {
 	public void setNumQuestionsCorrect(int numQuestionsCorrect){
 		this.numQuestionsCorrect = numQuestionsCorrect;
 	}
-
-	/*
-	public void setUsersScore(double usersScore) { //TODO: Update database?
-		this.usersScore = usersScore;
-	}*/
-
 
 	public void addQuestion(Question question){
 		questions.add(question);
