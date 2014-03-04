@@ -73,7 +73,7 @@ function displayQuestion()
 </div>
 
 <div>
-	<form action ="AddQuestionsServlet" method = post>
+	<form action ="AddQuestionsServlet" method = "post">
 		<div id ="displayArea">
 			<h3>Question Response</h3>
 			<p>Question:<input type = "text" name="question"></p>
