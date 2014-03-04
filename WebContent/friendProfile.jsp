@@ -28,8 +28,11 @@
 	<h2><%= name %>'s Profile</h2>
 	
 	<%
-	if(dal.getFriendListForUser(userName).contains(name)) {
-		%> <button> Friends </button>
+	if(dal.getFriendListForUser(userName).contains(name)) {%> 
+		<form name="removeFriend" action ="RemoveFriendServlet" method="post">
+			<input type="hidden" name="user2" value="<%=name%>">
+			<input type="submit" value="Remove friend">
+		</form>
 	<%} else {%>
 		<form name="addFriend" action ="AddFriendServlet" method="post">
 			<input type="hidden" name="user2" value="<%=name%>">
