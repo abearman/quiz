@@ -64,11 +64,15 @@ public class DoneWithQuizServlet extends HttpServlet {
 		quiz.setNumQuestionsCorrect(numQuestionsCorrect);
 		request.getSession().setAttribute("numQuestionsCorrect", numQuestionsCorrect);
 		
-		//add this to the history and to the top scorers
+		//update database
+		//add this to the history
+		//add to top scorers
+		//increment number of times taken on this quiz
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		java.util.Date now = new java.util.Date();
 		dal.addToHistoryListForUser(user.getLoginName(), quiz.getQuizName(), numQuestionsCorrect, elapsedTime, df.format(now), now);
 		quiz.addTopScorer(new TopScorer(user.getLoginName(), numQuestionsCorrect, elapsedTime, dal));
+		quiz.incrementNumTimesTaken();
 		
 		String quizName = quiz.getQuizName();
 		if (dal.isHighestScorerForQuiz(loginName, quiz.getQuizName())) {
