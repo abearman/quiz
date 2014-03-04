@@ -40,6 +40,11 @@
 	
 	<a href="createQuizPage.jsp"><button> Create quiz </button></a> 
 	
+	<form name="searchForUser" action="SearchForUserServlet" method="post">
+		<input type="text" name="usernameToSearch">
+		<input type="submit" value="Search">
+	</form>
+	
 	<h2> Announcements: </h2>
 	<ul> 
 		<% 
