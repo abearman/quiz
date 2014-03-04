@@ -93,7 +93,7 @@ public class User {
 		
 		friends = new ArrayList<String>();
 		friends = initializeFriends();
-		friendsRecentActivity = initializeFriendsRecentActivity(friends);
+		//friendsRecentActivity = initializeFriendsRecentActivity(friends);
 		
 		historyList = initializeHistoryList();
 		messages = new ArrayList<Message>();
