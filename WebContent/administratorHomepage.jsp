@@ -76,7 +76,7 @@
 			for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
 				String quizName = recentlyCreatedQuizzes.get(i);
 				String creator = dal.getCreatorName(quizName);
-				%> <li> Quiz: <%=quizName%>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <% 
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <% 
 			}
 		%>
 	</ul>
@@ -85,7 +85,8 @@
 	<ul>
 		<%
 			for (int i = 0; i < popularQuizzes.size(); i++) {
-				%> <li> Quiz: <%= popularQuizzes.get(i) %></li> <% 
+				String quizName = popularQuizzes.get(i);
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </li> <% 
 			}
 		%>
 	</ul>
@@ -94,7 +95,8 @@
 	<ul>
 		<%
 			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
-				%> <li> Quiz: <%= userRecentlyCreatedQuizzes.get(i) %></li> <% 
+				String quizName = userRecentlyCreatedQuizzes.get(i);
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
 			}
 		%>
 	</ul>
@@ -103,7 +105,8 @@
 	<ul>
 		<%
 			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
-				%> <li> Quiz: <%= userRecentlyTakenQuizzes.get(i) %></li> <% 
+				String quizName = userRecentlyTakenQuizzes.get(i);
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
 			}
 		%>
 	</ul>
