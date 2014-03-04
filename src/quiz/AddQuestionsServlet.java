@@ -36,7 +36,7 @@ public class AddQuestionsServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO request should have the quiz stored some how
+		Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
 		int questionType = Integer.parseInt(request.getParameter("questionType"));
 		if(questionType == Question.QUESTION_RESPONSE)
 		{
@@ -45,7 +45,7 @@ public class AddQuestionsServlet extends HttpServlet {
 			ArrayList<String> answersList = Question.createArray(answers);
 			System.out.println("Question: "+question);
 			System.out.println("Answers: "+answers);
-			//TODO add question to quiz
+			quizCreated.addQuestion(new QuestionResponse(question, answersList, quizCreated.getNextQuestionNum()));
 		}
 		if(questionType == Question.FILL_IN_THE_BLANK)
 		{
@@ -54,7 +54,7 @@ public class AddQuestionsServlet extends HttpServlet {
 			ArrayList<String> answersList = Question.createArray(answers);
 			System.out.println("Question: "+question);
 			System.out.println("Answers: "+answers);
-			//TODO add question to quiz
+			quizCreated.addQuestion(new FillInTheBlank(question, answersList, quizCreated.getNextQuestionNum()));
 		}
 		if(questionType == Question.MULTIPLE_CHOICE)
 		{
@@ -66,17 +66,18 @@ public class AddQuestionsServlet extends HttpServlet {
 			System.out.println("Question: "+question);
 			System.out.println("Answers: "+answers);
 			System.out.println("Choices: " + choices);
-			//TODO add question to quiz
+			quizCreated.addQuestion(new MultipleChoice(question, answersList, quizCreated.getNextQuestionNum(), choicesList));
 		}
 		if(questionType == Question.PICTURE_RESPONSE)
 		{
 			String question = request.getParameter("question");
 			String answers = request.getParameter("answers");
+			ArrayList<String> answersList = Question.createArray(answers);
 			String imageURL = request.getParameter("imageURL");
 			System.out.println("Question: "+question);
 			System.out.println("Answers: "+answers);
 			System.out.println("imageURL: " + imageURL);
-			//TODO add question to quiz
+			quizCreated.addQuestion(new PictureResponse(question, answersList, quizCreated.getNextQuestionNum(),imageURL));
 		}
 		RequestDispatcher dispatch = request.getRequestDispatcher("addQuestions.jsp");
 		dispatch.forward(request,response);
