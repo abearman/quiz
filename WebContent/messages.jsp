@@ -11,7 +11,7 @@
 		User user = (User)session.getAttribute("user");
 		String username = user.getLoginName();
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
-		ArrayList<Message> messages = dal.getUserMessages(user);
+		ArrayList<Message> messages = dal.getFriendRequestMessages(username);
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>
@@ -26,18 +26,33 @@
 		%> Go back <a href="userHomepage.jsp">home</a><% 
 	}%>
 	
-	<%for (int i = 0; i < messages.size(); i++) {
-		FriendRequestMessage message = (FriendRequestMessage)messages.get(i);
-		String messageStr = message.getMessage();
-		String requestor = message.getFromUser();
-		String acceptor = message.getToUser(); %> 
+	<%for (Message message : messages) {
+		if (message.getMessageType().equals(Message.FRIEND_REQUEST_MESSAGE)) {
+		FriendRequestMessage friendRequest = (FriendRequestMessage) message;
+		String messageStr = friendRequest.getMessage();
+		String requestor = friendRequest.getFromUser();
+		String acceptor = friendRequest.getToUser(); %> 
 		<p><%=messageStr%></p>
 		<form name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
 			<input type="hidden" name="requestor" value="<%=requestor%>">
 			<input type="hidden" name="acceptor" value="<%=acceptor%>">
 			<input type="submit" value="Accept">
 		</form>
-	<%}%>
+	<%}}%>
+	
+	<%for (Message message : messages) {
+		if (message.getMessageType().equals(Message.NOTE_MESSAGE)) {
+			NoteMessage note = (NoteMessage)message;
+			String fromUser = note.getFromUser();
+			String messageString = note.getMessage(); %>
+			<p> <%= fromUser %>: <%= messageString %> </p>
+		<%} else if (message.getMessageType().equals(Message.CHALLENGE_MESSAGE)) {
+			ChallengeMessage challenge = (ChallengeMessage) message;
+			String fromUser = challenge.getFromUser();
+			String messageString = challenge.getMessage(); %>
+			<p> <%= fromUser %>: <%= messageString %> </p>
+		<%}
+	}%>
 
 
 	
