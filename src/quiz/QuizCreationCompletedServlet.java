@@ -32,10 +32,8 @@ public class QuizCreationCompletedServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//forwards to the quizSummary page
-		//TODO are there any field that need to be set so quizSummary will work?
-
-		RequestDispatcher dispatch = request.getRequestDispatcher("quizSummary.jsp");
+		//forwards to the quizCreationSuccessful page
+		RequestDispatcher dispatch = request.getRequestDispatcher("quizCreationSuccessful.jsp");
 		dispatch.forward(request, response);
 	}
 
