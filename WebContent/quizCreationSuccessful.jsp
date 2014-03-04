@@ -19,8 +19,8 @@
 	String quizSummaryURL = "quizSummary.jsp?quizName=" + quizCreated.getQuizName();
 	%>
 	
-	Check out your quiz:<a href="<%= quizSummaryURL %>"></a>
-	Go back to your homepage:<a href="userHomepage.jsp"></a>
+	Check out your <a href="<%= quizSummaryURL %>">quiz:</a><br>
+	Go back to your <a href="userHomepage.jsp">homepage:</a>
 	
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
