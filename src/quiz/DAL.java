@@ -262,6 +262,17 @@ public class DAL {
 		
 	}
 	
+	public boolean userHasNewMessages(String username) {
+		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	//VALUES and not "values"; messages, not users; need number of arguments in insert to be equivalent with number of clumns
 	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {		
 		String update;
@@ -744,27 +755,29 @@ public class DAL {
 		}
 	}
 	//retrieves all of the user's friends' most recent activity
-	public ArrayList<FriendRecentActivity> getFriendsRecentActivity(ArrayList<String> friends)
-	{
-			ArrayList<FriendRecentActivity> fra = new ArrayList<FriendRecentActivity>();
-			for(String f : friends)
-			{
-				String query = "SELECT * FROM users WHERE loginName = \""+f+"\";";
-				try {
-					ResultSet rs = stmt.executeQuery(query);
-					rs.first();
-					StringTokenizer st = new StringTokenizer(rs.getString(5), "\n");
-					FriendRecentActivity act = new FriendRecentActivity(f);
-					act.setRecentAchievement(Integer.getInteger(st.nextToken()));
-					act.setRecentlyTakenQuiz(st.nextToken());
-					act.setRecentlyCreatedQuiz(st.nextToken());
-					fra.add(act);
-					
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+	public ArrayList<FriendRecentActivity> getFriendsRecentActivity(ArrayList<String> friends) {
+		ArrayList<FriendRecentActivity> fra = new ArrayList<FriendRecentActivity>();
+		for(String f : friends) {
+			String query = "SELECT * FROM users WHERE loginName = \"" + f + "\";";
+			try {
+				ResultSet rs = stmt.executeQuery(query);
+				rs.first();
+				
+				String activity = rs.getString("recentActivity");
+				System.out.println(activity);
+				
+				StringTokenizer st = new StringTokenizer(rs.getString("recentActivity"), "\n");
+				FriendRecentActivity act = new FriendRecentActivity(f);
+				act.setRecentAchievement(Integer.getInteger(st.nextToken()));
+				act.setRecentlyTakenQuiz(st.nextToken());
+				act.setRecentlyCreatedQuiz(st.nextToken());
+				fra.add(act);
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			return fra;
+		}
+		return fra;
 	}
 	
 	//check if a quiz exists in the database
