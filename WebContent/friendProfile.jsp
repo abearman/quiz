@@ -54,20 +54,22 @@
 			%> 
 	</ul>
 	
-	<h2> <%=name%>'s Recently Created Quizzes: </h2>
+	<h2> My Recently Created Quizzes: </h2> 
 	<ul>
 		<%
 			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
-				%> <li> Quiz: <%= userRecentlyCreatedQuizzes.get(i) %></li> <% 
+				String quizName = userRecentlyCreatedQuizzes.get(i);
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
 			}
 		%>
 	</ul>
 	
-	<h2> <%=name%>'s Recently Taken Quizzes: </h2>
+	<h2> My Recently Taken Quizzes: </h2>
 	<ul>
 		<%
 			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
-				%> <li> Quiz: <%= userRecentlyTakenQuizzes.get(i) %></li> <% 
+				String quizName = userRecentlyTakenQuizzes.get(i);
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
 			}
 		%>
 	</ul>
