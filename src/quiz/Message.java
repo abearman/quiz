@@ -9,12 +9,14 @@ public class Message {
 	
 	private String fromUser;
 	private String toUser;
+	private String messageType;
 	private DAL dal;
 	
-	public Message(String fromUser, String toUser, DAL dal) {
+	public Message(String fromUser, String toUser, String messageType, DAL dal) {
 		this.fromUser = fromUser;
 		this.toUser = toUser;
 		this.dal = dal;
+		this.messageType = messageType;
 	}
 	
 	public String getFromUser() {
@@ -27,6 +29,10 @@ public class Message {
 	
 	public DAL getDAL() {
 		return dal;
+	}
+	
+	public String getMessageType() {
+		return messageType;
 	}
 	
 	

@@ -75,6 +75,10 @@ public class User {
 		return dal.getFriendsRecentActivity(friends);
 	}
 	
+	private ArrayList<Message> initializeMessages() {
+		return dal.getUserMessages(this);
+	}
+	
 	
 	/* Constructor */
 	public User(String loginName, String password, DAL dal) {
@@ -93,6 +97,7 @@ public class User {
 		
 		historyList = initializeHistoryList();
 		messages = new ArrayList<Message>();
+		messages = initializeMessages();
 		
 		recentlyTakenQuizzes = new ArrayList<String>();
 		recentlyCreatedQuizzes = new ArrayList<String>();

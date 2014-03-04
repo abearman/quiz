@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class AddFriendServlet
+ * Servlet implementation class RemoveFriendServlet
  */
-@WebServlet("/AddFriendServlet")
-public class AddFriendServlet extends HttpServlet {
+@WebServlet("/RemoveFriendServlet")
+public class RemoveFriendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddFriendServlet() {
+    public RemoveFriendServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,9 +38,8 @@ public class AddFriendServlet extends HttpServlet {
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
 		String user1 = (String)request.getSession().getAttribute("loginName");
 		String user2 = (String)request.getParameter("user2");
-
-		FriendRequestMessage frm = new FriendRequestMessage(user1, user2, dal);
-		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, frm.getMessage(), null, -1);
+		
+		dal.removeFriendPair(user1, user2);
 		
 		User user = (User)request.getSession().getAttribute("user");
 		if (user.getIsAdministrator()) {

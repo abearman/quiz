@@ -9,7 +9,6 @@
 	
 	<%
 	
-	
 	String quizName = request.getParameter("quizName");
 	DAL dal = (DAL)request.getServletContext().getAttribute("dal");
 	Quiz quiz = new Quiz(dal,quizName);

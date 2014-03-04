@@ -40,6 +40,7 @@ public class AcceptFriendRequestServlet extends HttpServlet {
 		String acceptor = (String)request.getParameter("acceptor");
 		
 		dal.addFriendPair(requestor, acceptor);
+		dal.removeFriendRequestMessage(acceptor, requestor);
 		
 		User user = (User)request.getSession().getAttribute("user");
 		if (user.getIsAdministrator()) {

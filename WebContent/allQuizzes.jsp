@@ -7,14 +7,15 @@
 	<meta content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
 	<%
 		User user = (User)session.getAttribute("user");
-		String username = user.getLoginName();
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
-		ArrayList<Message> messages = dal.getUserMessages(user);
+		String username = user.getLoginName();
+		ArrayList<Quiz> allQuizzes = dal.getAllQuizzes();
 	%>
-	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-	<title><%= username %>'s Messages</title>
+	<title><%= username %>'s Friends</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -26,20 +27,15 @@
 		%> Go back <a href="userHomepage.jsp">home</a><% 
 	}%>
 	
-	<%for (int i = 0; i < messages.size(); i++) {
-		FriendRequestMessage message = (FriendRequestMessage)messages.get(i);
-		String messageStr = message.getMessage();
-		String requestor = message.getFromUser();
-		String acceptor = message.getToUser(); %> 
-		<p><%=messageStr%></p>
-		<form name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
-			<input type="hidden" name="requestor" value="<%=requestor%>">
-			<input type="hidden" name="acceptor" value="<%=acceptor%>">
-			<input type="submit" value="Accept">
-		</form>
-	<%}%>
+	<ul>
+		<% 
+		for (Quiz quiz : allQuizzes) {
+			String quizName = quiz.getQuizName();
+			String creator = quiz.getCreatorName();
+			%> <li> Quiz: <%=quizName%>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <%
+		} 
+		%>
+	</ul>
 
-
-	
 </body>
 </html>
