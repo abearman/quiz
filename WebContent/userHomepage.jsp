@@ -17,7 +17,7 @@
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
 	
-	boolean[] achievements = user.getAchievements();
+	String achievements = dal.getUserAchievements(username);
 	ArrayList<String> announcements = dal.getAllAnnouncements();
 	boolean hasNewMessages = dal.userHasNewMessages(username);
 	
@@ -57,8 +57,8 @@
 	<h2> Achievements: </h2>
 	<ul>
 		<% 
-			for (int i = 0; i < achievements.length; i++) {
-				if (achievements[i]) {
+			for (int i = 0; i < achievements.length(); i++) {
+				if (achievements.charAt(i) == '1') {
 					%> <li> <%= Achievements.achievements[i] %></li> <% ;	
 				}
 			}
@@ -82,7 +82,7 @@
 			for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
 				String quizName = recentlyCreatedQuizzes.get(i);
 				String creator = dal.getCreatorName(quizName);
-				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <% 
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <% 
 			}
 		%>
 	</ul>
