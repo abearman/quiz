@@ -42,14 +42,8 @@ public class AcceptFriendRequestServlet extends HttpServlet {
 		dal.addFriendPair(requestor, acceptor);
 		dal.removeFriendRequestMessage(acceptor, requestor);
 		
-		User user = (User)request.getSession().getAttribute("user");
-		if (user.getIsAdministrator()) {
-			RequestDispatcher dispatch = request.getRequestDispatcher("administratorHomepage.jsp");
-			dispatch.forward(request,response);
-		} else {
-			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");
-			dispatch.forward(request,response);
-		}
+		RequestDispatcher dispatch = request.getRequestDispatcher("messages.jsp");
+		dispatch.forward(request, response);		
 	}
 
 }
