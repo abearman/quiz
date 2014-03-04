@@ -12,7 +12,7 @@
 		String username = user.getLoginName();
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
 		ArrayList<Message> friendRequestMessages = dal.getFriendRequestMessages(username);
-		//ArrayList<Message> otherMessages = dal.getUserMessages(user);
+		ArrayList<Message> otherMessages = dal.getUserMessages(user);
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>
@@ -39,6 +39,20 @@
 			<input type="submit" value="Accept">
 		</form>
 	<%}%>
+	
+	<%for (Message message : otherMessages) {
+		if (message.getMessageType().equals(Message.NOTE_MESSAGE)) {
+			NoteMessage note = (NoteMessage)message;
+			String fromUser = note.getFromUser();
+			String messageString = note.getMessage(); %>
+			<p> <%= fromUser %>: <%= messageString %> </p>
+		<%} else if (message.getMessageType().equals(Message.CHALLENGE_MESSAGE)) {
+			ChallengeMessage challenge = (ChallengeMessage) message;
+			String fromUser = challenge.getFromUser();
+			String messageString = challenge.getMessage(); %>
+			<p> <%= fromUser %>: <%= messageString %> </p>
+		<%}
+	}%>
 
 
 	
