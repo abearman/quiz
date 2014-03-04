@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class AddFriendServlet
+ * Servlet implementation class AcceptFriendRequestServlet
  */
-@WebServlet("/AddFriendServlet")
-public class AddFriendServlet extends HttpServlet {
+@WebServlet("/AcceptFriendRequestServlet")
+public class AcceptFriendRequestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddFriendServlet() {
+    public AcceptFriendRequestServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,11 +36,10 @@ public class AddFriendServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
-		String user1 = (String)request.getSession().getAttribute("loginName");
-		String user2 = (String)request.getParameter("user2");
+		String requestor = (String)request.getParameter("requestor");
+		String acceptor = (String)request.getParameter("acceptor");
 		
-		//dal.addFriendPair(user1, user2); //TODO
-		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, null, null, -1);
+		dal.addFriendPair(requestor, acceptor);
 		
 		User user = (User)request.getSession().getAttribute("user");
 		if (user.getIsAdministrator()) {

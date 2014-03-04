@@ -13,14 +13,14 @@
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
 	
-	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes();
+	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes(); 
 	ArrayList<String> popularQuizzes = dal.getPopularQuizzes();
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
 	
 	boolean[] achievements = user.getAchievements();
 	ArrayList<String> announcements = dal.getAllAnnouncements();
-	boolean hasNewMessages = user.getNewMessages();
+	boolean hasNewMessages = dal.userHasNewMessages(username);
 	
 	ArrayList<String> friends = dal.getFriendListForUser(username);
 	//ArrayList<FriendRecentActivity> friendRecentActivities = dal.getFriendsRecentActivity(friends);
@@ -59,7 +59,12 @@
 			%> 
 	</ul>
 	
-	<i>${hasNewMessages ? "You have new messages!" : "No new messages."}</i>
+	<%if (hasNewMessages) {
+		%> <i> You have new messages! </i><%
+	} else {%>
+		<i> No new messages. </i>
+	<%}%>
+	
 	<p>See my <a href="messages.jsp"> messages </a></p>
 	<p> See my <a href="friends.jsp"> friends </a></p>
 

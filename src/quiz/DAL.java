@@ -318,7 +318,22 @@ public class DAL {
 		}
 
 	}
+<<<<<<< HEAD
 
+=======
+	
+	public boolean userHasNewMessages(String username) {
+		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+>>>>>>> b7117fae5765fcac39b6cb840097148a086b1ac8
 	//VALUES and not "values"; messages, not users; need number of arguments in insert to be equivalent with number of clumns
 	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {		
 		String update;
@@ -340,7 +355,7 @@ public class DAL {
 	}
 
 	// Being used for testing
-	public void removeMessageForUser(String toUser) { //Do we need?
+	public void removeMessageForUser(String toUser) { 
 		try {
 			String update = "DELETE FROM messages WHERE toUser = \"" + toUser + "\";";
 			stmt.executeUpdate(update);
@@ -348,7 +363,33 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
+<<<<<<< HEAD
 
+=======
+	
+	public ArrayList<Message> getMessagesForUser(String user) {
+		ArrayList<Message> messages = new ArrayList<Message>();
+		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String messageType = rs.getString("messageType");
+				if (messageType.equals(Message.FRIEND_REQUEST_MESSAGE)) {
+					FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, this);
+					messages.add(frm);
+				} else if (messageType.equals(Message.CHALLENGE_MESSAGE)) {
+					
+				} else if (messageType.equals(Message.NOTE_MESSAGE)) {
+					
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(); 
+		}
+		return messages;
+	}
+	
+>>>>>>> b7117fae5765fcac39b6cb840097148a086b1ac8
 	public void addTopScorer(TopScorer topScorer, String quizName) {
 		try {
 			String update = "INSERT INTO topscorers VALUES(\""+quizName+"\",\""+topScorer.getLoginName()+"\","+ 
@@ -802,6 +843,7 @@ public class DAL {
 		}
 	}
 	//retrieves all of the user's friends' most recent activity
+<<<<<<< HEAD
 	public ArrayList<FriendRecentActivity> getFriendsRecentActivity(ArrayList<String> friends)
 	{
 		ArrayList<FriendRecentActivity> fra = new ArrayList<FriendRecentActivity>();
@@ -812,12 +854,30 @@ public class DAL {
 				ResultSet rs = stmt.executeQuery(query);
 				rs.first();
 				StringTokenizer st = new StringTokenizer(rs.getString(5), "\n");
+=======
+	public ArrayList<FriendRecentActivity> getFriendsRecentActivity(ArrayList<String> friends) {
+		ArrayList<FriendRecentActivity> fra = new ArrayList<FriendRecentActivity>();
+		for(String f : friends) {
+			String query = "SELECT * FROM users WHERE loginName = \"" + f + "\";";
+			try {
+				ResultSet rs = stmt.executeQuery(query);
+				rs.first();
+				
+				String activity = rs.getString("recentActivity");
+				System.out.println(activity);
+				
+				StringTokenizer st = new StringTokenizer(rs.getString("recentActivity"), "\n");
+>>>>>>> b7117fae5765fcac39b6cb840097148a086b1ac8
 				FriendRecentActivity act = new FriendRecentActivity(f);
 				act.setRecentAchievement(Integer.getInteger(st.nextToken()));
 				act.setRecentlyTakenQuiz(st.nextToken());
 				act.setRecentlyCreatedQuiz(st.nextToken());
 				fra.add(act);
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> b7117fae5765fcac39b6cb840097148a086b1ac8
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
