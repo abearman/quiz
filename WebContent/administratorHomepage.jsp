@@ -22,6 +22,9 @@
 	ArrayList<String> announcements = dal.getAllAnnouncements();
 	boolean hasNewMessages = user.getNewMessages();
 	
+	ArrayList<String> friends = dal.getFriendListForUser(username);
+	ArrayList<FriendRecentActivity> friendRecentActivities = dal.getFriendsRecentActivity(friends);
+	
 	%>  
 	
 	<title>Welcome <%= username %> </title>
@@ -93,6 +96,16 @@
 			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
 				%> <li> Quiz: <%= userRecentlyTakenQuizzes.get(i) %></li> <% 
 			}
+		%>
+	</ul>
+	
+	<h2> Friends' Recent Activities: </h2>
+	<ul>
+		<%
+			for (int i = 0; i < friendRecentActivities.size(); i++) {
+				FriendRecentActivity fra = friendRecentActivities.get(i);
+				%> <li> Your friend, <%=fra.getFriendName()%> recently created quiz <%=fra.getRecentlyCreatedQuiz()%>, recently took quiz <%=fra.getRecentlyCreatedQuiz()%>, and earned the achievement <%=Achievements.achievements[fra.getRecentAchievement()] %> </li> 
+			<%}
 		%>
 	</ul>
 	

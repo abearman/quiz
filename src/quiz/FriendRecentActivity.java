@@ -18,6 +18,10 @@ public class FriendRecentActivity {
 	
 	/* Getter methods */
 	
+	public String getFriendName() {
+		return this.friendName;
+	}
+	
 	/* Returns the index of the most recent achievement (0 through 5), or -1
 	 * if the friend has not achieved anything */
 	public int getRecentAchievement() {
