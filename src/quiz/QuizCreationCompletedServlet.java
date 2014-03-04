@@ -20,14 +20,12 @@ public class QuizCreationCompletedServlet extends HttpServlet {
      */
     public QuizCreationCompletedServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -36,6 +34,7 @@ public class QuizCreationCompletedServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//forwards to the quizSummary page
 		//TODO are there any field that need to be set so quizSummary will work?
+
 		RequestDispatcher dispatch = request.getRequestDispatcher("quizSummary.jsp");
 		dispatch.forward(request, response);
 	}
