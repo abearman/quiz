@@ -9,7 +9,7 @@ public class FriendRequestMessage extends Message {
 		super(fromUser, toUser, Message.FRIEND_REQUEST_MESSAGE,dal);
 		message = fromUser + " wants to be friends with you! Do you accept the request?";
 		this.dal = dal;
-		this.dal.addMessageForUser(fromUser, toUser, Message.FRIEND_REQUEST_MESSAGE, message, null, -1);
+		//this.dal.addMessageForUser(fromUser, toUser, Message.FRIEND_REQUEST_MESSAGE, message, null, -1);
 	}
 	
 	public void acceptRequest(boolean accept) {

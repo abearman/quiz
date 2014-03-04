@@ -39,7 +39,8 @@ public class AddFriendServlet extends HttpServlet {
 		String user1 = (String)request.getSession().getAttribute("loginName");
 		String user2 = (String)request.getParameter("user2");
 
-		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, null, null, -1);
+		FriendRequestMessage frm = new FriendRequestMessage(user1, user2, dal);
+		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, frm.getMessage(), null, -1);
 		
 		User user = (User)request.getSession().getAttribute("user");
 		if (user.getIsAdministrator()) {
