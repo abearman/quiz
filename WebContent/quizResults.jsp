@@ -13,7 +13,7 @@
 <body>
 
 <%
-
+User user = (User)request.getSession().getAttribute("user");
 Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 ArrayList<Question> questions = quiz.getQuestions();
 ArrayList<String> usersAnswers = quiz.getAnswers();
@@ -40,7 +40,12 @@ for (int i = 0; i < questions.size(); i++){
 %>
 </ul>
 
-Go back to your <a href="userHomepage.jsp">homepage</a>
+	<%
+	if (user.getIsAdministrator()) {
+		%> Go back <a href="administratorHomepage.jsp">home</a><% 
+	} else {
+		%> Go back <a href="userHomepage.jsp">home</a><% 
+	}%>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
