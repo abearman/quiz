@@ -8,8 +8,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Add Questions for 
-		<% /*Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
-			out.print(quizCreated.getQuizName());*/
+		<% Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
+			out.print(quizCreated.getQuizName());
 		%>
 	</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
