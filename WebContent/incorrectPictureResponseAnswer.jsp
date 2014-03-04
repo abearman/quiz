@@ -24,7 +24,6 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 
 <form action="" method="post">
 	Your Answer: <input type="text" name="answer" />
-	<input type = "submit" />
 </form>
 
 <h4>Sorry, your answer was incorrect.</h4>

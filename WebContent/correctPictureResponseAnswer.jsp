@@ -31,7 +31,6 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 
 <form action="" method="post">
 	Your Answer: <input type="text" name="answer" />
-	<input type = "submit" />
 </form>
 
 <h4>Your Answer: <%= quiz.getAnswers().get(quiz.getCurrentQuestionNum()) %></h4>

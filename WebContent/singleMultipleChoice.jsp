@@ -27,7 +27,7 @@ ArrayList<String> choices = ((MultipleChoice)thisQuestion).getChoices();
 <form action="UpdateAnswersServlet" method="post">
 <%
 	for (int i = 0; i < choices.size(); i++){
-		out.println("<input type=\"radio\" name=\"answer\" value=\"" + choices.get(i) + "\"/>");
+		out.println("<input type=\"radio\" name=\"answer\" value=\"" + choices.get(i) + "\"/> " + choices.get(i) + "<br>");
 	}
 %>
 	<input type = "submit" />
