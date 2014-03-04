@@ -57,7 +57,7 @@
 				}
 			}
 		%>
-		<input type="submit" value="Finished">
+		<br><input type="submit" value="Done">
 	</form>
 
 </body>

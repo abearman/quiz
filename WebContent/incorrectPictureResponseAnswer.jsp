@@ -26,8 +26,8 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 	Your Answer: <input type="text" name="answer" />
 </form>
 
-<h4>Sorry, your answer was incorrect.</h4>
-<h4>Correct Answer: <%= thisQuestion.getAnswer().get(0) %></h4>
+<h5>Sorry, your answer was incorrect.</h5>
+<h5>Correct Answer: <%= thisQuestion.getAnswer().get(0) %></h5>
 
 <%
 if (questionNum == quiz.getQuestions().size()-1){

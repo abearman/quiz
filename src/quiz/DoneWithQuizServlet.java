@@ -1,6 +1,8 @@
 package quiz;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -34,8 +36,16 @@ public class DoneWithQuizServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
+		String loginName = (String)request.getSession().getAttribute("loginName");
+		
+		int numQuizzesTaken = dal.getNumberQuizzesTakenForUser(loginName);
+		if (numQuizzesTaken >= 10) {
+			dal.addAchievementForUser(loginName, Achievements.QUIZ_MACHINE);
+		}
 		
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+		User user = (User)request.getSession().getAttribute("user");
 		ArrayList<Question> questions = quiz.getQuestions();
 		ArrayList<String> answers = quiz.getAnswers(); 
 		
@@ -53,6 +63,21 @@ public class DoneWithQuizServlet extends HttpServlet {
 		}
 		quiz.setNumQuestionsCorrect(numQuestionsCorrect);
 		request.getSession().setAttribute("numQuestionsCorrect", numQuestionsCorrect);
+		
+		//update database
+		//add this to the history
+		//add to top scorers
+		//increment number of times taken on this quiz
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		java.util.Date now = new java.util.Date();
+		dal.addToHistoryListForUser(user.getLoginName(), quiz.getQuizName(), numQuestionsCorrect, elapsedTime, df.format(now), now);
+		quiz.addTopScorer(new TopScorer(user.getLoginName(), numQuestionsCorrect, elapsedTime, dal));
+		quiz.incrementNumTimesTaken();
+		
+		String quizName = quiz.getQuizName();
+		if (dal.isHighestScorerForQuiz(loginName, quiz.getQuizName())) {
+			dal.addAchievementForUser(loginName, Achievements.I_AM_THE_GREATEST);
+		}
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher("quizResults.jsp");
 		dispatch.forward(request,response);

@@ -32,6 +32,18 @@ public class QuizCreationCompletedServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DAL dal = (DAL)getServletContext().getAttribute("DAL");
+		String loginName = (String)request.getSession().getAttribute("loginName");
+		
+		int numQuizzesCreated = dal.getNumberQuizzesCreatedForUser(loginName);
+		if (numQuizzesCreated >= 10) { //Created 10 quizzes
+			dal.addAchievementForUser(loginName, Achievements.PRODIGIOUS_AUTHOR); 
+		} else if (numQuizzesCreated >=5) { //Created 5 quizzes
+			dal.addAchievementForUser(loginName, Achievements.PROLIFIC_AUTHOR); 
+		} else { //Created 1 quiz
+			dal.addAchievementForUser(loginName, Achievements.AMATEUR_AUTHOR);
+		}
+		
 		//forwards to the quizCreationSuccessful page
 		RequestDispatcher dispatch = request.getRequestDispatcher("quizCreationSuccessful.jsp");
 		dispatch.forward(request, response);

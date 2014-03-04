@@ -15,12 +15,19 @@
 	<h3>Quiz Creation was Successful!</h3>
 	
 	<%
+	User user = (User)request.getSession().getAttribute("user");
 	Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
 	String quizSummaryURL = "quizSummary.jsp?quizName=" + quizCreated.getQuizName();
 	%>
 	
-	Check out your <a href="<%= quizSummaryURL %>">quiz:</a><br>
-	Go back to your <a href="userHomepage.jsp">homepage:</a>
+	Check out your <a href="<%= quizSummaryURL %>">quiz</a><br>
+	
+	<%
+	if (user.getIsAdministrator()) {
+		%> Go back <a href="administratorHomepage.jsp">home</a><% 
+	} else {
+		%> Go back <a href="userHomepage.jsp">home</a><% 
+	}%>
 	
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

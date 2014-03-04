@@ -100,6 +100,43 @@ public class DAL {
 		}
 		return false;
 	}
+	
+	public int getNumberQuizzesCreatedForUser(String userName) {
+		try {
+			String query = "SELECT * FROM quizzes WHERE creatorName = \"" + userName + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.last();
+			return rs.getRow();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public int getNumberQuizzesTakenForUser(String userName) {
+		try {
+			String query = "SELECT * FROM histories WHERE loginName = \"" + userName + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.last();
+			return rs.getRow();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public boolean isHighestScorerForQuiz(String userName, String quizName) {
+		try {
+			String query = "SELECT * FROM histories WHERE quizName = \"" + quizName + "\" ORDER BY numQuestionsCorrect DESC;";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.first();
+			if (rs.getString("loginName").equals(userName)) return true;
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public ArrayList<HistoryObject> getHistoryListForUser(String userName) {
 		ArrayList<HistoryObject> historyList = new ArrayList<HistoryObject>();
@@ -275,6 +312,27 @@ public class DAL {
 		}
 	}
 
+	public void addAchievementForUser(String loginName, int index) {
+		try {
+			String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.first();
+			String achievements = rs.getString("achievements");
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < Achievements.NUM_ACHIEVEMENTS; i++) {
+				if (i == index) {
+					sb.append('1');
+				} else {
+					sb.append(achievements.charAt(i));
+				}
+			}
+			String update = "UPDATE users SET achievements = \"" + sb.toString() + "\" WHERE loginName = \"" + loginName + "\";";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void updateUserAchievements(String loginName, String achievementsString) {
 		String update = "UPDATE users SET achievements = \"" + achievementsString + "\" WHERE loginName = \"" + loginName + "\";";
 		try {
@@ -401,16 +459,6 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
-
-	/*
-	public void insertQuiz(String quizName, String descriptionOfQuiz, boolean isRandom, boolean isMultiplePage, boolean isImmediateCorrection, boolean canBeTakenInPracticeMode, String creatorName, java.util.Date creationDate, int numTimesTaken) {
-		try {
-			String update = "INSERT INTO quizzes VALUES(\""+quizName+"\",\""+descriptionOfQuiz+"\","+ isRandom+","+isMultiplePage+","+isImmediateCorrection+","+canBeTakenInPracticeMode+",\"" + creatorName + "\"," + creationDate + "," + numTimesTaken + ");";
-			stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace(); 
-		}
-	}*/
 
 	public void insertQuiz(Quiz quiz) {
 		try {
