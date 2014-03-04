@@ -30,8 +30,8 @@ ArrayList<String> choices = ((MultipleChoice)thisQuestion).getChoices();
 %>
 </form>
 
-<h4>Your Answer: <%= quiz.getAnswers().get(quiz.getCurrentQuestionNum()) %></h4>
-<h4>Your answer was correct!</h4>
+<h5>Your Answer: <%= quiz.getAnswers().get(quiz.getCurrentQuestionNum()) %></h5>
+<h5>Your answer was correct!</h5>
 
 <%
 if (questionNum == quiz.getQuestions().size()-1){
