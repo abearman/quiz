@@ -8,18 +8,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<%
-	
 	String quizName = request.getParameter("quizName");
-	DAL dal = (DAL)request.getServletContext().getAttribute("dal");
+	DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
 	Quiz quiz = new Quiz(dal,quizName);
-	
-	
-	//TODO need to access the quiz in place of this dummy quiz for testing
-	/*
-	DAL dal = (DAL)request.getServletContext().getAttribute("dal");
-	Quiz quiz = new Quiz(new DAL(), "dummyQuiz","good for nothing",true,true,true,true,"Pavitra",new Date(),5); 
-	String quizName = quiz.getQuizName();
-	*/
 	%>
 	
 	<title><%= quizName %></title>
@@ -45,7 +36,7 @@
 	
 	<h3>Your Past Performance on <%= quizName %>:</h3>
 	<%
-	ArrayList<HistoryObject> usersHistory = user.getHistory();
+	ArrayList<HistoryObject> usersHistory = dal.getHistoryListForUser(user.getLoginName());
 	out.println("<ul>");
 	for (int i = 0; i < usersHistory.size(); i++){
 		HistoryObject history = usersHistory.get(i);
