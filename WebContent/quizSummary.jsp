@@ -100,7 +100,7 @@
 	out.println("</ul>");
 	%>
 	
-	<h3>Statistics Summary</h3>
+	<h4>Statistics Summary</h4>
 	<ul>
 	<li>Average Score: <%= averageScore %></li>
 	<li>Median Score: <%= medianScore %></li>
