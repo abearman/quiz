@@ -10,6 +10,8 @@
 	
 	<%
 	String name = request.getParameter("friendName");
+	String userName = (String)session.getAttribute("loginName");
+	
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(name);
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(name);
@@ -25,10 +27,15 @@
 
 	<h2><%= name %>'s Profile</h2>
 	
-	<form name="addFriend" action ="AddFriendServlet" method="post">
-		<input type="hidden" name="user2" value="<%=name%>">
-		<input type="submit" value="Add friend!">
-	</form>
+	<%
+	if(dal.getFriendListForUser(userName).contains(name)) {
+		%> <button> Friends </button>
+	<%} else {%>
+		<form name="addFriend" action ="AddFriendServlet" method="post">
+			<input type="hidden" name="user2" value="<%=name%>">
+			<input type="submit" value="Add friend!">
+		</form>
+	<%}%>
 
 	<h2> Achievements: </h2>
 	<ul>
