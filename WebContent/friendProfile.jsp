@@ -11,10 +11,9 @@
 	<%
 	String name = request.getParameter("friendName");
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
-	User user = dal.getUser(name);
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(name);
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(name);
-	boolean[] achievements = user.getAchievements();
+	String achievements = dal.getUserAchievements(name);
 	ArrayList<String> friends = dal.getFriendListForUser(name);
 	%>  
 	
@@ -26,12 +25,16 @@
 
 	<h2><%= name %>'s Profile</h2>
 	
+	<form name="addFriend" action ="AddFriendServlet" method="post">
+		<input type="hidden" name="user2" value="<%=name%>">
+		<input type="submit" value="Add friend!">
+	</form>
 
 	<h2> Achievements: </h2>
 	<ul>
 		<% 
-			for (int i = 0; i < achievements.length; i++) {
-				if (achievements[i]) {
+			for (int i = 0; i < achievements.length(); i++) {
+				if (achievements.charAt(i) == '1') {
 					%> <li> <%= Achievements.achievements[i] %></li> <% ;	
 				}
 			}
@@ -67,7 +70,7 @@
 	</ul>
 	
 	<%
-	if (user.getIsAdministrator()) {
+	if (dal.isUserAdmin(name)) {
 		%> Go back <a href="administratorHomepage.jsp">home</a><% 
 	} else {
 		%> Go back <a href="userHomepage.jsp">home</a><% 

@@ -23,7 +23,7 @@
 	boolean hasNewMessages = user.getNewMessages();
 	
 	ArrayList<String> friends = dal.getFriendListForUser(username);
-	ArrayList<FriendRecentActivity> friendRecentActivities = dal.getFriendsRecentActivity(friends);
+	//ArrayList<FriendRecentActivity> friendRecentActivities = dal.getFriendsRecentActivity(friends);
 	
 	%>  
 	
@@ -67,7 +67,9 @@
 	<ul>
 		<%
 			for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
-				%> <li> Quiz: <%= recentlyCreatedQuizzes.get(i) %></li> <% 
+				String quizName = recentlyCreatedQuizzes.get(i);
+				String creator = dal.getCreatorName(quizName);
+				%> <li> Quiz: <%=quizName%>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <% 
 			}
 		%>
 	</ul>
@@ -96,25 +98,6 @@
 			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
 				%> <li> Quiz: <%= userRecentlyTakenQuizzes.get(i) %></li> <% 
 			}
-		%>
-	</ul>
-	
-	<h2> Friends' Recent Activities: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < friendRecentActivities.size(); i++) {
-				FriendRecentActivity fra = friendRecentActivities.get(i);
-				String friendName = fra.getFriendName();
-				String rcq = fra.getRecentlyCreatedQuiz();
-				String rtq = fra.getRecentlyTakenQuiz();
-				int achievement = fra.getRecentAchievement();
-				%> <li> 
-					Your friend, <a href="friendProfile.jsp?friendName=<%=friendName%>"><%=friendName%></a> 
-					recently created quiz <a href="quizSummary.jsp?quizName=<%=rcq%>"><%=rcq%></a>, 
-					recently took quiz <a href="quizSummary.jsp?=<%=rtq%>"><%=rtq%></a>, 
-					and earned the achievement <%=Achievements.achievements[achievement] %> 
-				</li> 
-			<%}
 		%>
 	</ul>
 	

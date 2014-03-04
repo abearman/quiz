@@ -88,6 +88,19 @@ public class DAL {
 		return null;
 	}
 	
+	public boolean isUserAdmin(String userName) {
+		try {
+			String query = "SELECT * FROM users WHERE loginname = \"" + userName + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			if (rs.getBoolean("isAdministrator")) return true;
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public ArrayList<HistoryObject> getHistoryListForUser(String userName) {
 		ArrayList<HistoryObject> historyList = new ArrayList<HistoryObject>();
 		try {
@@ -225,6 +238,9 @@ public class DAL {
 	
 	public void addFriendPair(String user1, String user2) {
 		try {
+			String query = "SELECT * FROM friends WHERE user1 = \"" + user1 + "\" AND user2 = \"" + user2 + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) return; //Friend pair already exists
 			String update = "INSERT INTO friends VALUES(\"" + user1 + "\",\"" + user2 + "\"), "
 													+ "(\"" + user2 + "\",\"" + user1 + "\");";
 			stmt.executeUpdate(update);
