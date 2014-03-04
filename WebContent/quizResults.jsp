@@ -32,7 +32,7 @@ int totalNumQuestions = questions.size();
 <ul>
 <%
 for (int i = 0; i < questions.size(); i++){
-	String correctAnswer = questions.get(i).getAnswer().get(i);
+	String correctAnswer = questions.get(i).getAnswer().get(0);
 	String usersAnswer = usersAnswers.get(i);
 	out.println("<li>Your Answer: " + usersAnswer + " Correct Answer: " + correctAnswer + " </li>");
 }
