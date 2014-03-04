@@ -69,6 +69,7 @@
 	<p>See my <a href="messages.jsp"> messages </a></p>
 	<p> See my <a href="friends.jsp"> friends </a></p>
 	<p> See my <a href="fullHistory.jsp"> quiz history </a></p>
+	<p> See <a href="fullHistory.jsp"> all existing quizzes </a></p>
 
 	<h2> Recently Created Quizzes: </h2>
 	<ul>
