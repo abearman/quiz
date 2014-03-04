@@ -19,7 +19,7 @@
 
 	<h3>Create a Quiz</h3>
 	
-	<h2>Sorry, there is already a quiz named <%= quizName %>. Please choose another name.</h2>
+	<h4>Sorry, there is already a quiz named <%= quizName %>. Please choose another name.</h4>
 	
 	<form action="QuizCreationServlet" method = "post">
 		<p>Quiz Name: <input type = "text" name = "quizName"/></p>
