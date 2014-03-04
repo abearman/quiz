@@ -54,6 +54,8 @@ public class DoneWithQuizServlet extends HttpServlet {
 		quiz.setNumQuestionsCorrect(numQuestionsCorrect);
 		request.getSession().setAttribute("numQuestionsCorrect", numQuestionsCorrect);
 		
+		//TODO add this to the history and to the top scorers
+		
 		RequestDispatcher dispatch = request.getRequestDispatcher("quizResults.jsp");
 		dispatch.forward(request,response);
 	}
