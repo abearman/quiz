@@ -191,8 +191,8 @@ public class DAL {
 
 	public ArrayList<Message> getUserMessages(User user) {
 		ArrayList<Message> result = new ArrayList<Message>();
+		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\";";
 		try {
-			String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\";";
 			ResultSet rs = stmt.executeQuery(query);
 
 			while(rs.next()) {
@@ -219,6 +219,21 @@ public class DAL {
 		}
 		return result;
 
+	}
+	
+	public ArrayList<Quiz> getAllQuizzes() {
+		ArrayList<Quiz> allQuizzes = new ArrayList<Quiz>();
+		String query = "SELECT * FROM quizzes;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				Quiz q = new Quiz(this, rs.getString("quizName"));
+				allQuizzes.add(q);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return allQuizzes;
 	}
 
 	////////////////////////
@@ -351,28 +366,6 @@ public class DAL {
 		}
 	}
 
-	
-	public ArrayList<Message> getMessagesForUser(String user) {
-		ArrayList<Message> messages = new ArrayList<Message>();
-		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\";";
-		try {
-			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				String messageType = rs.getString("messageType");
-				if (messageType.equals(Message.FRIEND_REQUEST_MESSAGE)) {
-					FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, this);
-					messages.add(frm);
-				} else if (messageType.equals(Message.CHALLENGE_MESSAGE)) {
-					
-				} else if (messageType.equals(Message.NOTE_MESSAGE)) {
-					
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace(); 
-		}
-		return messages;
-	}
 	
 
 	public void addTopScorer(TopScorer topScorer, String quizName) {
