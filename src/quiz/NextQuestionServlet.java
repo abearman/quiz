@@ -36,8 +36,8 @@ public class NextQuestionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
-		String quizName = (String)request.getParameter("quizName");
-		Quiz quiz = new Quiz(dal, quizName);
+		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+		String quizName = quiz.getQuizName();
 		ArrayList<Question> questions = quiz.getQuestions();
 		
 		Question nextQuestion = questions.get(quiz.getNextQuestionNum());
