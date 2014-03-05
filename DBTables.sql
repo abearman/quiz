@@ -33,7 +33,6 @@ CREATE TABLE histories (
     quizName CHAR(64),
     numQuestionsCorrect INT,
     timeElapsed BIGINT,
-    dateString CHAR(64), 
     dateValue DATETIME
 );
 

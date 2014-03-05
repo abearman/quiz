@@ -1,12 +1,9 @@
 package quiz;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class HistoryObject {
 	
-	private String dateString;
 	private long timeElapsed;
 	private int numQuestionsCorrect;
 	private String userName;
@@ -15,19 +12,16 @@ public class HistoryObject {
 	private DAL dal;
 
 	public HistoryObject(String userName, Quiz quiz, DAL dal) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd HH:mm:ss");
 		date = new Date();
-		dateString = dateFormat.format(date);
 		this.timeElapsed = quiz.getLengthOfCompletion();
 		this.numQuestionsCorrect = quiz.getNumQuestionsCorrect();
 		this.userName = userName;
 		this.quizName = quiz.getQuizName();
 		this.dal = dal;
-		dal.addToHistoryListForUser(userName, quizName, numQuestionsCorrect, timeElapsed, dateString, date);
+		dal.addToHistoryListForUser(userName, quizName, numQuestionsCorrect, timeElapsed, date);
 	}
 	
-	public HistoryObject(String userName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date dateValue, DAL dal) {
-		this.dateString = dateString;
+	public HistoryObject(String userName, String quizName, int numQuestionsCorrect, long timeElapsed, java.util.Date dateValue, DAL dal) {
 		this.date = dateValue;
 		this.timeElapsed = timeElapsed;
 		this.numQuestionsCorrect = numQuestionsCorrect;
@@ -35,11 +29,7 @@ public class HistoryObject {
 		this.quizName = quizName;
 		this.dal = dal;
 	}
-	
-	public String getDateString() {
-		return dateString;
-	}
-	
+
 	public java.util.Date getDate(){
 		return date; 
 	}

@@ -10,7 +10,7 @@
 	<%
 	String quizName = request.getParameter("quizName");
 	DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
-	Quiz quiz = new Quiz(dal,quizName);
+	Quiz quiz = new Quiz(dal, quizName);
 	int numQuestions = quiz.getQuestions().size();
 	%>
 	
@@ -58,7 +58,9 @@
 		HistoryObject history = usersHistory.get(i);
 		if (history.getQuizName().equals(quizName)){
 			double elapsedTimeInSeconds = ((Long)history.getElapsedTime()).doubleValue()/1000;
-			out.println("<li><b>Date:</b> " + history.getDateString() + 
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String currentTime = sdf.format(history.getDate());
+			out.println("<li><b>Date:</b> " + currentTime +
 					" <b>Time Taken:</b> " + elapsedTimeInSeconds + 
 					" sec <b>Number of Questions Correct:</b> " + history.getNumQuestionsCorrect()
 					+ "</li>");
@@ -106,13 +108,15 @@
 	for (int i = 0; i < recentTestTakers.size(); i++){
 		HistoryObject history = recentTestTakers.get(i);
 		double elapsedTimeInSeconds = ((Long)history.getElapsedTime()).doubleValue()/1000;
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(history.getDate());
 		out.println("<li><b>Name:</b> " + history.getUserName() +
-				" <b>Date:</b> " + history.getDateString() + 
+				" <b>Date:</b> " + currentTime + 
 				" <b>Time Taken:</b> " + elapsedTimeInSeconds + 
 				" sec <b>Number of Questions Correct:</b> " + history.getNumQuestionsCorrect()
 				+ "</li>");
 	}
-	out.println("</ul>");
+	out.println("</ul>"); 
 	%>
 	
 	<h4>Statistics Summary</h4>

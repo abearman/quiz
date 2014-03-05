@@ -599,9 +599,8 @@ public class DAL {
 				String quizName = rs.getString("quizName");
 				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 				long timeElapsed = rs.getLong("timeElapsed");
-				String dateString = rs.getString("dateString");
 				java.sql.Date sqlDate = rs.getDate("dateValue");
-				historyList.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, new java.util.Date(sqlDate.getTime()), this));
+				historyList.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, new java.util.Date(sqlDate.getTime()), this));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -622,9 +621,8 @@ public class DAL {
 					String quizName = rs.getString("quizName");
 					int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 					long timeElapsed = rs.getLong("timeElapsed");
-					String dateString = rs.getString("dateString");
 					java.sql.Date sqlDate = rs.getDate("dateValue");
-					result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, new java.util.Date(sqlDate.getTime()), this));
+					result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, new java.util.Date(sqlDate.getTime()), this));
 				}
 			}
 		} catch (SQLException e) {
@@ -635,11 +633,11 @@ public class DAL {
 	
 	/* Setters */
 	
-	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
+	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, java.util.Date utilDate) {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(utilDate);
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\",'" + currentTime + "');";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\", \"" + quizName + "\", " + numQuestionsCorrect + ", " + timeElapsed + ", \"" + currentTime + "\");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -343,7 +343,8 @@ public class Quiz {
 
 	public ArrayList<HistoryObject> getRecentQuizTakers(){
 		sortHistories();
-		for (int i = 0; i < RECENT_TEST_TAKER_MAX; i++){
+		for (int i = 0; i < RECENT_TEST_TAKER_MAX; i++) {
+			if (i >= allHistories.size()) break;
 			recentQuizTakers.add(allHistories.get(i));
 		}
 		return recentQuizTakers;
