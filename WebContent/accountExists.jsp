@@ -19,10 +19,12 @@
 	<h3>Please enter another name and password.</h3>
 
 	<form action="AccountCreationServlet" method="post">
-	<p>User Name: <input type="text" name="username" /><br>
-	Password: <input type="text" name="password" />
-	<input type = "submit" /></p>
+		<p>User Name: <input type="text" name="username" /><br>
+		Password: <input type="text" name="password" />
+		<input type = "submit" /></p>
 	</form>
+	
+	<p><a href="index.html">Log in</a></p>
 
 </body>
 </html>
