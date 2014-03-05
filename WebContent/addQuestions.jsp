@@ -64,6 +64,7 @@ function displayQuestion()
 		display+= "<p id= \"choices\">Choices:<input type = \"text\" name=\"choice1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
 		var choiceButton = "<input type=\"button\" value=\"Add Choice\" onclick=\"addChoiceBox()\">";
+		choiceButton+= "<input type= \"button\" value = \"Remove Choice\" onclick=\"removeChoiceBox()\">";
 		document.getElementById("choicesButton").innerHTML = choiceButton;
 		var instructions = "<b>An example of a Multiple Choice question is \"Who was the first president of the United States?\"<br>";
 		instructions+= "Press \"Add Choices\" to add another choice for the question. Please enter one choice per box.</b>";
@@ -94,11 +95,33 @@ function addAnswerBox()
 	answers.appendChild(document.createElement('div')).innerHTML = "<input type =\"text\" name =\"answer"+document.frm.numAnswers.value+ "\">";
 }
 
+function removeAnswerBox()
+{
+	var numAnswers = parseInt(document.frm.numAnswers.value);
+	if(numAnswers > 1)
+	{
+		var answers = document.getElementById("answers");
+		answers.removeChild(answers.lastChild);
+		document.frm.numAnswers.value = (numAnswers - 1);
+	}
+}
+
 function addChoiceBox()
 {
 	document.frm.numChoices.value = parseInt(document.frm.numChoices.value)+1;
 	var choices = document.getElementById("choices");
 	choices.appendChild(document.createElement('div')).innerHTML = "<input type =\"text\" name =\"choice"+document.frm.numChoices.value+ "\" />";
+}
+
+function removeChoiceBox()
+{
+	var numChoices = parseInt(document.frm.numChoices.value);
+	if(numChoices > 1)
+	{
+		var choices = document.getElementById("choices");
+		choices.removeChild(choices.lastChild);
+		document.frm.numChoices.value = (numChoices - 1);
+	}
 }
 
 </script>
@@ -124,7 +147,8 @@ function addChoiceBox()
 			<p id="answers">Answers:<input type = "text" name="answer1" ></p>
 		</div>
 		
-		<input type ="button" value = "Add Answer" onclick ="addAnswerBox()"/>
+		<input type ="button" value = "Add Answer" onclick ="addAnswerBox()">
+		<input type= "button" value = "Remove Answer" onclick="removeAnswerBox()">
 		<p id="choicesButton"></p>
 		<input type = "submit" value = "Add Question"/> 
 	</form>
