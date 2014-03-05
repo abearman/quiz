@@ -42,14 +42,8 @@ public class AddFriendServlet extends HttpServlet {
 		FriendRequestMessage frm = new FriendRequestMessage(user1, user2, dal);
 		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, frm.getMessage(), null, -1);
 		
-		User user = (User)request.getSession().getAttribute("user");
-		if (user.getIsAdministrator()) {
-			RequestDispatcher dispatch = request.getRequestDispatcher("administratorHomepage.jsp");
-			dispatch.forward(request,response);
-		} else {
-			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");
-			dispatch.forward(request,response);
-		}
+		RequestDispatcher dispatch = request.getRequestDispatcher("friendProfile.jsp?friendName=" + user2);
+		dispatch.forward(request, response);
 	}
 
 }

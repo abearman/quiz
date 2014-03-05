@@ -41,14 +41,8 @@ public class RemoveFriendServlet extends HttpServlet {
 		
 		dal.removeFriendPair(user1, user2);
 		
-		User user = (User)request.getSession().getAttribute("user");
-		if (user.getIsAdministrator()) {
-			RequestDispatcher dispatch = request.getRequestDispatcher("administratorHomepage.jsp");
-			dispatch.forward(request,response);
-		} else {
-			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");
-			dispatch.forward(request,response);
-		}
+		RequestDispatcher dispatch = request.getRequestDispatcher("friendProfile.jsp?friendName=" + user2);
+		dispatch.forward(request, response);
 	}
 
 }
