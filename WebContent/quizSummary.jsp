@@ -1,4 +1,4 @@
-<%@ page import="java.util.*, quiz.*" %>
+<%@ page import="java.util.*, java.text.*, quiz.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
@@ -11,6 +11,7 @@
 	String quizName = request.getParameter("quizName");
 	DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
 	Quiz quiz = new Quiz(dal,quizName);
+	int numQuestions = quiz.getQuestions().size();
 	%>
 	
 	<title><%= quizName %></title>
@@ -38,6 +39,10 @@
 		averageTime = statistics[2];
 		averageTimeInSeconds = averageTime/1000;
 	}
+	DecimalFormat df = new DecimalFormat("#.##");
+	String averageScoreString = df.format(averageScore);
+	String medianScoreString = df.format(medianScore);
+	String averageTimeString = df.format(averageTimeInSeconds);
 	%>
 	
 	<h3><%= quizName %> by <%= quizCreator %></h3>
@@ -108,9 +113,9 @@
 	
 	<h4>Statistics Summary</h4>
 	<ul>
-	<li>Average Score: <%= averageScore %></li>
-	<li>Median Score: <%= medianScore %></li>
-	<li>Average Time: <%= averageTimeInSeconds %> sec</li>
+	<li>Average Score: <%= averageScoreString %></li>
+	<li>Median Score: <%= medianScoreString %>/<%= numQuestions %></li>
+	<li>Average Time: <%= averageTimeString %> sec</li>
 	</ul>
 	
 	<form action="TakeQuizServlet" method="post">
