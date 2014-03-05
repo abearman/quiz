@@ -478,9 +478,11 @@ public class DAL {
 	/* Setters */
 	
 	public void insertQuiz(Quiz quiz) {
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(quiz.getCreationDate());
 		try {
 			String update = "INSERT INTO quizzes VALUES(\""+quiz.getQuizName()+"\",\""+quiz.getDescriptionOfQuiz()+"\","+ quiz.isRandom()+","+quiz.isMultiplePage()+","+quiz.isImmediateCorrection()+","+quiz.canBeTakenInPracticeMode()+",\"" + 
-					quiz.getCreatorName() + "\",'" + new java.sql.Date(quiz.getCreationDate().getTime()) + "'," + quiz.getNumTimesTaken() + ");";
+					quiz.getCreatorName() + "\",'" + currentTime + "'," + quiz.getNumTimesTaken() + ");";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -634,9 +636,10 @@ public class DAL {
 	/* Setters */
 	
 	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date utilDate) {
-		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // I think this is wrong
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(utilDate);
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\",'" + sqlDate + "');";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\",\"" + quizName + "\"," + numQuestionsCorrect + "," + timeElapsed + ",\"" + dateString + "\",'" + currentTime + "');";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
