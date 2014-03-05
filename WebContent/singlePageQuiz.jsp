@@ -26,21 +26,21 @@
 				if(q.getQuestionType()==Question.QUESTION_RESPONSE)
 				{
 					out.print("<h4>Question ");
-					out.print(i+": ");
+					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
 					out.print("Your Answer: <input type=\"text\" name=\"answer"+i+"\"/>");
 				}
 				if(q.getQuestionType()==Question.FILL_IN_THE_BLANK)
 				{
 					out.print("<h4>Question ");
-					out.print(i+": ");
+					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
 					out.print("Your Answer: <input type=\"text\" name=\"answer"+i+"\"/>");	
 				}
 				if(q.getQuestionType()==Question.MULTIPLE_CHOICE)
 				{
 					out.print("<h4>Question ");
-					out.print(i+": ");
+					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
 					ArrayList<String> choices = ((MultipleChoice)q).getChoices();
 					for (int c = 0; c < choices.size(); c++){
@@ -50,7 +50,7 @@
 				if(q.getQuestionType()==Question.PICTURE_RESPONSE)
 				{
 					out.print("<h4>Question ");
-					out.print(i+": ");
+					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
 					out.print("<img src=\""+((PictureResponse)q).getImageURL()+"\">");
 					out.print("Your Answer: <input type=\"text\" name=\"answer\" />");
