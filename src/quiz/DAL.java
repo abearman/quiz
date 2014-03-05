@@ -416,9 +416,7 @@ public class DAL {
 		} catch (SQLException e) {
 			e.printStackTrace(); 
 		}
-
 	}
-
 	
 	public boolean userHasNewMessages(String username) {
 		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\";";
@@ -431,22 +429,35 @@ public class DAL {
 		return false;
 	}
 	
+	public boolean userHasPendingFriendRequestForThisFriend(String userName, String friendName) {
+		try {
+			String query = "SELECT * FROM messages WHERE fromUser = \"" + userName + "\" AND toUser = \"" + friendName + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) return true; 
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	//VALUES and not "values"; messages, not users; need number of arguments in insert to be equivalent with number of clumns
 	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {		
-		String update;
-		if (type.equals(Message.NOTE_MESSAGE)) {
-			update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
-		} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
-			update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
-		} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
-			update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ");";
-		} else {
-			update = ""; //Execution should never get here; just for initialization purposes
-		}
-
 		try {
-			stmt.executeUpdate(update);
+			if (type.equals(Message.NOTE_MESSAGE)) {
+				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
+				stmt.executeUpdate(update);
+			} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
+				String query = "SELECT * FROM messages WHERE fromUser = \"" + fromUser + "\" AND toUser = \"" + toUser + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
+				ResultSet rs = stmt.executeQuery(query);
+				if (!rs.next()) { //Only insert the message if the friend request doesn't already exist in the message table 
+					String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
+					stmt.executeUpdate(update);
+				} 
+			} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
+				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ");";
+				stmt.executeUpdate(update);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -470,8 +481,6 @@ public class DAL {
 			e.printStackTrace();
 		}
 	}
-
-	
 
 	public void addTopScorer(TopScorer topScorer, String quizName) {
 		try {

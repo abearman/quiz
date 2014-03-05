@@ -9,34 +9,36 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<%
-	String name = request.getParameter("friendName");
+	String friendName = request.getParameter("friendName");
 	String userName = (String)session.getAttribute("loginName");
 	
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
-	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(name);
-	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(name);
-	String achievements = dal.getUserAchievements(name);
-	ArrayList<String> friends = dal.getFriendListForUser(name);
+	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(friendName);
+	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(friendName);
+	String achievements = dal.getUserAchievements(friendName);
+	ArrayList<String> friends = dal.getFriendListForUser(friendName);
 	%>  
 	
-	<title> <%= name %>'s Profile </title>
+	<title> <%=friendName%>'s Profile </title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
 
-	<h2><%= name %>'s Profile</h2>
+	<h2><%= friendName %>'s Profile</h2>
 	
 	<%
-	if (!name.equals(userName)) {
-		if(dal.getFriendListForUser(userName).contains(name)) {%> 
+	if (!friendName.equals(userName)) {
+		if(dal.getFriendListForUser(userName).contains(friendName)) {%> 
 			<form name="removeFriend" action ="RemoveFriendServlet" method="post">
-				<input type="hidden" name="user2" value="<%=name%>">
+				<input type="hidden" name="user2" value="<%=friendName%>">
 				<input type="submit" value="Remove friend">
 			</form>
+		<%} else if (dal.userHasPendingFriendRequestForThisFriend(userName, friendName)) {
+			%><button> Pending Friend Request </button>
 		<%} else {%>
 			<form name="addFriend" action ="AddFriendServlet" method="post">
-				<input type="hidden" name="user2" value="<%=name%>">
+				<input type="hidden" name="user2" value="<%=friendName%>">
 				<input type="submit" value="Add friend!">
 			</form>
 		<%}
@@ -74,7 +76,7 @@
 		%>
 	</ul>
 	
-	<h2> <%=name%>'s Friends: </h2>
+	<h2> <%=friendName%>'s Friends: </h2>
 	<ul>
 		<%
 			for (int i = 0; i < friends.size(); i++) {
@@ -85,7 +87,7 @@
 	</ul>
 	
 	<%
-	if (dal.isUserAdmin(name)) {
+	if (dal.isUserAdmin(userName)) {
 		%> Go back <a href="administratorHomepage.jsp">home</a><% 
 	} else {
 		%> Go back <a href="userHomepage.jsp">home</a><% 
