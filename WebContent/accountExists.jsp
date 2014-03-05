@@ -18,7 +18,7 @@
 	<h2>Sorry, the name <%= username %> is already in use.</h2>
 	<h3>Please enter another name and password.</h3>
 
-	<form action="LoginServlet" method="post">
+	<form action="AccountCreationServlet" method="post">
 	<p>User Name: <input type="text" name="username" /><br>
 	Password: <input type="text" name="password" />
 	<input type = "submit" /></p>
