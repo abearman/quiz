@@ -39,11 +39,6 @@ public class DoneWithQuizServlet extends HttpServlet {
 		DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
 		String loginName = (String)request.getSession().getAttribute("loginName");
 		
-		int numQuizzesTaken = dal.getNumberQuizzesTakenForUser(loginName);
-		if (numQuizzesTaken >= 10) {
-			dal.addAchievementForUser(loginName, Achievements.QUIZ_MACHINE);
-		}
-		
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 		User user = (User)request.getSession().getAttribute("user");
 		ArrayList<Question> questions = quiz.getQuestions();
@@ -74,9 +69,13 @@ public class DoneWithQuizServlet extends HttpServlet {
 		quiz.addTopScorer(new TopScorer(user.getLoginName(), numQuestionsCorrect, elapsedTime, dal));
 		quiz.incrementNumTimesTaken();
 		
-		String quizName = quiz.getQuizName();
 		if (dal.isHighestScorerForQuiz(loginName, quiz.getQuizName())) {
 			dal.addAchievementForUser(loginName, Achievements.I_AM_THE_GREATEST);
+		}
+		
+		int numQuizzesTaken = dal.getNumberQuizzesTakenForUser(loginName);
+		if (numQuizzesTaken >= 10) {
+			dal.addAchievementForUser(loginName, Achievements.QUIZ_MACHINE);
 		}
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher("quizResults.jsp");
