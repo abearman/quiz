@@ -44,37 +44,57 @@ public class AddQuestionsServlet extends HttpServlet {
 		{
 			answersList.add(request.getParameter("answer"+i));
 		}
+		
 		if(questionType == Question.QUESTION_RESPONSE)
 		{
 			String question = request.getParameter("question");
-			System.out.println("Question: "+question);
-			//System.out.println("Answers: "+answers);
+			/*System.out.println("Question: "+question);
+			for(int i = 0; i <answersList.size(); i++)
+			{
+				System.out.println("answer: "+answersList.get(i));
+			}*/
 			quizCreated.addQuestion(new QuestionResponse(question, answersList, quizCreated.getNextQuestionNum()));
 		}
 		if(questionType == Question.FILL_IN_THE_BLANK)
 		{
 			String question = request.getParameter("question");
-			System.out.println("Question: "+question);
-			//System.out.println("Answers: "+answers);
+			/*System.out.println("Question: "+question);
+			for(int i = 0; i <answersList.size(); i++)
+			{
+				System.out.println("answer: "+answersList.get(i));
+			}*/
 			quizCreated.addQuestion(new FillInTheBlank(question, answersList, quizCreated.getNextQuestionNum()));
 		}
 		if(questionType == Question.MULTIPLE_CHOICE)
 		{
 			String question = request.getParameter("question");
-			String choices = request.getParameter("choices");
-			ArrayList<String> choicesList = Question.createArray(choices);
-			System.out.println("Question: "+question);
-			//System.out.println("Answers: "+answers);
-			System.out.println("Choices: " + choices);
+			ArrayList<String> choicesList = new ArrayList<String>();
+			int numChoices = Integer.parseInt(request.getParameter("numChoices"));
+			for(int i = 1; i <=numChoices; i++)
+			{
+				choicesList.add(request.getParameter("choice"+i));
+			}
+			/*System.out.println("Question: "+question);
+			for(int i = 0; i <answersList.size(); i++)
+			{
+				System.out.println("answer: "+answersList.get(i));
+			}
+			for(int i = 0; i <choicesList.size(); i++)
+			{
+				System.out.println("Choice: " + choicesList.get(i));
+			}*/
 			quizCreated.addQuestion(new MultipleChoice(question, answersList, quizCreated.getNextQuestionNum(), choicesList));
 		}
 		if(questionType == Question.PICTURE_RESPONSE)
 		{
 			String question = request.getParameter("question");
 			String imageURL = request.getParameter("imageURL");
-			System.out.println("Question: "+question);
-			//System.out.println("Answers: "+answers);
-			System.out.println("imageURL: " + imageURL);
+			/*System.out.println("Question: "+question);
+			for(int i = 0; i <answersList.size(); i++)
+			{
+				System.out.println("answer: "+answersList.get(i));
+			}
+			System.out.println("imageURL: " + imageURL);*/
 			quizCreated.addQuestion(new PictureResponse(question, answersList, quizCreated.getNextQuestionNum(),imageURL));
 		}
 		RequestDispatcher dispatch = request.getRequestDispatcher("addQuestions.jsp");
