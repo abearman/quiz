@@ -52,7 +52,9 @@
 	<%
 	ArrayList<HistoryObject> usersHistory = dal.getHistoryListForUser(user.getLoginName());
 	out.println("<ul>");
-	for (int i = 0; i < usersHistory.size(); i++){
+	int upperLimit = usersHistory.size();
+	if (usersHistory.size() > 5) upperLimit = 5;
+	for (int i = 0; i < upperLimit; i++){
 		HistoryObject history = usersHistory.get(i);
 		if (history.getQuizName().equals(quizName)){
 			double elapsedTimeInSeconds = ((Long)history.getElapsedTime()).doubleValue()/1000;
@@ -97,10 +99,10 @@
 	
 	<h4>Recent Test Takers of  <%= quizName %></h4>
 	<%
-	ArrayList<HistoryObject> quizHistory = dal.getAllHistoryLists(quizName);
+	ArrayList<HistoryObject> recentTestTakers = quiz.getRecentQuizTakers();
 	out.println("<ul>");
-	for (int i = 0; i < quizHistory.size(); i++){
-		HistoryObject history = quizHistory.get(i);
+	for (int i = 0; i < recentTestTakers.size(); i++){
+		HistoryObject history = recentTestTakers.get(i);
 		double elapsedTimeInSeconds = ((Long)history.getElapsedTime()).doubleValue()/1000;
 		out.println("<li><b>Name:</b> " + history.getUserName() +
 				" <b>Date:</b> " + history.getDateString() + 

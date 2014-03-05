@@ -27,7 +27,7 @@ public class Quiz {
 
 	//miscellaneous
 	private ArrayList<TopScorer> topScorersPastDay;
-	private ArrayList<String> recentQuizTakers;
+	private ArrayList<HistoryObject> recentQuizTakers;
 
 	//different across sessions
 	private long lengthOfCompletion;
@@ -71,7 +71,7 @@ public class Quiz {
 		allHistories = initializeAllHistories();
 
 		topScorersPastDay = new ArrayList<TopScorer>();
-		recentQuizTakers = new ArrayList<String>();
+		recentQuizTakers = new ArrayList<HistoryObject>();
 	}
 
 	private ArrayList<HistoryObject> initializeAllHistories() { 
@@ -341,10 +341,10 @@ public class Quiz {
 		});
 	}
 
-	public ArrayList<String> getRecentQuizTakers(){
+	public ArrayList<HistoryObject> getRecentQuizTakers(){
 		sortHistories();
 		for (int i = 0; i < RECENT_TEST_TAKER_MAX; i++){
-			recentQuizTakers.add(allHistories.get(i).getUserName());
+			recentQuizTakers.add(allHistories.get(i));
 		}
 		return recentQuizTakers;
 	}
@@ -410,13 +410,14 @@ public class Quiz {
 		sortTopScorers(topScorersPastDay);
 		
 		//cap top scorers in the past day at 5
-		int numExtra = topScorersPastDay.size() - TOPSCORER_MAX;
-		if (numExtra > 0){
-			for (int i = TOPSCORER_MAX; i < topScorersPastDay.size(); i++){
-				topScorersPastDay.remove(i);
+		if (topScorersPastDay.size() > TOPSCORER_MAX){
+			ArrayList<TopScorer> topScorersPastDayWithCap = new ArrayList<TopScorer>();
+			for (int i = 0; i < TOPSCORER_MAX; i++){
+				topScorersPastDayWithCap.add(topScorersPastDay.get(i));
 			}
+			topScorersPastDay = topScorersPastDayWithCap;
 		}
-
+		
 		return topScorersPastDay;
 	}
 	
