@@ -353,7 +353,10 @@ public class Quiz {
 	//history 1 is "less than" history 2 if history 1's date is before history 2's
 	private void sortHistories(){
 
+		System.out.println("sorting histories");
+		System.out.println("allhistories size is " + allHistories.size());
 		Collections.sort(allHistories, new Comparator<HistoryObject>(){
+			
 
 			@Override
 			public int compare(HistoryObject history1, HistoryObject history2){

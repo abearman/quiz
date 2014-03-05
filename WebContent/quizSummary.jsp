@@ -117,7 +117,7 @@
 	
 	<h4>Statistics Summary</h4>
 	<ul>
-	<li>Average Score: <%= averageScoreString %></li>
+	<li>Average Score: <%= averageScoreString %>/<%= numQuestions %></li>
 	<li>Median Score: <%= medianScoreString %>/<%= numQuestions %></li>
 	<li>Average Time: <%= averageTimeString %> sec</li>
 	</ul>
