@@ -71,7 +71,9 @@
 	<%
 	ArrayList<TopScorer> topScorers = quiz.getTopScorers();
 	out.println("<ul>");
-	for (int i = 0; i < topScorers.size(); i++){
+	int topScorerUpperLimit = topScorers.size();
+	if (topScorers.size() > 5) topScorerUpperLimit = 5;
+	for (int i = 0; i < topScorerUpperLimit; i++){
 		TopScorer topScorer = topScorers.get(i);
 		double elapsedTimeInSeconds = (topScorer.getTimeTaken())/1000;
 		out.println("<li><b>Name:</b> " + topScorer.getLoginName() + 
