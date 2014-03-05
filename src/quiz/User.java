@@ -168,7 +168,7 @@ public class User {
 	}
 	
 	public void takeQuiz(HistoryObject ho) {
-		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getNumQuestionsCorrect(), ho.getElapsedTime(), ho.getDateString(), ho.getDate());
+		dal.addToHistoryListForUser(ho.getUserName(), ho.getQuizName(), ho.getNumQuestionsCorrect(), ho.getElapsedTime(), ho.getDate());
 		this.recentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(ho.getUserName());
 		//Update recently taken quizzes, in the database, and the instance variable
 		//Updates recentActivity field for user in database
