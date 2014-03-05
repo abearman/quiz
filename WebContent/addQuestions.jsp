@@ -17,7 +17,8 @@
 
 <body>
 	<h5><i>Choose a question type from the drop down menu and fill out the necessary fields. Press "Add Question" to add another
-question or press "Done" if you are complete. Press "Add Answers" to add another possible answer to the question.</i></h5>
+question or press "Done" if you are complete. Press "Add Answers" to add another possible answer to the question.
+Please enter one answer per box.</i></h5>
 
 <script type="text/javascript">
 
@@ -34,6 +35,8 @@ function displayQuestion()
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
+		var choiceButton = "";
+		document.getElementById("choicesButton").innerHTML = choiceButton;
 		var instructions = "<b>An example of a Question Response question is \"Who was the first president of the United States?\"</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
@@ -45,6 +48,8 @@ function displayQuestion()
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
+		var choiceButton = "";
+		document.getElementById("choicesButton").innerHTML = choiceButton;
 		var instructions = "<b>An example of a Fill in the Blank question is \"______ was the first president of the United States.\"</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
@@ -53,12 +58,15 @@ function displayQuestion()
 		var display = "<h3>Multiple Choice</h3> ";
 		display+= "<input type=\"hidden\" name=\"questionType\" value =3>";
 		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1>";
+		display+= "<input type=\"hidden\" name=\"numChoices\" value= 1>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
-		display+= "<p>Choices:<input type = \"text\" name=\"choices\"></p>";
+		display+= "<p id= \"choices\">Choices:<input type = \"text\" name=\"choice1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
+		var choiceButton = "<input type=\"button\" value=\"Add Choice\" onclick=\"addChoiceBox()\">";
+		document.getElementById("choicesButton").innerHTML = choiceButton;
 		var instructions = "<b>An example of a Multiple Choice question is \"Who was the first president of the United States?\"<br>";
-		instructions+= "Choices for the question need to be separated by the \"\\n\" character. For the question above, answer formatting would look like \"Abraham Lincoln\\nGeorge Washington\\nJohn Adams\"</b>";
+		instructions+= "Press \"Add Choices\" to add another choice for the question. Please enter one choice per box.</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
 	if (options[selected].value == "PictureResponse")
@@ -70,6 +78,8 @@ function displayQuestion()
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		display+= "<p>Image URL:<input type = \"text\" name=\"imageURL\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
+		var choiceButton = "";
+		document.getElementById("choicesButton").innerHTML = choiceButton;
 		var instructions = "<b>An example of a Picture Response question is a picture of George Washinton with the accompanying question \"Who is this President of the United States?\"<br>";
 		instructions+= "The question field may be left blank for this type of question and only a picture will be shown. The URL for the image should be the exact URL to find the image at.</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
@@ -82,6 +92,13 @@ function addAnswerBox()
 	document.frm.numAnswers.value = parseInt(document.frm.numAnswers.value)+1;
 	var answers = document.getElementById("answers");
 	answers.appendChild(document.createElement('div')).innerHTML = "<input type =\"text\" name =\"answer"+document.frm.numAnswers.value+ "\">";
+}
+
+function addChoiceBox()
+{
+	document.frm.numChoices.value = parseInt(document.frm.numChoices.value)+1;
+	var choices = document.getElementById("choices");
+	choices.appendChild(document.createElement('div')).innerHTML = "<input type =\"text\" name =\"choice"+document.frm.numChoices.value+ "\" />";
 }
 
 </script>
@@ -102,12 +119,13 @@ function addAnswerBox()
 		<div id ="displayArea">
 			<h3>Question Response</h3>
 			<input type="hidden" name="questionType" value =1>
-			<input type="hidden" name="numAnswers" value= 1/>
+			<input type="hidden" name="numAnswers" value= 1>
 			<p>Question:<input type = "text" name="question"></p>
 			<p id="answers">Answers:<input type = "text" name="answer1" ></p>
 		</div>
 		
 		<input type ="button" value = "Add Answer" onclick ="addAnswerBox()"/>
+		<p id="choicesButton"></p>
 		<input type = "submit" value = "Add Question"/> 
 	</form>
 	
@@ -119,8 +137,6 @@ function addAnswerBox()
 
 <hr noshade size=4>
 <p id = "specialInstructions"><b>An example of a Question Response question is "Who was the first president of the United States?"</b></p>
-<br>
-<p><b>Please separate the possible answers for the question in the text box by the "\n" character. An example would be "apple\norange\nbanana".</b></p>
 
 
 
