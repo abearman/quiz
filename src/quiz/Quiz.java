@@ -148,6 +148,7 @@ public class Quiz {
 	//constructor for taking a quiz, handles querying of database
 	public Quiz(DAL dal, String givenQuizName) {
 		this.dal = dal;
+		this.quizName = givenQuizName;
 		initializeArrayLists();
 		readDatabase(givenQuizName);
 		getQuestionsFromDB(givenQuizName);
@@ -367,7 +368,7 @@ public class Quiz {
 	}
 
 	public ArrayList<TopScorer> getTopScorersPastDay(){
-
+		
 		for (int i = 0; i < allHistories.size(); i++){
 
 			HistoryObject history = allHistories.get(i);
@@ -386,17 +387,17 @@ public class Quiz {
 
 			//get the history object's day
 			Date historyDate = history.getDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(historyDate);
+			Calendar historyCal = Calendar.getInstance();
+			historyCal.setTime(historyDate);
 
-			int historyYear = cal.get(Calendar.YEAR);
-			int historyMonth = cal.get(Calendar.MONTH);
-			int historyDay = cal.get(Calendar.DAY_OF_MONTH);
-
+			int historyYear = historyCal.get(Calendar.YEAR);
+			int historyMonth = historyCal.get(Calendar.MONTH);
+			int historyDay = historyCal.get(Calendar.DAY_OF_MONTH);
+			
 			int yesterdayYear = previousDayCal.get(Calendar.YEAR);
 			int yesterdayMonth = previousDayCal.get(Calendar.MONTH);
 			int yesterdayDay = previousDayCal.get(Calendar.DAY_OF_MONTH);
-
+			
 			//found a history in the past day
 			if ((historyYear == currentYear && historyMonth == currentMonth && historyDay == currentDay) || 
 					(historyYear == yesterdayYear && historyMonth == yesterdayMonth && historyDay == yesterdayDay)){
@@ -405,8 +406,16 @@ public class Quiz {
 
 		}
 
-		//sort top scorers in the past day and cap at 5
+		//sort top scorers in the past day
 		sortTopScorers(topScorersPastDay);
+		
+		//cap top scorers in the past day at 5
+		int numExtra = topScorersPastDay.size() - TOPSCORER_MAX;
+		if (numExtra > 0){
+			for (int i = TOPSCORER_MAX; i < topScorersPastDay.size(); i++){
+				topScorersPastDay.remove(i);
+			}
+		}
 
 		return topScorersPastDay;
 	}

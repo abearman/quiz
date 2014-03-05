@@ -26,8 +26,9 @@ public class HistoryObject {
 		dal.addToHistoryListForUser(userName, quizName, numQuestionsCorrect, timeElapsed, dateString, date);
 	}
 	
-	public HistoryObject(String userName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, DAL dal) {
+	public HistoryObject(String userName, String quizName, int numQuestionsCorrect, long timeElapsed, String dateString, java.util.Date dateValue, DAL dal) {
 		this.dateString = dateString;
+		this.date = dateValue;
 		this.timeElapsed = timeElapsed;
 		this.numQuestionsCorrect = numQuestionsCorrect;
 		this.userName = userName;

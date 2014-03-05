@@ -149,7 +149,8 @@ public class DAL {
 				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 				long timeElapsed = rs.getLong("timeElapsed");
 				String dateString = rs.getString("dateString");
-				historyList.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
+				java.sql.Date sqlDate = rs.getDate("dateValue");
+				historyList.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, new java.util.Date(sqlDate.getTime()), this));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -186,7 +187,8 @@ public class DAL {
 					int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 					long timeElapsed = rs.getLong("timeElapsed");
 					String dateString = rs.getString("dateString");
-					result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, this));
+					java.sql.Date sqlDate = rs.getDate("dateValue");
+					result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, dateString, new java.util.Date(sqlDate.getTime()), this));
 				}
 			}
 
