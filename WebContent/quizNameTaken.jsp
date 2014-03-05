@@ -12,14 +12,9 @@
 
 <body>
 
-<%
-	Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
-	String quizName = quiz.getQuizName();
-%>
-
 	<h3>Create a Quiz</h3>
 	
-	<h4>Sorry, there is already a quiz named <%= quizName %>. Please choose another name.</h4>
+	<h4>Sorry, there is already a quiz with this name. Please choose another name.</h4>
 	
 	<form action="QuizCreationServlet" method = "post">
 		<p>Quiz Name: <input type = "text" name = "quizName"/></p>

@@ -29,8 +29,8 @@ function displayQuestion()
 	if (options[selected].value == "QuestionResponse")
 	{
 		var display = "<h3>Question Response</h3> ";
-		display+= "<input type=\"hidden\" name=\"questionType\" value =1/>";
-		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =1>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
@@ -40,8 +40,8 @@ function displayQuestion()
 	if (options[selected].value == "FillInTheBlank")
 	{
 		var display = "<h3>Fill in the Blank</h3> ";
-		display+= "<input type=\"hidden\" name=\"questionType\" value =2/>";
-		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =2>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		document.getElementById("displayArea").innerHTML = display;
@@ -51,8 +51,8 @@ function displayQuestion()
 	if (options[selected].value == "MultipleChoice")
 	{
 		var display = "<h3>Multiple Choice</h3> ";
-		display+= "<input type=\"hidden\" name=\"questionType\" value =3/>";
-		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =3>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		display+= "<p>Choices:<input type = \"text\" name=\"choices\"></p>";
@@ -64,8 +64,8 @@ function displayQuestion()
 	if (options[selected].value == "PictureResponse")
 	{
 		var display = "<h3>Picture Response</h3> ";
-		display+= "<input type=\"hidden\" name=\"questionType\" value =4/>";
-		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1/>";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =4>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1>";
 		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
 		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
 		display+= "<p>Image URL:<input type = \"text\" name=\"imageURL\"></p>";
@@ -81,7 +81,7 @@ function addAnswerBox()
 {
 	document.frm.numAnswers.value = parseInt(document.frm.numAnswers.value)+1;
 	var answers = document.getElementById("answers");
-	answers.appendChild(document.createElement('div')).innerHTML = "<input type =\"text\" name =\"answer"+document.frm.numAnswers.value+ "\"/>";
+	answers.appendChild(document.createElement('div')).innerHTML = "<input type =\"text\" name =\"answer"+document.frm.numAnswers.value+ "\">";
 }
 
 </script>

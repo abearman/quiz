@@ -44,7 +44,7 @@
 					out.print(q.getQuestion()+"</h4>");
 					ArrayList<String> choices = ((MultipleChoice)q).getChoices();
 					for (int c = 0; c < choices.size(); c++){
-						out.println("<input type=\"radio\" name=\"answer" +i+ "\" value=\"" + choices.get(c) + "\"/>");
+						out.println("<input type=\"radio\" name=\"answer" +i+ "\" value=\"" + choices.get(c) + "\"/> " + choices.get(c) + "<br>");
 					}
 				}
 				if(q.getQuestionType()==Question.PICTURE_RESPONSE)
