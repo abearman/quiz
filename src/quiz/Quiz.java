@@ -406,8 +406,16 @@ public class Quiz {
 
 		}
 
-		//sort top scorers in the past day and cap at 5
+		//sort top scorers in the past day
 		sortTopScorers(topScorersPastDay);
+		
+		//cap top scorers in the past day at 5
+		int numExtra = topScorersPastDay.size() - TOPSCORER_MAX;
+		if (numExtra > 0){
+			for (int i = TOPSCORER_MAX; i < topScorersPastDay.size(); i++){
+				topScorersPastDay.remove(i);
+			}
+		}
 
 		return topScorersPastDay;
 	}
