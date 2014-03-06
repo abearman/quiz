@@ -33,6 +33,9 @@ public class UpdateAnswersServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("in update answers servlet");
+		
 		String answer = (String)request.getParameter("answer");
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 		quiz.addAnswers(answer);

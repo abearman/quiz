@@ -52,6 +52,8 @@ public class DoneWithQuizServlet extends HttpServlet {
 		
 		int numQuestionsCorrect = 0;
 		for (int i = 0; i < questions.size(); i++){
+			System.out.println("questions.get(i) is " + questions.get(i).getQuestion());
+			System.out.println("answers.get(i) is " + answers.get(i));
 			if (questions.get(i).answerIsCorrect(answers.get(i))){
 				numQuestionsCorrect++;
 			}

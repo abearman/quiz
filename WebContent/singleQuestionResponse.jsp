@@ -24,7 +24,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 <h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
 
 <form action="UpdateAnswersServlet" method="post">
-	Your Answer: <input type="text" name="answer" />
+	<br>Your Answer: <input type="text" name="answer" />
 	<input type = "submit" />
 </form>
 
