@@ -16,9 +16,9 @@
 </head>
 
 <body>
-	<h5><i>Choose a question type from the drop down menu and fill out the necessary fields. Press "Add Question" to add another
-question or press "Done" if you are complete. Press "Add Answers" to add another possible answer to the question.
-Please enter one answer per box.</i></h5>
+	<h4><i>Choose a question type from the drop down menu and fill out the necessary fields. Press "Add Question" to add another
+question or press "Done" if you are complete. Press "Add Answers" to add another possible answer to the question. Press "Remove Answers" to remove the last answer.
+Please enter one answer per box and do not leave any boxes unfilled.</i></h4>
 
 <script type="text/javascript">
 
@@ -67,7 +67,7 @@ function displayQuestion()
 		choiceButton+= "<input type= \"button\" value = \"Remove Choice\" onclick=\"removeChoiceBox()\">";
 		document.getElementById("choicesButton").innerHTML = choiceButton;
 		var instructions = "<b>An example of a Multiple Choice question is \"Who was the first president of the United States?\"<br>";
-		instructions+= "Press \"Add Choices\" to add another choice for the question. Please enter one choice per box.</b>";
+		instructions+= "Press \"Add Choices\" to add another choice for the question. Press \"Remove Answers\" to remove the last answer. Please enter only one choice per box and do not leave any Choices boxes unfilled.</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
 	if (options[selected].value == "PictureResponse")
@@ -124,6 +124,46 @@ function removeChoiceBox()
 	}
 }
 
+function checkForm()//error checking to make sure fields are filled out properly
+{
+	var selected = document.getElementById("optionsBox").selectedIndex;
+	var options = document.getElementById("optionsBox").options;
+	if(document.frm.question.value == "")
+	{
+		alert("Please enter a Question.");
+	}
+	else if(document.frm.answer1.value == "")
+	{
+		alert("Please enter an Answer.");
+	}
+	else if (options[selected].value == "MultipleChoice")
+	{
+		if(document.frm.choice1.value == "")
+		{
+			alert("Please enter a Choice.");
+		}
+		else
+		{
+			document.frm.submit();
+		}
+	}
+	else if (options[selected].value == "PictureResponse")
+	{
+		if(document.frm.imageURL.value == "")
+		{
+			alert("Please enter an Image URL.");
+		}
+		else
+		{
+			document.frm.submit();
+		}
+	}
+	else
+	{
+		document.frm.submit();
+	}
+	
+}
 </script>
 
 
@@ -149,8 +189,8 @@ function removeChoiceBox()
 		
 		<input type ="button" value = "Add Answer" onclick ="addAnswerBox()">
 		<input type= "button" value = "Remove Answer" onclick="removeAnswerBox()">
-		<p id="choicesButton"></p>
-		<input type = "submit" value = "Add Question"/> 
+		<p id= "choicesButton"></p>
+		<input type = "button" value = "Add Question" onclick="checkForm()" > 
 	</form>
 	
 	<form action="QuizCreationCompletedServlet" method = "post">
