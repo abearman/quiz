@@ -162,7 +162,19 @@ function checkForm()//error checking to make sure fields are filled out properly
 	{
 		document.frm.submit();
 	}
-	
+}
+
+function checkNumQuestions()
+{
+	var numQuestions = parseInt(document.doneFrm.numQuestions.value);
+	if(numQuestions > 0)
+	{
+		document.doneFrm.submit();
+	}
+	else
+	{
+		alert("Quiz needs at least one question.");
+	}
 }
 </script>
 
@@ -193,8 +205,9 @@ function checkForm()//error checking to make sure fields are filled out properly
 		<input type = "button" value = "Add Question" onclick="checkForm()" > 
 	</form>
 	
-	<form action="QuizCreationCompletedServlet" method = "post">
-		<input type = "submit" value = "Done"/>
+	<form name="doneFrm" action="QuizCreationCompletedServlet" method = "post">
+		<input type= "hidden" name="numQuestions" value = <%out.print(quizCreated.getQuestions().size());%>>
+		<input type = "button" value = "Done" onclick="checkNumQuestions()" >
 	</form>
 	
 </div>
