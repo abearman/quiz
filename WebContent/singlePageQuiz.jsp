@@ -53,7 +53,7 @@
 					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
 					out.print("<img src=\""+((PictureResponse)q).getImageURL()+"\">");
-					out.print("Your Answer: <input type=\"text\" name=\"answer\">");
+					out.print("Your Answer: <input type=\"text\" name=\"answer"+i+ "\" />");
 				}
 			}
 		%>
