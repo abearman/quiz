@@ -350,10 +350,6 @@ public class Quiz {
 		for (int i = 0; i < upperLimit; i++){
 			recentQuizTakers.add(allHistories.get(i));
 		}
-		
-		for (int i = 0; i < recentQuizTakers.size(); i++){
-			HistoryObject history = recentQuizTakers.get(i);
-		}
 		return recentQuizTakers;
 	}
 
