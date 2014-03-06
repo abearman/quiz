@@ -109,9 +109,9 @@
 		HistoryObject history = recentTestTakers.get(i);
 		double elapsedTimeInSeconds = ((Long)history.getElapsedTime()).doubleValue()/1000;
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String currentTime = sdf.format(history.getDate());
+		String historyTime = sdf.format(history.getDate());
 		out.println("<li><b>Name:</b> " + history.getUserName() +
-				" <b>Date:</b> " + currentTime + 
+				" <b>Date:</b> " + historyTime + 
 				" <b>Time Taken:</b> " + elapsedTimeInSeconds + 
 				" sec <b>Number of Questions Correct:</b> " + history.getNumQuestionsCorrect()
 				+ "</li>");

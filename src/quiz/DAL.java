@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class DAL {
@@ -599,7 +599,7 @@ public class DAL {
 				String quizName = rs.getString("quizName");
 				int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 				long timeElapsed = rs.getLong("timeElapsed");
-				java.sql.Date sqlDate = rs.getDate("dateValue");
+				Timestamp sqlDate = rs.getTimestamp("dateValue");
 				historyList.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, new java.util.Date(sqlDate.getTime()), this));
 			}
 		} catch (SQLException e) {
@@ -621,7 +621,7 @@ public class DAL {
 					String quizName = rs.getString("quizName");
 					int numQuestionsCorrect = rs.getInt("numQuestionsCorrect");
 					long timeElapsed = rs.getLong("timeElapsed");
-					java.sql.Date sqlDate = rs.getDate("dateValue");
+					Timestamp sqlDate = rs.getTimestamp("dateValue");
 					result.add(new HistoryObject(loginName, quizName, numQuestionsCorrect, timeElapsed, new java.util.Date(sqlDate.getTime()), this));
 				}
 			}
@@ -637,7 +637,7 @@ public class DAL {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(utilDate);
 		try {
-			String update = "INSERT INTO histories VALUES(\"" + loginName + "\", \"" + quizName + "\", " + numQuestionsCorrect + ", " + timeElapsed + ", \"" + currentTime + "\");";
+			String update = "INSERT INTO histories VALUES(\"" + loginName + "\", \"" + quizName + "\", " + numQuestionsCorrect + ", " + timeElapsed + ", '" + currentTime + "');";
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();

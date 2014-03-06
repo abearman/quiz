@@ -350,6 +350,11 @@ public class Quiz {
 		for (int i = 0; i < upperLimit; i++){
 			recentQuizTakers.add(allHistories.get(i));
 		}
+		
+		for (int i = 0; i < recentQuizTakers.size(); i++){
+			HistoryObject history = recentQuizTakers.get(i);
+			System.out.println("history.date is " + history.getDate());
+		}
 		return recentQuizTakers;
 	}
 
@@ -362,9 +367,9 @@ public class Quiz {
 			@Override
 			public int compare(HistoryObject history1, HistoryObject history2){
 				if (history1.getDate().before(history2.getDate())){
-					return -1;
-				}else if (history2.getDate().before(history1.getDate())){
 					return 1;
+				}else if (history2.getDate().before(history1.getDate())){
+					return -1;
 				}
 				return 0;
 			}
