@@ -93,7 +93,7 @@ CREATE TABLE pictureResponse (
     answer CHAR(64),
     qtype INT,
     qNum INT,
-    imageURL CHAR(64)
+    imageURL CHAR(255)
 );
 
 
