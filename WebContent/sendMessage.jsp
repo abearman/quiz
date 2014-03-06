@@ -32,13 +32,13 @@ function displayMessage()
 	System.out.println("hellooo");
 	if (options[selected].value.equals(Message.NOTE_MESSAGE)) {
 		var display = "<h3>Note Message</h3> ";
-		display+= "<input type=\"hidden\" name=\"messageType\" value =\"Message.NOTE_MESSAGE\"/>";
+		display+= "<input type=\"hidden\" name=\"messageType\" value =\"<%=Message.NOTE_MESSAGE%>\"/>";
 		display+= "<p>Message:<input type = \"text\" name=\"message\"></p>";
 		document.getElementById("messageArea").innerHTML = display;
 
 	} else if (options[selected].value.equals(Message.CHALLENGE_MESSAGE)) {
 		var display = "<h3>Challenge Message</h3> ";
-		display+= "<input type=\"hidden\" name=\"messageType\" value =\"Message.CHALLENGE_MESSAGE\"/>";
+		display+= "<input type=\"hidden\" name=\"messageType\" value =\"<%=Message.CHALLENGE_MESSAGE%>\"/>";
 		display+= "<p>Quiz:<input type = \"text\" name=\"quiz\"></p>";
 		document.getElementById("messageArea").innerHTML = display;
 	}
