@@ -22,7 +22,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 
 <h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
 <h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
-<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>"><br>
+<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>" height="250" width="250"><br>
 
 <form action="UpdateAnswersServlet" method="post">
 	Your Answer: <input type="text" name="answer" />
