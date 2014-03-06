@@ -353,7 +353,6 @@ public class Quiz {
 		
 		for (int i = 0; i < recentQuizTakers.size(); i++){
 			HistoryObject history = recentQuizTakers.get(i);
-			System.out.println("history.date is " + history.getDate());
 		}
 		return recentQuizTakers;
 	}
