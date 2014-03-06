@@ -27,6 +27,8 @@
 
 	<h2><%= friendName %>'s Profile</h2>
 	
+		<a href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=userName%>"><button> Send Message </button></a>
+	
 	<%
 	if (!friendName.equals(userName)) {
 		if(dal.getFriendListForUser(userName).contains(friendName)) {%> 
