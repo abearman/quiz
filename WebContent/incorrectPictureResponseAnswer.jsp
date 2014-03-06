@@ -20,7 +20,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 
 <h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
 <h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
-<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>">
+<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>"><br>
 
 <form action="" method="post">
 	Your Answer: <input type="text" name="answer" />
