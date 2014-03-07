@@ -21,9 +21,7 @@
 	ArrayList<String> announcements = dal.getAllAnnouncements();
 	boolean hasNewMessages = dal.userHasNewMessages(username);
 	
-	ArrayList<String> friends = dal.getFriendListForUser(username);
-	//ArrayList<FriendRecentActivity> friendRecentActivities = dal.getFriendsRecentActivity(friends);
-	
+	ArrayList<NewsfeedObject> newsfeed = dal.getNewsfeed(username);
 	%>  
 	
 	<title>Welcome <%= username %></title>
@@ -115,6 +113,22 @@
 				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
 			}
 		%>
+	</ul>
+	
+	<!-- Newsfeed -->
+	<h2> Newsfeed </h2>
+	<ul>
+		<%for (int i = 0; i < newsfeed.size(); i++) {
+			NewsfeedObject nfo = newsfeed.get(i);
+			String name = nfo.getLoginName();
+			String action = nfo.getAction();
+			if (nfo.hasQuiz()) { 
+				String quizName = nfo.getQuizName(); %>
+				<li> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </li>
+			<%} else {%>
+				<li> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> </li>
+			<%}%>
+		<%}%>
 	</ul>
 
 </body>
