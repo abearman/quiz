@@ -29,14 +29,11 @@ public class DAL {
 	public ArrayList<NewsfeedObject> getNewsfeed(String loginName) {
 		ArrayList<NewsfeedObject> newsfeed = new ArrayList<NewsfeedObject>();
 		
-		//Get all of loginName's friends
-		ArrayList<String> friendList = getFriendListForUser(loginName);
-		
 		//Get all created quizzes, sorted by creationDate (that were created by friends of this user)
-		ArrayList<NewsfeedObject> allCreatedQuizzes = getAllCreatedQuizzesForNewsFeed(friendList); 
+		ArrayList<NewsfeedObject> allCreatedQuizzes = getAllCreatedQuizzesForNewsFeed(loginName); 
 		
 		//Get all taken quizzes, sorted by dateValue (that were taken by friends of this user)
-		ArrayList<NewsfeedObject> allTakenQuizzes = getAllTakenQuizzesForNewsFeed(friendList);
+		ArrayList<NewsfeedObject> allTakenQuizzes = getAllTakenQuizzesForNewsFeed(loginName);
 		
 		//Get all achievements, sorted by achievementDate (that were achieved by friends of this user) ==> Do this later //TODO
 		//Get all statuses, sorted by date (that were posted by friends of this user) ==> Do this later //TODO
@@ -304,19 +301,20 @@ public class DAL {
 	 * Returns a list of all created quizzes, ordered by date, created by users who are friends 
 	 * of a given user (are included in the friendList) 
 	 * */
-	public ArrayList<NewsfeedObject> getAllCreatedQuizzesForNewsFeed(ArrayList<String> friendList) {
+	public ArrayList<NewsfeedObject> getAllCreatedQuizzesForNewsFeed(String loginName) {
+		ArrayList<String> friendList = getFriendListForUser(loginName);
 		ArrayList<NewsfeedObject> recentlyCreatedQuizzes = new ArrayList<NewsfeedObject>();
 		
 		String query = "SELECT * FROM quizzes ORDER BY creationDate DESC;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				if (friendList.contains(rs.getString("creatorName"))) {
-					String loginName = rs.getString("creatorName");
+				String friendName = rs.getString("creatorName");
+				if (friendList.contains(friendName) || friendName.equals(loginName)) {
 					String action = NewsfeedObject.CREATED_A_QUIZ_STRING;
 					String quizName = rs.getString("quizName");
 					java.sql.Date date = rs.getDate("creationDate");
-					NewsfeedObject nfo = new NewsfeedObject(loginName, action, true, quizName, date);
+					NewsfeedObject nfo = new NewsfeedObject(friendName, action, true, quizName, date);
 					recentlyCreatedQuizzes.add(nfo);
 				}
 			}
@@ -625,18 +623,19 @@ public class DAL {
 	 * Returns a list of all taken quizzes, ordered by date, taken by users who are friends 
 	 * of a given user (are included in the friendList) 
 	 * */
-	public ArrayList<NewsfeedObject> getAllTakenQuizzesForNewsFeed(ArrayList<String> friendList) {
+	public ArrayList<NewsfeedObject> getAllTakenQuizzesForNewsFeed(String loginName) {
+		ArrayList<String> friendList = getFriendListForUser(loginName);
 		ArrayList<NewsfeedObject> recentlyTakenQuizzes = new ArrayList<NewsfeedObject>();
 		String query = "SELECT * FROM histories ORDER BY dateValue DESC;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				String loginName = rs.getString("loginName");
-				if (friendList.contains(rs.getString("loginName"))) {
+				String friendName = rs.getString("loginName");
+				if (friendList.contains(friendName) || friendName.equals(loginName)) {
 					String action = NewsfeedObject.TOOK_A_QUIZ_STRING;
 					String quizName = rs.getString("quizName");
 					java.sql.Date date = rs.getDate("dateValue");
-					NewsfeedObject nfo = new NewsfeedObject(loginName, action, true, quizName, date);
+					NewsfeedObject nfo = new NewsfeedObject(friendName, action, true, quizName, date);
 					recentlyTakenQuizzes.add(nfo);
 				}
 			}
