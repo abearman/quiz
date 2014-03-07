@@ -117,19 +117,19 @@
 	
 	<!-- Newsfeed -->
 	<h2> Newsfeed </h2>
-	<ul>
-		<%for (int i = 0; i < newsfeed.size(); i++) {
-			NewsfeedObject nfo = newsfeed.get(i);
-			String name = nfo.getLoginName();
-			String action = nfo.getAction();
-			if (nfo.hasQuiz()) { 
-				String quizName = nfo.getQuizName(); %>
-				<li> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </li>
-			<%} else {%>
-				<li> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> </li>
+	<div style="width:400px;height:400px;overflow:scroll;padding:5px;">
+			<%for (int i = 0; i < newsfeed.size(); i++) {
+				NewsfeedObject nfo = newsfeed.get(i);
+				String name = nfo.getLoginName();
+				String action = nfo.getAction();
+				if (nfo.hasQuiz()) { 
+					String quizName = nfo.getQuizName(); %>
+					<p> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </p>
+				<%} else {%>
+					<p> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> </p>
+				<%}%>
 			<%}%>
-		<%}%>
-	</ul>
+	</div>
 
 </body>
 </html>
