@@ -21,6 +21,7 @@ long elapsedTime = (Long)request.getSession().getAttribute("elapsedTime");
 double elapsedTimeInSeconds = ((Long)elapsedTime).doubleValue()/1000;
 int numQuestionsCorrect = (Integer)request.getSession().getAttribute("numQuestionsCorrect");
 int totalNumQuestions = questions.size();
+String friendAttempt = request.getParameter("friendAttempt");
 
 %>
 
@@ -46,8 +47,9 @@ for (int i = 0; i < questions.size(); i++){
 			<input type="hidden" name="messageType" value ="ChallengeMessage">
 			<input type="hidden" name="quiz" value=<%=quiz.getQuizName()%>>
 			<input type="hidden" name="fromUser" value=<%=user.getLoginName()%>>
-			<h5>Challenge a friend to take this quiz!<input type = "text" name="toUser"></h5>	
-		<input type = "submit" value = "Challenge"/> 
+			<h5>Challenge a friend to take this quiz!<input type = "text" name="toUser"></h5>
+		<input type = "submit" value = "Challenge"/>
+		You are not friends with the user <%=friendAttempt%>. Try again!
 	</form>
 </div>
 		

@@ -682,6 +682,18 @@ public class DAL {
 		return friendList;
 	}
 	
+	public boolean areFriends(String friend1, String friend2) {
+		boolean areFriends = false;
+		String query = "SELECT * FROM friends WHERE user1 = \"" + friend1 + "\" AND user2 = \"" + friend2 + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			areFriends = rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return areFriends;
+	}
+	
 	/* Setters */
 	
 	public void addFriendPair(String user1, String user2) {

@@ -5,13 +5,15 @@ public class ChallengeMessage extends Message {
 	private String quizName;
 	private String message;
 	private double bestScore;
+	private DAL dal;
 	
-	public ChallengeMessage(User fromUser, User toUser, Quiz quiz, DAL dal) {
-		super(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, dal);
+	public ChallengeMessage(String fromUser, String toUser, Quiz quiz, DAL dal) {
+		super(fromUser, toUser, Message.CHALLENGE_MESSAGE, dal);
+		this.dal = dal;
 		this.quizName = quiz.getQuizName();
 		this.bestScore = challengingUserBestScore(fromUser);
-		message = fromUser.getLoginName() + " is challenging you to take the " + quiz.getQuizName() + " quiz!";
-		dal.addMessageForUser(fromUser.getLoginName(), toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
+		message = fromUser + " is challenging you to take the " + quiz.getQuizName() + " quiz!";
+		dal.addMessageForUser(fromUser, toUser, Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
 	}
 	
 	//Used for testing
@@ -39,10 +41,10 @@ public class ChallengeMessage extends Message {
 		return message;
 	}
 	
-	public double challengingUserBestScore(User user) {
+	public double challengingUserBestScore(String userName) {
 		//Alternative looping through user's histories
 		int bestScore = 0;
-		for (HistoryObject hist : user.getHistory()) {
+		for (HistoryObject hist : dal.getHistoryListForUser(userName)) {
 			if (hist.getQuizName().equals(getQuizName())) {
 				int score = hist.getNumQuestionsCorrect();
 				if (score > bestScore)
