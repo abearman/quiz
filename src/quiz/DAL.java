@@ -22,9 +22,56 @@ public class DAL {
 	public Statement getStatement() {
 		return stmt;
 	}
+	
+	///////////////////////////////////////////////////
+	/** NEWSFEED */
+	
+	public ArrayList<NewsfeedObject> getNewsfeed(String loginName) {
+		ArrayList<NewsfeedObject> newsfeed = new ArrayList<NewsfeedObject>();
+		
+		//Get all of loginName's friends
+		ArrayList<String> friendList = getFriendListForUser(loginName);
+		
+		//Get all created quizzes, sorted by creationDate (that were created by friends of this user)
+		ArrayList<NewsfeedObject> allCreatedQuizzes = getAllCreatedQuizzesForNewsFeed(friendList); 
+		
+		//Get all taken quizzes, sorted by dateValue (that were taken by friends of this user)
+		ArrayList<NewsfeedObject> allTakenQuizzes = getAllTakenQuizzesForNewsFeed(friendList);
+		
+		//Get all achievements, sorted by achievementDate (that were achieved by friends of this user) ==> Do this later //TODO
+		//Get all statuses, sorted by date (that were posted by friends of this user) ==> Do this later //TODO
+		
+		//Sort these interweavingly, by date
+		int i = 0, j = 0;
+		while (i < allCreatedQuizzes.size() && j < allTakenQuizzes.size()) {
+			NewsfeedObject cq  = allCreatedQuizzes.get(i);
+			NewsfeedObject tq = allTakenQuizzes.get(j);
+			java.sql.Date cqDate = cq.getDate();
+			java.sql.Date tqDate = tq.getDate();
+			
+			if (cqDate.after(tqDate)) { //if (cqDate < tqDate), more recent should go first
+				newsfeed.add(cq);
+				i++;
+			} else {
+				newsfeed.add(tq);
+				j++;
+			}
+		}
+		
+		while (i < allCreatedQuizzes.size()) {
+			newsfeed.add(allCreatedQuizzes.get(i++));
+		}
+		
+		while (j < allTakenQuizzes.size()) {
+			newsfeed.add(allTakenQuizzes.get(j++));
+		}
+		
+		//Return an ArrayList of these
+		return newsfeed;
+	}
 
 	///////////////////////////////////////////////////
-	/***  USERS TABLE */
+	/**  USERS TABLE */
 	
 	/* Getters */
 	
@@ -148,7 +195,6 @@ public class DAL {
 	
 	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements, String recentActivity) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
-		String usersActivity = "took a quiz";
 		try {
 			String update = "INSERT INTO users VALUES(\"" + loginName + "\", " + isAdministrator + ", \"" + passwordHash + "\", \"" + achievementsString + "\", \"" + recentActivity + "\");";
 			stmt.executeUpdate(update);
@@ -238,22 +284,50 @@ public class DAL {
 	}
 	
 	//check if a quiz exists in the database
-		public boolean doesQuizExist(String quizName) {
-			String query = "SELECT * FROM quizzes WHERE quizName = \""+quizName+"\";";
-			try {
-				ResultSet rs = stmt.executeQuery(query);
-				if(rs.next()) {
-					return true;
-				} else {
-					return false;
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
+	public boolean doesQuizExist(String quizName) {
+		String query = "SELECT * FROM quizzes WHERE quizName = \""+quizName+"\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			if(rs.next()) {
+				return true;
+			} else {
+				return false;
 			}
-			return false;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		return false;
+	}
 	
+	/* 
+	 * Returns a list of all created quizzes, ordered by date, created by users who are friends 
+	 * of a given user (are included in the friendList) 
+	 * */
+	public ArrayList<NewsfeedObject> getAllCreatedQuizzesForNewsFeed(ArrayList<String> friendList) {
+		ArrayList<NewsfeedObject> recentlyCreatedQuizzes = new ArrayList<NewsfeedObject>();
+		
+		String query = "SELECT * FROM quizzes ORDER BY creationDate DESC;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				if (friendList.contains(rs.getString("creatorName"))) {
+					String loginName = rs.getString("creatorName");
+					String action = NewsfeedObject.CREATED_A_QUIZ_STRING;
+					int type = NewsfeedObject.CREATED_A_QUIZ;
+					String quizName = rs.getString("quizName");
+					java.sql.Date date = rs.getDate("creationDate");
+					NewsfeedObject nfo = new NewsfeedObject(loginName, action, type, quizName, date);
+					recentlyCreatedQuizzes.add(nfo);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return recentlyCreatedQuizzes;
+	}
+		
+		
 	public ArrayList<String> getRecentlyCreatedQuizzes() {
 		ArrayList<String> recentlyCreatedQuizzes = new ArrayList<String>();
 		String query = "SELECT * FROM quizzes ORDER BY creationDate DESC LIMIT 0, 10;";
@@ -366,7 +440,7 @@ public class DAL {
 				return (String)quizResultSet.getObject("quizName");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return "";
 	}
@@ -379,7 +453,7 @@ public class DAL {
 				return (String)quizResultSet.getObject("description");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return "";
 	}
@@ -392,7 +466,7 @@ public class DAL {
 				return (Boolean) quizResultSet.getObject("isRandom");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return false;
 	}
@@ -405,7 +479,7 @@ public class DAL {
 				return (Boolean) quizResultSet.getObject("isMultiplePage");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return false;
 	}
@@ -418,7 +492,7 @@ public class DAL {
 				return (Boolean) quizResultSet.getObject("isImmediateCorrection");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return false;
 	}
@@ -431,7 +505,7 @@ public class DAL {
 				return (Boolean) quizResultSet.getObject("canBeTakenInPracticeMode");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return false;
 	}
@@ -444,7 +518,7 @@ public class DAL {
 				return (String) quizResultSet.getObject("creatorName");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return "";
 	}
@@ -457,7 +531,7 @@ public class DAL {
 				return (java.util.Date) quizResultSet.getObject("creationDate");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return null;
 	}
@@ -470,7 +544,7 @@ public class DAL {
 				return (Integer) quizResultSet.getObject("numTimesTaken");
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return 0;
 	}
@@ -546,6 +620,32 @@ public class DAL {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	/* 
+	 * Returns a list of all taken quizzes, ordered by date, taken by users who are friends 
+	 * of a given user (are included in the friendList) 
+	 * */
+	public ArrayList<NewsfeedObject> getAllTakenQuizzesForNewsFeed(ArrayList<String> friendList) {
+		ArrayList<NewsfeedObject> recentlyTakenQuizzes = new ArrayList<NewsfeedObject>();
+		String query = "SELECT * FROM histories ORDER BY dateValue DESC;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String loginName = rs.getString("creatorName");
+				if (friendList.contains(rs.getString(loginName))) {
+					String action = NewsfeedObject.TOOK_A_QUIZ_STRING;
+					int type = NewsfeedObject.TOOK_A_QUIZ;
+					String quizName = rs.getString("quizName");
+					java.sql.Date date = rs.getDate("dateValue");
+					NewsfeedObject nfo = new NewsfeedObject(loginName, action, type, quizName, date);
+					recentlyTakenQuizzes.add(nfo);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return recentlyTakenQuizzes;
 	}
 
 	public ArrayList<String> getRecentlyTakenQuizzes() {
@@ -943,7 +1043,7 @@ public class DAL {
 				}
 			}
 		} catch (SQLException e){
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 		return questions;
 	}
@@ -979,7 +1079,7 @@ public class DAL {
 			}
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace();
 		}
 	}
 
@@ -1004,7 +1104,7 @@ public class DAL {
 			}
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
-			e.printStackTrace(); //TODO How do we want to handle this?
+			e.printStackTrace(); 
 		}
 	}
 	
