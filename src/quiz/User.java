@@ -20,7 +20,7 @@ public class User {
 	private String recentlyTakenQuiz;
 	
 	private ArrayList<String> recentlyTakenQuizzes;
-	private ArrayList<String> recentlyCreatedQuizzes;
+	private ArrayList<String> recentlyCreatedQuizzes; 
 	private ArrayList<FriendRecentActivity> friendsRecentActivity;
 	
 	private DAL dal; //Handles connection to Database
