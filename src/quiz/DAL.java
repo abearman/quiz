@@ -314,10 +314,9 @@ public class DAL {
 				if (friendList.contains(rs.getString("creatorName"))) {
 					String loginName = rs.getString("creatorName");
 					String action = NewsfeedObject.CREATED_A_QUIZ_STRING;
-					int type = NewsfeedObject.CREATED_A_QUIZ;
 					String quizName = rs.getString("quizName");
 					java.sql.Date date = rs.getDate("creationDate");
-					NewsfeedObject nfo = new NewsfeedObject(loginName, action, type, quizName, date);
+					NewsfeedObject nfo = new NewsfeedObject(loginName, action, true, quizName, date);
 					recentlyCreatedQuizzes.add(nfo);
 				}
 			}
@@ -632,13 +631,12 @@ public class DAL {
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				String loginName = rs.getString("creatorName");
-				if (friendList.contains(rs.getString(loginName))) {
+				String loginName = rs.getString("loginName");
+				if (friendList.contains(rs.getString("loginName"))) {
 					String action = NewsfeedObject.TOOK_A_QUIZ_STRING;
-					int type = NewsfeedObject.TOOK_A_QUIZ;
 					String quizName = rs.getString("quizName");
 					java.sql.Date date = rs.getDate("dateValue");
-					NewsfeedObject nfo = new NewsfeedObject(loginName, action, type, quizName, date);
+					NewsfeedObject nfo = new NewsfeedObject(loginName, action, true, quizName, date);
 					recentlyTakenQuizzes.add(nfo);
 				}
 			}

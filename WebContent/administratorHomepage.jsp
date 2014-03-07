@@ -12,7 +12,7 @@
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
-	
+
 	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes(); 
 	ArrayList<String> popularQuizzes = dal.getPopularQuizzes();
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
@@ -22,9 +22,8 @@
 	ArrayList<String> announcements = dal.getAllAnnouncements();
 	boolean hasNewMessages = dal.userHasNewMessages(username);
 	
-	ArrayList<String> friends = dal.getFriendListForUser(username);
-	//ArrayList<FriendRecentActivity> friendRecentActivities = dal.getFriendsRecentActivity(friends);
-	
+	ArrayList<NewsfeedObject> newsfeed = dal.getNewsfeed(username);
+
 	%>  
 	
 	<title>Welcome <%= username %> </title>
@@ -152,6 +151,22 @@
 		<li> Number of users: <%=dal.getNumberOfUsers() %></li>
 		<li> Number of quizzes created: <%=dal.getNumberOfQuizzesCreated() %></li>
 		<li> Number of quizzes taken: <%=dal.getNumberOfQuizzesTaken() %></li>
+	</ul>
+
+	<!-- Newsfeed -->
+	<h2> Newsfeed </h2>
+	<ul>
+		<%for (int i = 0; i < newsfeed.size(); i++) {
+			NewsfeedObject nfo = newsfeed.get(i);
+			String name = nfo.getLoginName();
+			String action = nfo.getAction();
+			if (nfo.hasQuiz()) { 
+				String quizName = nfo.getQuizName(); %>
+				<li> <%=name%> <%=action%> <%=quizName%> </li>
+			<%} else {%>
+				<li> <%=name%> <%=action%> </li>
+			<%}%>
+		<%}%>
 	</ul>
 
 </body>
