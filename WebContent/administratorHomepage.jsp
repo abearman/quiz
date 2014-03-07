@@ -162,9 +162,9 @@
 			String action = nfo.getAction();
 			if (nfo.hasQuiz()) { 
 				String quizName = nfo.getQuizName(); %>
-				<li> <%=name%> <%=action%> <%=quizName%> </li>
+				<li> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </li>
 			<%} else {%>
-				<li> <%=name%> <%=action%> </li>
+				<li> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> </li>
 			<%}%>
 		<%}%>
 	</ul>
