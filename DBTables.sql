@@ -127,3 +127,25 @@ CREATE TABLE announcements (
     announcement CHAR(64)
 );
 
+DROP TABLE IF EXISTS achievements;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE achievements (
+	loginName CHAR(64),
+	achievement CHAR(64),
+	achievementDate DATETIME
+);
+
+DROP TABLE IF EXISTS statuses;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE statuses (
+	loginName CHAR(64),
+	status CHAR(64),
+	statusDate DATETIME
+);
+
+
+
+
+
