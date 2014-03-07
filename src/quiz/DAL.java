@@ -225,15 +225,31 @@ public class DAL {
 			}
 			String update = "UPDATE users SET achievements = \"" + sb.toString() + "\" WHERE loginName = \"" + loginName + "\";";
 			stmt.executeUpdate(update);
+			
+			//Add achievement for user
+			String achievementStr = Achievements.achievements[index];
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			String updateAchievements = "INSERT INTO achievements VALUES(\"" + loginName + "\", \"" + achievementStr + "\", \"" + date + "\");";
+			stmt.executeUpdate(updateAchievements);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void updateUserAchievements(String loginName, String achievementsString) {
-		String update = "UPDATE users SET achievements = \"" + achievementsString + "\" WHERE loginName = \"" + loginName + "\";";
 		try {
+			String update = "UPDATE users SET achievements = \"" + achievementsString + "\" WHERE loginName = \"" + loginName + "\";";
 			stmt.executeUpdate(update);
+			for (int i = 0; i < achievementsString.length(); i++) {
+				if (achievementsString.charAt(i) == '1') {
+					//Add achievement for user
+					String achievementStr = Achievements.achievements[i];
+					java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+					String updateAchievements = "INSERT INTO achievements VALUES(\"" + loginName + "\", \"" + achievementStr + "\", \"" + date + "\");";
+					stmt.executeUpdate(updateAchievements);
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
