@@ -22,7 +22,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 <h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
 
 <form action="" method="post">
-	Your Answer: <input type="text" name="answer" />
+	Your Answer: <input type="text" class="span2" name="answer" />
 </form>
 
 <h5>Your Answer: <%= quiz.getAnswers().get(quiz.getCurrentQuestionNum()) %></h5>

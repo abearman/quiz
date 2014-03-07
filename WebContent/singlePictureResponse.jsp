@@ -25,7 +25,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 <img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>" height="250" width="250"><br>
 
 <form action="UpdateAnswersServlet" method="post">
-	Your Answer: <input type="text" name="answer" />
+	Your Answer: <input type="text" class="span2" name="answer" />
 	<input type = "submit" class="btn btn-primary"/>
 </form>
 	

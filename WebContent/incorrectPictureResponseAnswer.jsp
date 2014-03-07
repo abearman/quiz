@@ -23,7 +23,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 <img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>" height="250" width="250"><br>
 
 <form action="" method="post">
-	Your Answer: <input type="text" name="answer" />
+	Your Answer: <input type="text" class="span2" name="answer" />
 </form>
 
 <h5>Sorry, your answer was incorrect.</h5>

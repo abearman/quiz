@@ -28,14 +28,14 @@
 					out.print("<h4>Question ");
 					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
-					out.print("Your Answer: <input type=\"text\" name=\"answer"+i+"\"/>");
+					out.print("Your Answer: <input class=\"span2\" type=\"text\" name=\"answer"+i+"\"/>");
 				}
 				if(q.getQuestionType()==Question.FILL_IN_THE_BLANK)
 				{
 					out.print("<h4>Question ");
 					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
-					out.print("Your Answer: <input type=\"text\" name=\"answer"+i+"\"/>");	
+					out.print("Your Answer: <input class=\"span2\" type=\"text\" name=\"answer"+i+"\"/>");	
 				}
 				if(q.getQuestionType()==Question.MULTIPLE_CHOICE)
 				{
@@ -53,7 +53,7 @@
 					out.print((i+1)+": ");
 					out.print(q.getQuestion()+"</h4>");
 					out.print("<img src=\""+((PictureResponse)q).getImageURL()+"\" height=\"250\" width=\"250\"><br>");
-					out.print("Your Answer: <input type=\"text\" name=\"answer"+i+ "\" />");
+					out.print("Your Answer: <input class=\"span2\" type=\"text\" name=\"answer"+i+ "\" />");
 				}
 			}
 		%>
