@@ -23,73 +23,40 @@ public class DAL {
 		return stmt;
 	}
 	
+	private ArrayList<NewsfeedObject> mergeTwoSortedArrayLists(ArrayList<NewsfeedObject> al1, ArrayList<NewsfeedObject> al2) {
+		ArrayList<NewsfeedObject> result = new ArrayList<NewsfeedObject>();
+		int i = 0, j = 0;
+		while (i < al1.size() && j < al2.size()) {
+			NewsfeedObject al1Obj  = al1.get(i);
+			NewsfeedObject al2Obj = al2.get(j);
+			java.sql.Date al1Date = al1Obj.getDate();
+			java.sql.Date al2Date = al2Obj.getDate();
+			
+			if (al1Date.after(al2Date)) { //if (cqDate < tqDate), more recent should go first
+				result.add(al1Obj);
+				i++;
+			} else {
+				result.add(al2Obj);
+				j++;
+			}
+		}
+		
+		while (i < al1.size()) result.add(al1.get(i++));
+		while (j < al2.size()) result.add(al2.get(j++));
+		return result;
+	}
+	
 	///////////////////////////////////////////////////
 	/** NEWSFEED */
 	
 	public ArrayList<NewsfeedObject> getNewsfeed(String loginName) {
-		//Get all created quizzes, sorted by creationDate (that were created by friends of this user)
 		ArrayList<NewsfeedObject> allCreatedQuizzes = getAllCreatedQuizzesForNewsFeed(loginName); 
-		//Get all taken quizzes, sorted by dateValue (that were taken by friends of this user)
 		ArrayList<NewsfeedObject> allTakenQuizzes = getAllTakenQuizzesForNewsFeed(loginName);
-		//Get all achievements, sorted by achievementDate (that were achieved by friends of this user) 
 		ArrayList<NewsfeedObject> allAchievements = getAllAchievementsForNewsFeed(loginName);
 		//Get all statuses, sorted by date (that were posted by friends of this user) ==> Do this later //TODO
 		
-		//Sort createdQuizzes and takenQuizzes interweavingly, by date
-		int i = 0, j = 0;
-		ArrayList<NewsfeedObject> quizzes = new ArrayList<NewsfeedObject>();
-		while (i < allCreatedQuizzes.size() && j < allTakenQuizzes.size()) {
-			NewsfeedObject cq  = allCreatedQuizzes.get(i);
-			NewsfeedObject tq = allTakenQuizzes.get(j);
-			java.sql.Date cqDate = cq.getDate();
-			java.sql.Date tqDate = tq.getDate();
-			
-			if (cqDate.after(tqDate)) { //if (cqDate < tqDate), more recent should go first
-				quizzes.add(cq);
-				i++;
-			} else {
-				quizzes.add(tq);
-				j++;
-			}
-		}
-		
-		while (i < allCreatedQuizzes.size()) {
-			quizzes.add(allCreatedQuizzes.get(i++));
-		}
-		
-		while (j < allTakenQuizzes.size()) {
-			quizzes.add(allTakenQuizzes.get(j++));
-		}
-		
-		//Sort quizzes and achievements interweavingly, by date
-		ArrayList<NewsfeedObject> newsfeed = new ArrayList<NewsfeedObject>();
-		i = 0; //quizzes
-		j = 0; //achievements
-		while (i < quizzes.size() && j < allAchievements.size()) {
-			NewsfeedObject q = quizzes.get(i);
-			NewsfeedObject a = allAchievements.get(j);
-			java.sql.Date qDate = q.getDate();
-			java.sql.Date aDate = a.getDate();
-			
-			if (qDate.after(aDate)) {
-				newsfeed.add(q);
-				i++;
-			} else {
-				newsfeed.add(a);
-				j++;
-			}
-		}
-		
-		while (i < quizzes.size()) {
-			newsfeed.add(quizzes.get(i++));
-		}
-		
-		while (j < allAchievements.size()) {
-			newsfeed.add(allAchievements.get(j++));
-		}
-
-		//Return an ArrayList of these
-		return newsfeed;
+		ArrayList<NewsfeedObject> quizzes = mergeTwoSortedArrayLists(allCreatedQuizzes, allTakenQuizzes);
+		return mergeTwoSortedArrayLists(quizzes, allAchievements); //This is our news feed
 	}
 
 	///////////////////////////////////////////////////
