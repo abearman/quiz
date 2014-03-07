@@ -21,45 +21,13 @@
 
 	<h3>Send message to <%=toUser%></h3>
 	
-
-<script type="text/javascript">
-
-//displays the corresponding message type and its fields.
-function displayMessage()
-{
-	var selected = document.getElementById("optionsBox").selectedIndex;
-	var options = document.getElementById("optionsBox").options;
-	System.out.println("hellooo");
-	if (options[selected].value.equals(Message.NOTE_MESSAGE)) {
-		var display = "<h3>Note Message</h3> ";
-		display+= "<input type=\"hidden\" name=\"messageType\" value =\"<%=Message.NOTE_MESSAGE%>\"/>";
-		display+= "<p>Message:<input type = \"text\" name=\"message\"></p>";
-		document.getElementById("messageArea").innerHTML = display;
-
-	} else if (options[selected].value.equals(Message.CHALLENGE_MESSAGE)) {
-		var display = "<h3>Challenge Message</h3> ";
-		display+= "<input type=\"hidden\" name=\"messageType\" value =\"<%=Message.CHALLENGE_MESSAGE%>\"/>";
-		display+= "<p>Quiz:<input type = \"text\" name=\"quiz\"></p>";
-		document.getElementById("messageArea").innerHTML = display;
-	}
-}
-
-</script>
-
-
-
-<div>
-	<select id ="optionsBox" onchange="displayMessage()">
-		<option value = "<%=Message.NOTE_MESSAGE%>"> Note Message</option>
-		<option value = "<%=Message.CHALLENGE_MESSAGE%>"> Challenge Message</option>
-	</select>
-</div>
-
 <div>
 	<form name ="frm" action ="SendMessageServlet" method = "post">
 		<div id ="messageArea">
 			<h3>Note Message</h3>
-			<input type="hidden" name="messageType" value ="<%=Message.NOTE_MESSAGE%>">
+			<input type="hidden" name="messageType" value ="NoteMessage">
+			<input type="hidden" name="fromUser" value=<%=fromUser%>>
+			<input type="hidden" name="toUser" value=<%=toUser%>>
 			<p>Message:<input type = "text" name="message"></p>
 		</div>		
 		<input type = "submit" value = "Send Message"/> 

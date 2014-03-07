@@ -205,9 +205,9 @@ public class User {
 			messages.add(frm);
 			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.FRIEND_REQUEST_MESSAGE, message, null, -1);
 		} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
-			ChallengeMessage cm = new ChallengeMessage(this, toUser, quiz, dal);
+			ChallengeMessage cm = new ChallengeMessage(this.loginName, toUser.getLoginName(), quiz, dal);
 			messages.add(cm);
-			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quiz.getQuizName(), cm.challengingUserBestScore(this));
+			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quiz.getQuizName(), cm.challengingUserBestScore(this.loginName));
 		}
 		hasNewMessages = true;
 	}

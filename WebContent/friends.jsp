@@ -27,6 +27,8 @@
 		%> Go back <a href="userHomepage.jsp">home</a><% 
 	}%>
 	
+	<h1><%=username %>'s friends: </h1>
+	
 	<ul>
 		<% 
 		for (int i = 0; i < friends.size(); i++) {
@@ -35,6 +37,8 @@
 		} 
 		%>
 	</ul>
+
+	
 
 </body>
 </html>
