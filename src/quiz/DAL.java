@@ -27,19 +27,17 @@ public class DAL {
 	/** NEWSFEED */
 	
 	public ArrayList<NewsfeedObject> getNewsfeed(String loginName) {
-		ArrayList<NewsfeedObject> newsfeed = new ArrayList<NewsfeedObject>();
-		
 		//Get all created quizzes, sorted by creationDate (that were created by friends of this user)
 		ArrayList<NewsfeedObject> allCreatedQuizzes = getAllCreatedQuizzesForNewsFeed(loginName); 
-		
 		//Get all taken quizzes, sorted by dateValue (that were taken by friends of this user)
 		ArrayList<NewsfeedObject> allTakenQuizzes = getAllTakenQuizzesForNewsFeed(loginName);
-		
-		//Get all achievements, sorted by achievementDate (that were achieved by friends of this user) ==> Do this later //TODO
+		//Get all achievements, sorted by achievementDate (that were achieved by friends of this user) 
+		ArrayList<NewsfeedObject> allAchievements = getAllAchievementsForNewsFeed(loginName);
 		//Get all statuses, sorted by date (that were posted by friends of this user) ==> Do this later //TODO
 		
-		//Sort these interweavingly, by date
+		//Sort createdQuizzes and takenQuizzes interweavingly, by date
 		int i = 0, j = 0;
+		ArrayList<NewsfeedObject> quizzes = new ArrayList<NewsfeedObject>();
 		while (i < allCreatedQuizzes.size() && j < allTakenQuizzes.size()) {
 			NewsfeedObject cq  = allCreatedQuizzes.get(i);
 			NewsfeedObject tq = allTakenQuizzes.get(j);
@@ -47,22 +45,49 @@ public class DAL {
 			java.sql.Date tqDate = tq.getDate();
 			
 			if (cqDate.after(tqDate)) { //if (cqDate < tqDate), more recent should go first
-				newsfeed.add(cq);
+				quizzes.add(cq);
 				i++;
 			} else {
-				newsfeed.add(tq);
+				quizzes.add(tq);
 				j++;
 			}
 		}
 		
 		while (i < allCreatedQuizzes.size()) {
-			newsfeed.add(allCreatedQuizzes.get(i++));
+			quizzes.add(allCreatedQuizzes.get(i++));
 		}
 		
 		while (j < allTakenQuizzes.size()) {
-			newsfeed.add(allTakenQuizzes.get(j++));
+			quizzes.add(allTakenQuizzes.get(j++));
 		}
 		
+		//Sort quizzes and achievements interweavingly, by date
+		ArrayList<NewsfeedObject> newsfeed = new ArrayList<NewsfeedObject>();
+		i = 0; //quizzes
+		j = 0; //achievements
+		while (i < quizzes.size() && j < allAchievements.size()) {
+			NewsfeedObject q = quizzes.get(i);
+			NewsfeedObject a = allAchievements.get(j);
+			java.sql.Date qDate = q.getDate();
+			java.sql.Date aDate = a.getDate();
+			
+			if (qDate.after(aDate)) {
+				newsfeed.add(q);
+				i++;
+			} else {
+				newsfeed.add(a);
+				j++;
+			}
+		}
+		
+		while (i < quizzes.size()) {
+			newsfeed.add(quizzes.get(i++));
+		}
+		
+		while (j < allAchievements.size()) {
+			newsfeed.add(allAchievements.get(j++));
+		}
+
 		//Return an ArrayList of these
 		return newsfeed;
 	}
@@ -1148,6 +1173,31 @@ public class DAL {
 	}
 	//////////////////////////////////////
 
+	
+	/** ACHIEVEMENTS TABLE */
+	
+	public ArrayList<NewsfeedObject> getAllAchievementsForNewsFeed(String loginName) {
+		ArrayList<String> friendList = getFriendListForUser(loginName);
+		ArrayList<NewsfeedObject> achievements = new ArrayList<NewsfeedObject>();
+		try {
+			String query = "SELECT * FROM achievements ORDER BY achievementDate DESC;";
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String friendName = rs.getString("loginName");
+				if (friendList.contains(friendName) || friendName.equals(loginName)) {
+					String action = NewsfeedObject.EARNED_ACHIEVEMENT_STRING + rs.getString("achievement");
+					java.sql.Date date = rs.getDate("achievementDate");
+					NewsfeedObject nfo = new NewsfeedObject(friendName, action, false, null, date);
+					achievements.add(nfo);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return achievements;
+	}
+	
+	
 }
 
 
