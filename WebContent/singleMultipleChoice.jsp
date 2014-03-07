@@ -30,7 +30,7 @@ ArrayList<String> choices = ((MultipleChoice)thisQuestion).getChoices();
 		out.println("<input type=\"radio\" name=\"answer\" value=\"" + choices.get(i) + "\"/> " + choices.get(i) + "<br>");
 	}
 %>
-	<input type = "submit" />
+	<input type = "submit" class="btn btn-primary" />
 </form>
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

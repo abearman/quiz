@@ -36,10 +36,10 @@ ArrayList<String> choices = ((MultipleChoice)thisQuestion).getChoices();
 <%
 if (questionNum == quiz.getQuestions().size()-1){
 	out.println("<form action=\"DoneWithQuizServlet\" method=\"post\">");
-	out.println("<input type=\"submit\" value=\"Done\">");
+	out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Done\">");
 }else{
 	out.println("<form action=\"NextQuestionServlet\" method=\"post\">");
-	out.println("<input type=\"submit\" value=\"Next Question\">");
+	out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Next Question\">");
 }
 %>
 

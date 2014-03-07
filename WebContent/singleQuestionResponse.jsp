@@ -25,7 +25,7 @@ Question thisQuestion = quiz.getQuestions().get(questionNum);
 
 <form action="UpdateAnswersServlet" method="post">
 	<br>Your Answer: <input type="text" name="answer" />
-	<input type = "submit" />
+	<input type = "submit" class="btn btn-primary"/>
 </form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
