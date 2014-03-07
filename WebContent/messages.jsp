@@ -51,7 +51,7 @@
 			String fromUser = challenge.getFromUser();
 			String messageString = challenge.getMessage(); 
 			String quizName = challenge.getQuizName(); %>
-			<p> <%= fromUser %>: <%= messageString %> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!</p>
+			<p><%= messageString %> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!</p>
 		<%}
 	}%>
 
