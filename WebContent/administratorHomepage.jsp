@@ -98,7 +98,7 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 
-	<h2 style="padding-top:70px">Welcome, admin <%= username %></h2>
+	<h2>Welcome, admin <%= username %></h2>
 	<a href="createQuizPage.jsp"><button> Create quiz </button></a> 
 	
 	<h2> Announcements: </h2>

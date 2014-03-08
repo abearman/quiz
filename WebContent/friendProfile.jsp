@@ -93,7 +93,7 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 
-	<h2 style="padding-top:70px"><%= friendName %>'s Profile</h2>
+	<h2><%= friendName %>'s Profile</h2>
 	
 		<a href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"><button> Send Message </button></a>
 	
