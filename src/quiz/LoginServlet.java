@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 
 /**
  * Servlet implementation class LoginServlet.
@@ -45,6 +46,7 @@ public class LoginServlet extends HttpServlet {
 		manager = (AccountManager)getServletContext().getAttribute("manager");
 		String username = (String)request.getParameter("username");
 		String password = (String)request.getParameter("password");
+		String checked = (String)request.getParameter("checkbox");
 		
 		request.getSession().setAttribute("loginName", username);
 		
@@ -53,6 +55,19 @@ public class LoginServlet extends HttpServlet {
 			DAL dal = (DAL)getServletContext().getAttribute("DAL");
 			User user = dal.getUser(username); //Gets User from database to store on session 
 			request.getSession().setAttribute("user", user); //Sets the user as an attribute on the session
+			
+			if (checked != null) {
+				Cookie cookie = new Cookie(username, password);
+				cookie.setMaxAge(60*60); //1 hour
+				response.addCookie(cookie);
+			}
+			
+			Cookie[] cookies = request.getCookies();
+			for (Cookie c : cookies) {
+				String s = c.getName();
+				String t = c.getValue();
+				int a = 0;
+			}
 			
 			if (user.getIsAdministrator()) { //display administrator homepage
 				RequestDispatcher dispatch = request.getRequestDispatcher("administratorHomepage.jsp");
