@@ -128,7 +128,12 @@
 			for (int i = 0; i < questions.size(); i++){
 				String correctAnswer = questions.get(i).getAnswer().get(0);
 				String usersAnswer = usersAnswers.get(i);
-				out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
+				if (questions.get(i).answerIsCorrect(usersAnswer)){
+					correctAnswer = usersAnswer;
+					out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
+				}else{
+					out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
+				}
 			}
 		%>
 		</ul>
