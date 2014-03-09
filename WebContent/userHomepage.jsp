@@ -12,8 +12,9 @@
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	User user = (User)session.getAttribute("user");
 	String username = user.getLoginName();
-	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes();
-	ArrayList<String> popularQuizzes = dal.getPopularQuizzes(); 
+
+	ArrayList<String> recentlyCreatedQuizzes = dal.getRecentlyCreatedQuizzes(); 
+	ArrayList<String> popularQuizzes = dal.getPopularQuizzes();
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(user.getLoginName());
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(user.getLoginName());
 	
@@ -23,8 +24,8 @@
 	
 	ArrayList<NewsfeedObject> newsfeed = dal.getNewsfeed(username);
 	%>  
-	
-	<title>Welcome <%= username %></title>
+
+	<title>Welcome <%= username %> </title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
 </head>
@@ -41,14 +42,13 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
-	      <div><a class="navbar-brand" href="/" style="color:white; font-family:'Fugaz One', cursive; font-size:40px">Quizzler</a></div>
+	      <div><a class="navbar-brand" style="color:white; font-family:'Fugaz One', cursive; font-size:40px">Quizzler</a></div>
 	    </div>
 	
 		<form class="navbar-form navbar-left" role="search" name="searchForUser" action="SearchForUserServlet" method="post">
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search for friends" name="usernameToSearch">
 				<button type="submit" class="btn btn-default">Submit</button>
-				
 			</div>	
 		</form>
 	
@@ -96,92 +96,184 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 
-	<h2>Welcome <%= username %></h2>
-	
-	<a href="createQuizPage.jsp"><button> Create quiz </button></a> 
-	
-	<h2> Announcements: </h2>
-	<ul> 
-		<% 
-			for (String s : announcements) {
-				%> <li> <%=s%></li> <%	
-			}
-		%> 
-	</ul>
 
-	<h2> Achievements: </h2>
-	<ul>
-		<% 
-			for (int i = 0; i < achievements.length(); i++) {
-				if (achievements.charAt(i) == '1') {
-					%> <li> <%= Achievements.achievements[i] %></li> <% ;	
+	<div class="row">
+		<div class="col-md-2">
+			<!-- User stuff on left -->
+			<h3><a href="friendProfile.jsp?friendName=<%=username%>"><%= username %></a></h3>
+			<a href="createQuizPage.jsp"><button class="btn btn-default btn-primary"> Create quiz </button></a> 
+			
+			<h3> Achievements: </h3>
+			<%for (int i = 0; i < achievements.length(); i++) {
+				if (achievements.charAt(i) == '1') {%>
+					<div style="padding-left:10px">
+						<img src="<%=Achievements.achievementsImgs[i]%>" height="30px" width="30px" />
+						<%=Achievements.achievements[i]%>	
+					</div> <% ;
 				}
-			}
-			%> 
-	</ul>
-	
-	<p> See my <a href="fullHistory.jsp"> quiz history </a></p>
-	<p> See <a href="allQuizzes.jsp"> all existing quizzes </a></p>
+			}%> 
+			
+			<h3> My Recently Created Quizzes: </h3> 
+				<%for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
+					String quizName = userRecentlyCreatedQuizzes.get(i);
+					%> <div><a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </div> <% 
+				}%>
+				
+			<h3> My Recently Taken Quizzes: </h3>
+				<%for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
+						String quizName = userRecentlyTakenQuizzes.get(i);
+						%> <div><a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a></div> <% 
+				}%>
 
-	<h2> Recently Created Quizzes: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
-				String quizName = recentlyCreatedQuizzes.get(i);
-				String creator = dal.getCreatorName(quizName);
-				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <% 
-			}
-		%>
-	</ul>
+		</div>
 	
-	<h2> Popular Quizzes: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < popularQuizzes.size(); i++) {
-				String quizName = popularQuizzes.get(i);
-				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </li> <% 
-			}
-		%>
-	</ul>
-	
-	<h2> My Recently Created Quizzes: </h2> 
-	<ul>
-		<%
-			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
-				String quizName = userRecentlyCreatedQuizzes.get(i);
-				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
-			}
-		%>
-	</ul>
-	
-	<h2> My Recently Taken Quizzes: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
-				String quizName = userRecentlyTakenQuizzes.get(i);
-				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
-			}
-		%>
-	</ul>
-	
-	<!-- Newsfeed -->
-	<h2> Newsfeed </h2>
-	<div style="width:400px;height:400px;overflow:scroll;padding:5px;">
-			<%for (int i = 0; i < newsfeed.size(); i++) {
-				NewsfeedObject nfo = newsfeed.get(i);
-				String name = nfo.getLoginName();
-				String action = nfo.getAction();
-				if (nfo.hasQuiz()) { 
-					String quizName = nfo.getQuizName(); %>
-					<p> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </p>
-				<%} else {%>
-					<p> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> </p>
+		<div class="col-md-7" style="border-right-style:solid; border-right-color:#d3d3d3; border-left-style:solid; border-left-color:#d3d3d3">
+			<!-- Newsfeed in middle -->
+
+			<h2 style="margin-left:15px">Newsfeed</h2>
+			
+			<form class="navbar-form" role="search" name="updateStatus" action="" method="post">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Update status" name="status" size=80>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</div>	
+			</form>
+			
+			<div class="row" style="margin-left:15px; padding-bottom:5px">
+				<a data-toggle="modal" href="#fullHistoryModal" class="btn btn-primary">See my quiz history</a>
+				<a data-toggle="modal" href="#allQuizzesModal" class="btn btn-primary">See all existing quizzes</a>
+				<a data-toggle="modal" href="#recentlyCreatedQuizzesModal" class="btn btn-primary">Recently Created Quizzes</a>
+				<a data-toggle="modal" href="#popularQuizzesModal" class="btn btn-primary">Popular Quizzes</a>
+			</div>
+			
+			<div style="height:800px;overflow:scroll;padding:5px;">
+				<%for (int i = 0; i < newsfeed.size(); i++) {
+					NewsfeedObject nfo = newsfeed.get(i);
+					String name = nfo.getLoginName();
+					String action = nfo.getAction();
+					if (nfo.hasQuiz()) { 
+						String quizName = nfo.getQuizName(); %>
+						<div style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color:#d3d3d3; padding:5px"> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </div>
+					<%} else {%>
+						<div style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color:#d3d3d3; padding:5px"> <a href="friendProfile.jsp?friendName=<%=name%>"><%=name%></a> <%=action%> </div>
+					<%}%>
 				<%}%>
-			<%}%>
-	</div>
+			</div>
+		</div>
 	
-	<script src="/bootstrap/js/bootstrap.min.js"></script>
-
+		<div class="col-md-3">
+			<!-- User stuff on right -->
+			<h3> Announcements </h3>
+			<div class="well">
+				<% for (String announcement : announcements) {
+					%> <div style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color:#d3d3d3; padding-top:5px; padding-bottom:5px"> <%=announcement%></div> <%	
+				}%> 
+			</div>		
+			
+		</div>	
+	</div>
+		
+	  <!-- Recently Created Quizzes Modal -->
+	  <div class="modal fade" id="recentlyCreatedQuizzesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">Recently Created Quizzes</h4>
+	        </div>
+	        <div class="modal-body">
+	          <%for (int i = 0; i < recentlyCreatedQuizzes.size(); i++) {
+					String quizName = recentlyCreatedQuizzes.get(i);
+					String creator = dal.getCreatorName(quizName);
+					%> <div> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </div> <% 
+			   }%>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div><!-- /.modal-content -->
+	    </div><!-- /.modal-dialog -->
+	  </div><!-- /.modal -->
+	  
+	   <!-- Popular Quizzes Modal -->
+	  <div class="modal fade" id="popularQuizzesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">Popular Quizzes</h4>
+	        </div>
+	        <div class="modal-body">
+	          <%for (int i = 0; i < popularQuizzes.size(); i++) {
+				String quizName = popularQuizzes.get(i);
+				%> <div> <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a> </div> <% 
+			  }%>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div><!-- /.modal-content -->
+	    </div><!-- /.modal-dialog -->
+	  </div><!-- /.modal -->
+	
+		<!-- All Quizzes Modal -->
+	  <div class="modal fade" id="allQuizzesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">All Quizzes</h4>
+	        </div>
+	        <div class="modal-body">
+	          <% ArrayList<Quiz> allQuizzes = dal.getAllQuizzes();
+	          for (Quiz quiz : allQuizzes) {
+				String quizName = quiz.getQuizName();
+				String creator = quiz.getCreatorName();
+				%> <div><a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </div> <%
+			}%>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div><!-- /.modal-content -->
+	    </div><!-- /.modal-dialog -->
+	  </div><!-- /.modal -->
+	
+		<!-- Full History Modal -->
+	  <div class="modal fade" id="fullHistoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">My Quiz History</h4>
+	        </div>
+	        <div class="modal-body">
+				<ul>
+					<% 
+					ArrayList<HistoryObject> allHistories = dal.getHistoryListForUser(username);
+					for (HistoryObject hist : allHistories) {
+						String quizName = hist.getQuizName();
+						%> <li> 
+								<p>Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a></p>
+								<p>Score: <%= hist.getNumQuestionsCorrect() %></p> 
+								<p>Time Elapsed: <%= hist.getElapsedTime() %></p>
+								<p>Date: <%= hist.getDate() %></p>
+						
+						 </li> <%
+					} 
+					%>
+				</ul>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div><!-- /.modal-content -->
+	    </div><!-- /.modal-dialog -->
+	  </div><!-- /.modal -->
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+	<script src="/twitter-bootstrap/twitter-bootstrap-v2>/js/bootstrap-modal.js"></script> 
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
 
