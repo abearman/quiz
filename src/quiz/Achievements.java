@@ -13,4 +13,5 @@ public class Achievements {
 	public static final int PRACTICE_MAKES_PERFECT = 5;
 	
 	public static final String[] achievements = {"Amateur Author", "Prolific Author", "Prodigious Author", "Quiz Machine", "I Am the Greatest", "Practice Makes Perfect"};
+	public static final String[] achievementsImgs = {"book.jpg", "prolificAuthor.jpg", "library.jpg", "machine.jpg", "star.png", "book.jpg"};
 }
