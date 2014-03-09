@@ -220,7 +220,7 @@
 		
 		<form action="TakeQuizServlet" method="post">
 		<input type="hidden" name="quizName" value="<%= quizName %>"/>
-		<input type = "submit" value = "Take This Quiz">
+		<input type = "submit" class="btn btn-primary" value = "Take This Quiz">
 		</form>
 	
 	</div>
