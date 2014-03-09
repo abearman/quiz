@@ -7,37 +7,79 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Question Response</title>
+	
+	<style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #000000;
+      }
+      
+      .form-quiz {
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    </style>
+	
+	<link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
 </head>
 
-<body>
+<body style="background-color:#f5f5f5">
 
-<%
-Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
-int questionNum = quiz.getCurrentQuestionNum();
-Question thisQuestion = quiz.getQuestions().get(questionNum);
-%>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <div><a class="navbar-brand" style="color:white; font-family:'Fugaz One', cursive; font-size:40px">Quizzler</a></div>
+	    </div>
+	  </div><!-- /.container-fluid -->
+	</nav>
 
-<h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
-<h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
-<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>" height="250" width="250"><br>
+	<%
+		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+		int questionNum = quiz.getCurrentQuestionNum();
+		Question thisQuestion = quiz.getQuestions().get(questionNum);
+	%>
+	
+	<div class="form-quiz" style="width:400px">
 
-<form action="" method="post">
-	Your Answer: <input type="text" class="span2" name="answer" />
-</form>
+		<h3><%= quiz.getQuizName() %> by <%= quiz.getCreatorName() %></h3>
+		<h4>Question <%= quiz.getCurrentQuestionNum()+1 %>: <%= thisQuestion.getQuestion() %></h4>
+		<img src="<%= ((PictureResponse)thisQuestion).getImageURL() %>" height="250" width="250"><br>
 
-<h5>Sorry, your answer was incorrect.</h5>
-<h5>Correct Answer: <%= thisQuestion.getAnswer().get(0) %></h5>
+		<form action="" method="post">
+			Your Answer: <input type="text" class="span2" name="answer" />
+		</form>
 
-<%
-if (questionNum == quiz.getQuestions().size()-1){
-	out.println("<form action=\"DoneWithQuizServlet\" method=\"post\">");
-	out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Done\">");
-}else{
-	out.println("<form action=\"NextQuestionServlet\" method=\"post\">");
-	out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Next Question\">");
-}
-%>
+		<h5>Sorry, your answer was incorrect.</h5>
+		<h5>Correct Answer: <%= thisQuestion.getAnswer().get(0) %></h5>
+
+		<%
+		if (questionNum == quiz.getQuestions().size()-1){
+			out.println("<form action=\"DoneWithQuizServlet\" method=\"post\">");
+			out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Done\">");
+		}else{
+			out.println("<form action=\"NextQuestionServlet\" method=\"post\">");
+			out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Next Question\">");
+		}
+		%>
+	</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
