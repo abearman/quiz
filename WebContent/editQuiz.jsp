@@ -75,6 +75,10 @@
 		<br>Remove Question #: <input type="text" class="span2" name="answer" />
 		<input type = "submit" class="btn btn-primary"/>
 		</form>
+		
+		<%
+			Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
+		%>
 	
 	</div>
 	

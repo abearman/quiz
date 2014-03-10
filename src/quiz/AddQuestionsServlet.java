@@ -48,21 +48,11 @@ public class AddQuestionsServlet extends HttpServlet {
 		if(questionType == Question.QUESTION_RESPONSE)
 		{
 			String question = request.getParameter("question");
-			/*System.out.println("Question: "+question);
-			for(int i = 0; i <answersList.size(); i++)
-			{
-				System.out.println("answer: "+answersList.get(i));
-			}*/
 			quizCreated.addQuestion(new QuestionResponse(question, answersList, quizCreated.getNextQuestionNum()));
 		}
 		if(questionType == Question.FILL_IN_THE_BLANK)
 		{
 			String question = request.getParameter("question");
-			/*System.out.println("Question: "+question);
-			for(int i = 0; i <answersList.size(); i++)
-			{
-				System.out.println("answer: "+answersList.get(i));
-			}*/
 			quizCreated.addQuestion(new FillInTheBlank(question, answersList, quizCreated.getNextQuestionNum()));
 		}
 		if(questionType == Question.MULTIPLE_CHOICE)
@@ -74,27 +64,12 @@ public class AddQuestionsServlet extends HttpServlet {
 			{
 				choicesList.add(request.getParameter("choice"+i));
 			}
-			/*System.out.println("Question: "+question);
-			for(int i = 0; i <answersList.size(); i++)
-			{
-				System.out.println("answer: "+answersList.get(i));
-			}
-			for(int i = 0; i <choicesList.size(); i++)
-			{
-				System.out.println("Choice: " + choicesList.get(i));
-			}*/
 			quizCreated.addQuestion(new MultipleChoice(question, answersList, quizCreated.getNextQuestionNum(), choicesList));
 		}
 		if(questionType == Question.PICTURE_RESPONSE)
 		{
 			String question = request.getParameter("question");
 			String imageURL = request.getParameter("imageURL");
-			/*System.out.println("Question: "+question);
-			for(int i = 0; i <answersList.size(); i++)
-			{
-				System.out.println("answer: "+answersList.get(i));
-			}
-			System.out.println("imageURL: " + imageURL);*/
 			quizCreated.addQuestion(new PictureResponse(question, answersList, quizCreated.getNextQuestionNum(),imageURL));
 		}
 		RequestDispatcher dispatch = request.getRequestDispatcher("addQuestions.jsp");

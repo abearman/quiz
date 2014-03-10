@@ -218,8 +218,6 @@ function checkNumQuestions()
 <p id = "specialInstructions"><b>An example of a Question Response question is "Who was the first president of the United States?"</b></p>
 
 
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
