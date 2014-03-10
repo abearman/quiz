@@ -13,6 +13,7 @@
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
 		ArrayList<Message> friendRequestMessages = dal.getFriendRequestMessages(username);
 		ArrayList<Message> otherMessages = dal.getUserMessages(user);
+		dal.setHasNewMessage(username, false);
 		boolean hasNewMessages = dal.userHasNewMessages(username);
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">

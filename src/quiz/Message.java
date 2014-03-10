@@ -10,11 +10,13 @@ public class Message {
 	private String fromUser;
 	private String toUser;
 	private String messageType;
+	private java.util.Date sendDate;
 	private DAL dal;
 	
-	public Message(String fromUser, String toUser, String messageType, DAL dal) {
+	public Message(String fromUser, String toUser, String messageType, java.util.Date sendDate, DAL dal) {
 		this.fromUser = fromUser;
 		this.toUser = toUser;
+		this.sendDate = sendDate;
 		this.dal = dal;
 		this.messageType = messageType;
 	}
@@ -33,6 +35,10 @@ public class Message {
 	
 	public String getMessageType() {
 		return messageType;
+	}
+	
+	public java.util.Date getSendDate() {
+		return sendDate;
 	}
 	
 	

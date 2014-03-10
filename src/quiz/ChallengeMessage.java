@@ -1,5 +1,7 @@
 package quiz;
 
+import java.util.Date;
+
 public class ChallengeMessage extends Message {
 	
 	private String quizName;
@@ -8,26 +10,26 @@ public class ChallengeMessage extends Message {
 	private DAL dal;
 	
 	public ChallengeMessage(String fromUser, String toUser, Quiz quiz, DAL dal) {
-		super(fromUser, toUser, Message.CHALLENGE_MESSAGE, dal);
+		super(fromUser, toUser, Message.CHALLENGE_MESSAGE, new Date(), dal);
 		this.dal = dal;
 		this.quizName = quiz.getQuizName();
 		this.bestScore = challengingUserBestScore(fromUser);
 		message = fromUser + " is challenging you to take the " + quiz.getQuizName() + " quiz!";
-		dal.addMessageForUser(fromUser, toUser, Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
+		dal.addMessageForUser(fromUser, toUser, Message.CHALLENGE_MESSAGE, message, quizName, bestScore, this.getSendDate());
 	}
 	
 	//Used for testing
 	public ChallengeMessage(String fromUserString, String toUserString, Quiz quiz, DAL dal, double bestScore) {
-		super(fromUserString, toUserString, Message.CHALLENGE_MESSAGE, dal);
+		super(fromUserString, toUserString, Message.CHALLENGE_MESSAGE, new Date(), dal);
 		this.quizName = quiz.getQuizName();
 		this.bestScore = bestScore;
 		message = fromUserString + " is challenging you to take the " + quiz.getQuizName() + " quiz!";
-		dal.addMessageForUser(fromUserString, toUserString, Message.CHALLENGE_MESSAGE, message, quizName, bestScore);
+		dal.addMessageForUser(fromUserString, toUserString, Message.CHALLENGE_MESSAGE, message, quizName, bestScore, this.getSendDate());
 	}
 	
 	//Used for building
-	public ChallengeMessage(String fromUserString, String toUserString, String quizName, DAL dal, double bestScore) {
-		super(toUserString, toUserString, Message.CHALLENGE_MESSAGE,dal);
+	public ChallengeMessage(String fromUserString, String toUserString, String quizName, java.util.Date sendDate, DAL dal, double bestScore) {
+		super(toUserString, toUserString, Message.CHALLENGE_MESSAGE, sendDate, dal);
 		this.quizName = quizName;
 		this.bestScore = bestScore;
 		message = fromUserString + " is challenging you to take the " + quizName + " quiz!";

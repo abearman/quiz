@@ -45,6 +45,7 @@ public class SendMessageServlet extends HttpServlet {
 		if (messageType.equals(Message.NOTE_MESSAGE)) {
 			String message = (String) request.getParameter("message");
 			new NoteMessage(fromUserString, toUserString, message, dal);
+			dal.setHasNewMessage(toUserString, true);
 			RequestDispatcher dispatch = request.getRequestDispatcher("friendProfile.jsp?friendName=" + toUserString);
 			dispatch.forward(request,response);
 		} else if (messageType.equals(Message.CHALLENGE_MESSAGE)) {
@@ -52,6 +53,7 @@ public class SendMessageServlet extends HttpServlet {
 			Quiz quiz = new Quiz(dal, quizString);
 			if (dal.areFriends(fromUserString, toUserString)) {
 				new ChallengeMessage(fromUserString, toUserString, quiz, dal);
+				dal.setHasNewMessage(toUserString, true);
 				RequestDispatcher dispatch = request.getRequestDispatcher("quizResults.jsp");
 				dispatch.forward(request,response);
 			} else {
