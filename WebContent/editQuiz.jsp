@@ -73,12 +73,16 @@
 		
 		<form action="RemoveQuestionServlet" method="post">
 		<br>Remove Question #: <input type="text" class="span2" name="answer" />
-		<input type = "submit" class="btn btn-primary"/>
+		<input type = "submit" class="btn btn-primary" value="Remove Question"/>
 		</form>
 		
 		<%
-			Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
+			request.getSession().setAttribute("quizCreated",quiz);
 		%>
+		
+		<form action="addQuestions.jsp" method="post">
+		<input type = "submit" class="btn btn-primary" value="Add Question"/>
+		</form>
 	
 	</div>
 	
