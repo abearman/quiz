@@ -139,6 +139,13 @@
 	
 		<h3><%= quizName %> by <%= quizCreator %></h3>
 		<h5><%= descriptionOfQuiz %></h5>
+		
+		<h4>Statistics Summary</h4>
+		<ul>
+		<li>Average Score: <%= averageScoreString %>/<%= numQuestions %></li>
+		<li>Median Score: <%= medianScoreString %>/<%= numQuestions %></li>
+		<li>Average Time: <%= averageTimeString %> sec</li>
+		</ul>
 	
 		<h4>Your Past Performance on <%= quizName %>:</h4>
 		<%
@@ -210,13 +217,6 @@
 		}
 		out.println("</ul>"); 
 		%>
-		
-		<h4>Statistics Summary</h4>
-		<ul>
-		<li>Average Score: <%= averageScoreString %>/<%= numQuestions %></li>
-		<li>Median Score: <%= medianScoreString %>/<%= numQuestions %></li>
-		<li>Average Time: <%= averageTimeString %> sec</li>
-		</ul>
 		
 		<form action="TakeQuizServlet" method="post">
 		<input type="hidden" name="quizName" value="<%= quizName %>"/>
