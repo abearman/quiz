@@ -46,6 +46,8 @@
 		
 	      <ul class="nav navbar-nav navbar-right">
 	      	<li class="active"><a href="guestHomepage.jsp">Home</a></li>
+	      	<li class="active"><a href="index.html">Log In</a>
+	      	<li class="active"><a href="createAccount.html">Create Account</a>
 	      </ul>
 	  </div><!-- /.container-fluid -->
 	</nav>

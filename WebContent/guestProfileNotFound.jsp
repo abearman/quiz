@@ -9,11 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<%
-	String loginName = (String)session.getAttribute("loginName");
-	User user = (User)session.getAttribute("user");
-	DAL dal = (DAL)getServletContext().getAttribute("DAL");
 	String name = request.getParameter("usernameToSearch");
-	boolean hasNewMessages = dal.userHasNewMessages(loginName);
 	%>  
 	
 	<title> Profile Not Found </title>
@@ -44,27 +40,7 @@
 		</form>
 		
 	      <ul class="nav navbar-nav navbar-right">
-	        <li class="active"><a href="friends.jsp" style="margin:0; padding:0"><img src="friends-icon.jpg" height="50px" height="50px"/></a></li>
-	        <li class="active"><a href="messages.jsp" style="margin:0; margin-left:10px; padding:0"><img src="messages.jpg" height="50px" height="50px"/></a></li>
-	        
-	        <%if (hasNewMessages) {
-	        	%> <li class="active"><a href="messages.jsp" style="margin:0; margin-left:10px; padding:0"><img src="exclamation-red.jpg" height="50px" height="50px"/></a></li> <% 
-	        } else {%>
-	        	<li class="active"><a href="messages.jsp" style="margin:0; margin-left:10px; padding:0"><img src="exclamation.jpg" height="50px" height="50px"/></a></li>
-			<%}%>
-			
-			<%if (user.getIsAdministrator()) {
-				%> <li class="active"><a href="administratorHomepage.jsp">Home</a></li><%
-			} else {
-				%> <li class="active"><a href="userHomepage.jsp">Home</a></li>
-			<%}%>
-			
-	        <li class="active"><a href="friendProfile.jsp?friendName=<%=loginName%>"><%=loginName%></a></li>
-	        <li style="padding-right:10px">
-	        	<form class="navbar-form navbar-right" name="logOut" action="LogOutServlet" method="post">
-					<button type="submit" class="btn btn-default">Log Out</button>
-				</form>
-	        </li>
+			<li class="active"><a href="guestHomepage.jsp">Home</a></li>
 	      </ul>
 	  </div><!-- /.container-fluid -->
 	</nav>

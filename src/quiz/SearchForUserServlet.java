@@ -50,7 +50,7 @@ public class SearchForUserServlet extends HttpServlet {
 				RequestDispatcher dispatch = request.getRequestDispatcher("guestFriendProfile.jsp?friendName=" + userToSearch);		
 				dispatch.forward(request,response);
 			} else { //Profile was not found
-				RequestDispatcher dispatch = request.getRequestDispatcher("profileNotFound.jsp?usernameToSearch=" + userToSearch);		
+				RequestDispatcher dispatch = request.getRequestDispatcher("guestProfileNotFound.jsp?usernameToSearch=" + userToSearch);		
 				dispatch.forward(request,response);
 			}
 		}
