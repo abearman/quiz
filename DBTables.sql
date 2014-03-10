@@ -47,7 +47,7 @@ CREATE TABLE messages (
     message CHAR(64),
     quizName CHAR(64),
     bestScore DOUBLE,
-    sendMessage DATETIME
+    sendDate DATETIME
 );
 
 DROP TABLE IF EXISTS questionResponse;
