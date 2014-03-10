@@ -54,7 +54,7 @@
 <body style="background-color:#f5f5f5">
 
 	<div class="container">
-		<form style="width:400px" class="form-signin" action="LoginServlet" method="post">
+		<form style="width:400px" class="form-signin" action="AccountCreationServlet" method="post">
 			<h2 class="form-signin-heading"> Sorry, the name <%= username %> is already in use. </h2>
 			<h3>Please enter another name and password.</h3>
 			<div><input name="username" type="text" class="input-block-level" placeholder="User Name"></div>
