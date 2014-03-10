@@ -880,7 +880,7 @@ public class DAL {
 	/** MESSAGES TABLE */
 	
 	public java.sql.Date getLastReadMessageDate(User user) {
-		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendMessage DESC;";
+		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendDate DESC;";
 		try {
 			
 			ResultSet rs = stmt.executeQuery(query);
@@ -897,7 +897,7 @@ public class DAL {
 
 	public ArrayList<Message> getFriendRequestMessages(String user) {
 		ArrayList<Message> messages = new ArrayList<Message>();
-		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\" ORDER BY sendMessage DESC;";
+		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\" ORDER BY sendDate DESC;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -913,7 +913,7 @@ public class DAL {
 
 	public ArrayList<Message> getUserMessages(User user) {
 		ArrayList<Message> result = new ArrayList<Message>();
-		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendMessage DESC;";
+		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendDate DESC;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 
@@ -947,7 +947,7 @@ public class DAL {
 		if (lastDate == null)
 			return true;
 		
-		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\" ORDER BY sendMessage DESC;";
+		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\" ORDER BY sendDate DESC;";
 		try {
 			
 			ResultSet rs = stmt.executeQuery(query);

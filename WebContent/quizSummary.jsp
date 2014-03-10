@@ -46,7 +46,8 @@
 	<%
 	User user = (User)session.getAttribute("user");
 	String username = (String)session.getAttribute("loginName");
-	boolean hasNewMessages = dal.userHasNewMessages(username);
+	java.sql.Date lastMessageDate = (java.sql.Date) getServletContext().getAttribute("lastMessageDate");
+	boolean hasNewMessages = dal.userHasNewMessages(username, lastMessageDate);
 	
 	String descriptionOfQuiz = quiz.getDescriptionOfQuiz();
 	String quizCreator = quiz.getCreatorName();
