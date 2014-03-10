@@ -1,3 +1,4 @@
+<%@ page import="java.util.*, quiz.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
@@ -7,14 +8,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Create Quiz</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<% DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
+	%>
 </head>
+
 
 <body>
 
 	<h3>Create a Quiz</h3>
 	
-	<form action="QuizCreationServlet" method = "post">
-		<p>Quiz Name: <input type = "text" name = "quizName"/></p>
+	<form name="creationForm" action="QuizCreationServlet" method = "post">
+		<p>Quiz Name: <input type = "text" name = "quizName"/> </p>
 		<p>Quiz Description: <input type = "text" name = "quizDescription"/></p>
 		<p>Random Question Order: <br>
 		Yes: <input type = "radio" name = "isRandom" value = "true"/><br>

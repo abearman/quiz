@@ -18,6 +18,7 @@ public class Question {
 	public static final int FILL_IN_THE_BLANK = 2;
 	public static final int MULTIPLE_CHOICE = 3;
 	public static final int PICTURE_RESPONSE = 4;
+	public static final int MultiAnswer_MultipleChoice = 5;
 	
 	/**
 	 * Construct creates a new Question by
