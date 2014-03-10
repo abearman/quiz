@@ -78,6 +78,14 @@
 		<br>Remove Question #: <input type="text" class="span2" name="answer" />
 		<input type = "submit" class="btn btn-primary"/>
 		</form>
+		
+		<%
+			request.getSession().setAttribute("quizCreated",quiz);
+		%>
+		
+		<form action="addQuestions.jsp" method="post">
+		<input type = "submit" class="btn btn-primary" value="Add Question"/>
+		</form>
 	
 	</div>
 	
