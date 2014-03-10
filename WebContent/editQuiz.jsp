@@ -1,4 +1,4 @@
-<%@ page import="java.util.*, quiz.*" %>
+<%@ page import="java.util.*, java.text.*, quiz.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
@@ -6,8 +6,8 @@
 	<meta content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Quiz Creation Successful</title>
-
+	
+	<title>Edit Quiz</title>
 	<style type="text/css">
       body {
         padding-top: 40px;
@@ -32,7 +32,6 @@
 	<link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
-	
 </head>
 
 <body style="background-color:#f5f5f5">
@@ -52,24 +51,30 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<div class="form-quiz" style="width:400px">
-
-		<h3>Quiz Creation was Successful!</h3>
+	<%
+		Quiz quiz = (Quiz)request.getSession().getAttribute("editQuiz");
+		String quizName = quiz.getQuizName();
+		DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
+		ArrayList<Question> questions = quiz.getQuestions();
+		int numQuestions = questions.size();
+		request.getSession().setAttribute("editQuizQuestions",questions);
+	%>
 	
+	<div class="form-quiz" style="width:1100px">
+		<h2><%= quizName %></h2>
+		<h4>Quiz Details:</h4>
+		<ul>
 		<%
-			User user = (User)request.getSession().getAttribute("user");
-			Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
-			String quizSummaryURL = "quizSummary.jsp?quizName=" + quizCreated.getQuizName();
+			for (int i = 0; i < numQuestions; i++){
+				out.println("<li>" + (i+1) + ". " + questions.get(i).getQuestion() + "</li>");
+			}
 		%>
-	
-		Check out your <a href="<%= quizSummaryURL %>">quiz</a><br>
+		</ul>
 		
-		<%
-			if (user.getIsAdministrator()) {
-				%> Go back <a href="administratorHomepage.jsp">home</a><% 
-			} else {
-				%> Go back <a href="userHomepage.jsp">home</a><% 
-			}%>
+		<form action="RemoveQuestionServlet" method="post">
+		<br>Remove Question #: <input type="text" class="span2" name="answer" />
+		<input type = "submit" class="btn btn-primary"/>
+		</form>
 	
 	</div>
 	

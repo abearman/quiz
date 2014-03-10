@@ -222,6 +222,17 @@
 		<input type="hidden" name="quizName" value="<%= quizName %>"/>
 		<input type = "submit" class="btn btn-primary" value = "Take This Quiz">
 		</form>
+		<br>
+	
+		<%
+			String creatorName = quiz.getCreatorName();
+			if (user.getLoginName().equals(creatorName)){
+				out.println("<form action=\"EditQuizServlet\" method=\"post\">");
+				out.println("<input type=\"hidden\" name=\"editQuizName\" value=\"" + quizName + "\"/>");
+				out.println("<input type = \"submit\" class=\"btn btn-primary\" value = \"Edit This Quiz\">");
+				out.println("</form>");
+			}
+		%>
 	
 	</div>
 	
