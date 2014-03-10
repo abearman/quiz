@@ -55,6 +55,9 @@ public class NextQuestionServlet extends HttpServlet {
 		}else if (questionType == Question.PICTURE_RESPONSE){
 			RequestDispatcher dispatch = request.getRequestDispatcher("singlePictureResponse.jsp");
 			dispatch.forward(request,response);
+		}else if (questionType == Question.MultiAnswer_MultipleChoice){
+			RequestDispatcher dispatch = request.getRequestDispatcher("singleMultiAnswerMultipleChoice.jsp");
+			dispatch.forward(request,response);
 		}
 	}
 

@@ -39,9 +39,24 @@ public class CorrectSinglePageQuizServlet extends HttpServlet {
 		ArrayList<Question> questions = quiz.getQuestions();
 		for(int i = 0; i < questions.size(); i++)
 		{
-			String answerField = "answer"+i;
-			String answer = request.getParameter(answerField);
-			quiz.addAnswers(answer);
+			if(questions.get(i).getQuestionType()==Question.MultiAnswer_MultipleChoice)
+			{
+				String answerField = "answer"+i;
+				String[] answers = request.getParameterValues(answerField);
+				String input ="";
+				for(int j = 0; j<answers.length; j++)
+				{
+					input+=answers[j];
+					input+="\n";
+				}
+				quiz.addAnswers(input);
+			}
+			else
+			{
+				String answerField = "answer"+i;
+				String answer = request.getParameter(answerField);
+				quiz.addAnswers(answer);
+			}
 		}
 		RequestDispatcher dispatch = request.getRequestDispatcher("/DoneWithQuizServlet");
 		dispatch.forward(request, response);

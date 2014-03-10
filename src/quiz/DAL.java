@@ -580,6 +580,8 @@ public class DAL {
 			stmt.executeUpdate(update);
 			update = "DELETE FROM pictureResponse WHERE quizName = \"" + quizName + "\";";
 			stmt.executeUpdate(update);
+			update = "DELETE FROM multiAnswerMultipleChoice WHERE quizName = \"" + quizName + "\";";
+			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1047,6 +1049,18 @@ public class DAL {
 							qrs.getInt(5), qrs.getString(6)));
 				}
 			}
+			
+			//for  multi-answer multiple choice
+			qrs = stmt.executeQuery("SELECT * FROM multiAnswerMultipleChoice WHERE quizName = \"" 
+					+ quizName + "\";");
+			if (qrs.next()){
+				qrs.beforeFirst();
+				while(qrs.next())
+				{
+					questions.add(new MultiAnswerMultipleChoice(qrs.getString(2),Question.createArray(qrs.getString(3)),
+							qrs.getInt(5), Question.createArray(qrs.getString(6))));
+				}
+			}
 		} catch (SQLException e){
 			e.printStackTrace(); 
 		}
@@ -1082,6 +1096,12 @@ public class DAL {
 						+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
 						+question.getQuestionNumber()+",\""+((PictureResponse)question).getImageURL()+"\");";
 			}
+			if(question.getQuestionType() == Question.MultiAnswer_MultipleChoice)
+			{
+				update = "INSERT INTO multiAnswerMultipleChoice VALUES(\""+quizName+"\",\""+question.getQuestion()
+						+"\",\""+question.createAnswerString()+"\","+question.getQuestionType()+","
+						+question.getQuestionNumber()+",\""+((MultiAnswerMultipleChoice)question).createChoicesString()+"\");";
+			}
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1106,6 +1126,10 @@ public class DAL {
 			if(question.getQuestionType() == Question.PICTURE_RESPONSE)
 			{
 				update = "DELETE FROM pictureResponse WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\";";
+			}
+			if(question.getQuestionType() == Question.MultiAnswer_MultipleChoice)
+			{
+				update = "DELETE FROM multiAnswerMultipleChoice WHERE quizName = \"" + quizName + "\" AND question = \"" + question.getQuestion() + "\";";
 			}
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {

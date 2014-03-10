@@ -46,7 +46,8 @@ CREATE TABLE messages (
     messageType CHAR(64),
     message CHAR(64),
     quizName CHAR(64),
-    bestScore DOUBLE
+    bestScore DOUBLE,
+    sendDate DATETIME
 );
 
 DROP TABLE IF EXISTS questionResponse;
@@ -76,6 +77,18 @@ DROP TABLE IF EXISTS multipleChoice;
  -- remove table if it already exists and start from scratch
 
 CREATE TABLE multipleChoice (
+    quizName CHAR(64),
+    question CHAR(64),
+    answer CHAR(64),
+    qtype INT,
+    qNum INT,
+    options CHAR(64)
+);
+
+DROP TABLE IF EXISTS multiAnswerMultipleChoice;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE multiAnswerMultipleChoice (
     quizName CHAR(64),
     question CHAR(64),
     answer CHAR(64),

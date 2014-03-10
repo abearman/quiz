@@ -128,11 +128,69 @@
 			for (int i = 0; i < questions.size(); i++){
 				String correctAnswer = questions.get(i).getAnswer().get(0);
 				String usersAnswer = usersAnswers.get(i);
-				if (questions.get(i).answerIsCorrect(usersAnswer)){
-					correctAnswer = usersAnswer;
-					out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
-				}else{
-					out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
+				if(questions.get(i).getQuestionType()==Question.MultiAnswer_MultipleChoice)
+				{
+					ArrayList<String> realAnswers = Question.createArray(usersAnswer);
+					for(int s =0; s < realAnswers.size(); s++ )
+					{
+						if(!(questions.get(i).answerIsCorrect(realAnswers.get(s)))){
+							out.println("<li><b>Your Answer:</b> "); 
+							String userOutput = "";
+							for(int j =0; j < realAnswers.size(); j++)//adds up users answers
+							{
+								if(j+1==realAnswers.size())
+								{
+									userOutput+=realAnswers.get(j);
+								}
+								else
+								{
+									userOutput+=realAnswers.get(j)+", ";
+								}
+							}
+							out.println(userOutput + " <b>Correct Answer:</b> ");
+							ArrayList<String> actualAnswers = questions.get(i).getAnswer();
+							String quizOutput = "";
+							for(int j =0; j < actualAnswers.size(); j++)//adds up users answers
+							{
+								if(j+1==actualAnswers.size())
+								{
+									quizOutput+=actualAnswers.get(j);
+								}
+								else
+								{
+									quizOutput+=actualAnswers.get(j)+", ";
+								}
+							}
+							out.println(quizOutput + " </li>");
+							break;
+						}
+						if(s+1 == realAnswers.size())//if all of the users answers are correct
+						{
+							out.println("<li><b>Your Answer:</b> "); 
+							String userOutput = "";
+							for(int j =0; j < realAnswers.size(); j++)//adds up users answers
+							{
+								if(j+1==realAnswers.size())
+								{
+									userOutput+=realAnswers.get(j);
+								}
+								else
+								{
+									userOutput+=realAnswers.get(j)+", ";
+								}
+							}
+							out.println(userOutput + " <b>Correct Answer:</b> "+userOutput+ " </li>");
+						}
+					}
+				}
+				else
+				{
+					if (questions.get(i).answerIsCorrect(usersAnswer)){
+						correctAnswer = usersAnswer;
+						out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
+					}else{
+						out.println("<li><b>Your Answer:</b> " + usersAnswer + " <b>Correct Answer:</b> " + correctAnswer + " </li>");
+					}
 				}
 			}
 		%>
