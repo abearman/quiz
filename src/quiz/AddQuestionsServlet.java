@@ -72,6 +72,27 @@ public class AddQuestionsServlet extends HttpServlet {
 			String imageURL = request.getParameter("imageURL");
 			quizCreated.addQuestion(new PictureResponse(question, answersList, quizCreated.getNextQuestionNum(),imageURL));
 		}
+		if(questionType == Question.MultiAnswer_MultipleChoice)
+		{
+			String question = request.getParameter("question");
+			ArrayList<String> choicesList = new ArrayList<String>();
+			int numChoices = Integer.parseInt(request.getParameter("numChoices"));
+			for(int i = 1; i <=numChoices; i++)
+			{
+				choicesList.add(request.getParameter("choice"+i));
+			}
+			quizCreated.addQuestion(new MultiAnswerMultipleChoice(question, answersList, quizCreated.getNextQuestionNum(), choicesList));
+			/*System.out.println("Question: "+question);
+			for(int i = 0; i < answersList.size(); i++)
+			{
+				System.out.println("Answer: "+answersList.get(i));
+			}
+			for(int i = 0; i < choicesList.size(); i++)
+			{
+				System.out.println("Choice: "+choicesList.get(i));
+			}*/
+		}
+		
 		RequestDispatcher dispatch = request.getRequestDispatcher("addQuestions.jsp");
 		dispatch.forward(request,response);
 	}

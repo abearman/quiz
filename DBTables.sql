@@ -84,6 +84,18 @@ CREATE TABLE multipleChoice (
     options CHAR(64)
 );
 
+DROP TABLE IF EXISTS multiAnswerMultipleChoice;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE multiAnswerMultipleChoice (
+    quizName CHAR(64),
+    question CHAR(64),
+    answer CHAR(64),
+    qtype INT,
+    qNum INT,
+    options CHAR(64)
+);
+
 DROP TABLE IF EXISTS pictureResponse;
  -- remove table if it already exists and start from scratch
 

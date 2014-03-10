@@ -1,6 +1,7 @@
 package quiz;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,14 +35,44 @@ public class UpdateAnswersServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String answer = (String)request.getParameter("answer");
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+		Question question = quiz.getQuestions().get(quiz.getCurrentQuestionNum());
+		String answer = "";
+		if(question.getQuestionType()==Question.MultiAnswer_MultipleChoice)
+		{
+			String[] usersAnswers = request.getParameterValues("answer");
+			for(int j = 0; j < usersAnswers.length; j++)
+			{
+				answer+=usersAnswers[j];
+				answer+="\n";
+			}
+		}
+		else
+		{
+			answer = (String)request.getParameter("answer");
+		}
 		quiz.addAnswers(answer);
 		
 		if (quiz.isImmediateCorrection()){
-			Question question = quiz.getQuestions().get(quiz.getCurrentQuestionNum());
+			
 			int questionType = question.getQuestionType();
-			boolean answerCorrect = question.answerIsCorrect(answer);
+			boolean answerCorrect = true;
+			if(questionType ==Question.MultiAnswer_MultipleChoice)
+			{
+				ArrayList<String> realAnswers = Question.createArray(answer);
+				for(int s =0; s < realAnswers.size(); s++ )
+				{
+					if(!(question.answerIsCorrect(realAnswers.get(s)))){
+						answerCorrect = false;
+						break;
+					}
+				}
+			}
+			else
+			{
+				answerCorrect = question.answerIsCorrect(answer);
+			}
+			
 			
 			if (answerCorrect){
 				if (questionType == Question.QUESTION_RESPONSE){
@@ -56,6 +87,9 @@ public class UpdateAnswersServlet extends HttpServlet {
 				}else if (questionType == Question.PICTURE_RESPONSE){
 					RequestDispatcher dispatch = request.getRequestDispatcher("correctPictureResponseAnswer.jsp");
 					dispatch.forward(request,response);
+				}else if (questionType == Question.MultiAnswer_MultipleChoice){
+					RequestDispatcher dispatch = request.getRequestDispatcher("correctMultiAnswerMultipleChoiceAnswer.jsp");
+					dispatch.forward(request,response);
 				}
 			}else{
 				if (questionType == Question.QUESTION_RESPONSE){
@@ -69,6 +103,10 @@ public class UpdateAnswersServlet extends HttpServlet {
 					dispatch.forward(request,response);
 				}else if (questionType == Question.PICTURE_RESPONSE){
 					RequestDispatcher dispatch = request.getRequestDispatcher("incorrectPictureResponseAnswer.jsp");
+					dispatch.forward(request,response);
+				}
+				else if (questionType == Question.MultiAnswer_MultipleChoice){
+					RequestDispatcher dispatch = request.getRequestDispatcher("incorrectMultiAnswerMultipleChoiceAnswer.jsp");
 					dispatch.forward(request,response);
 				}
 			}
@@ -92,6 +130,9 @@ public class UpdateAnswersServlet extends HttpServlet {
 					dispatch.forward(request,response);
 				}else if (questionType == Question.PICTURE_RESPONSE){
 					RequestDispatcher dispatch = request.getRequestDispatcher("singlePictureResponse.jsp");
+					dispatch.forward(request,response);
+				}else if (questionType == Question.MultiAnswer_MultipleChoice){
+					RequestDispatcher dispatch = request.getRequestDispatcher("singleMultiAnswerMultipleChoice.jsp");
 					dispatch.forward(request,response);
 				}
 			}

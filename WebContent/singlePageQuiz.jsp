@@ -98,6 +98,16 @@
 						out.print("<img src=\""+((PictureResponse)q).getImageURL()+"\" height=\"250\" width=\"250\"><br>");
 						out.print("Your Answer: <input class=\"span2\" type=\"text\" name=\"answer"+i+ "\" />");
 					}
+					if(q.getQuestionType()==Question.MultiAnswer_MultipleChoice)
+					{
+						out.print("<h4>Question ");
+						out.print((i+1)+": ");
+						out.print(q.getQuestion()+"</h4>");
+						ArrayList<String> choices = ((MultiAnswerMultipleChoice)q).getChoices();
+						for (int c = 0; c < choices.size(); c++){
+							out.println("<input type=\"checkbox\" name=\"answer" +i+ "\" value=\"" + choices.get(c) + "\"/> " + choices.get(c) + "<br>");
+						}
+					}
 				}
 			%>
 			<br><input type="submit" class="btn btn-primary" value="Done">

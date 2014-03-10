@@ -36,5 +36,16 @@ public class MultiAnswerMultipleChoice extends Question {
 	{
 		return Question.MultiAnswer_MultipleChoice;
 	}
+	
+	public String createChoicesString()
+	{
+		String result = "";
+		for(int i = 0; i < choices.size(); i++)
+		{
+			result += (choices.get(i)+"\n");
+		}
+		return result;
+			 
+	}
 
 }

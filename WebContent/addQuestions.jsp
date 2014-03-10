@@ -127,6 +127,25 @@ function displayQuestion()
 		instructions+= "The question field may be left blank for this type of question and only a picture will be shown. The URL for the image should be the exact URL to find the image at.</b>";
 		document.getElementById("specialInstructions").innerHTML = instructions;
 	}
+	if (options[selected].value == "MultiAnswerMultipleChoice")
+	{
+		var display = "<h3>Multi-Answer Multiple Choice</h3> ";
+		display+= "<input type=\"hidden\" name=\"questionType\" value =5>";
+		display+= "<input type=\"hidden\" name=\"numAnswers\" value= 1>";
+		display+= "<input type=\"hidden\" name=\"numChoices\" value= 1>";
+		display+= "<p>Question:<input type = \"text\" name=\"question\"></p>";
+		display+= "<p id=\"answers\">Answers:<input type = \"text\" name=\"answer1\"></p>";
+		display+= "<p id= \"choices\">Choices:<input type = \"text\" name=\"choice1\"></p>";
+		document.getElementById("displayArea").innerHTML = display;
+		var choiceButton = "<input type=\"button\" value=\"Add Choice\" onclick=\"addChoiceBox()\">";
+		choiceButton+= "<input type= \"button\" value = \"Remove Choice\" onclick=\"removeChoiceBox()\">";
+		document.getElementById("choicesButton").innerHTML = choiceButton;
+		var instructions = "<b>An example of a Multi-Answer Multiple Choice question is \"Select all that are true:\"<br> \"George Washington was the first president.\"<br>";
+		instructions+="\"George Washington was the General of the Continental Army.\"<br>\"George Washinton was an English soldier in the Revolutionary War.\"<br>";
+		instructions+="The right answers would be \"George Washington was the first president.\" and \"George Washington was the General of the Continental Army.\"<br>";
+		instructions+= "Press \"Add Choices\" to add another choice for the question. Press \"Remove Answers\" to remove the last answer. Please enter only one choice per box and do not leave any Choices boxes unfilled.</b>";
+		document.getElementById("specialInstructions").innerHTML = instructions;
+	}
 }
 
 
@@ -202,6 +221,17 @@ function checkForm()//error checking to make sure fields are filled out properly
 			document.frm.submit();
 		}
 	}
+	else if (options[selected].value == "MultiAnswerMultipleChoice")
+	{
+		if(document.frm.choice1.value == "")
+		{
+			alert("Please enter a Choice.");
+		}
+		else
+		{
+			document.frm.submit();
+		}
+	}
 	else
 	{
 		document.frm.submit();
@@ -230,6 +260,7 @@ function checkNumQuestions()
 		<option value = "FillInTheBlank"> Fill in the Blank</option>
 		<option value = "MultipleChoice"> Multiple Choice</option>
 		<option value = "PictureResponse"> Picture Response</option>
+		<option value = "MultiAnswerMultipleChoice"> Multi-Answer Multiple Choice</option>
 	</select>
 </div>
 
