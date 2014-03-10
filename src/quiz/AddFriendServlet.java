@@ -42,6 +42,7 @@ public class AddFriendServlet extends HttpServlet {
 
 		FriendRequestMessage frm = new FriendRequestMessage(user1, user2, dal);
 		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, frm.getMessage(), null, -1, new Date());
+		dal.setHasNewMessage(user2, true);
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher("friendProfile.jsp?friendName=" + user2);
 		dispatch.forward(request, response);
