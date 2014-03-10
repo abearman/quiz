@@ -152,6 +152,8 @@ function checkForm()//error checking to make sure fields are filled out properly
 		if(document.frm.imageURL.value == "")
 		{
 			alert("Please enter an Image URL.");
+		}else if (document.frm.imageURL.value.length > 255){
+			alert("This URL is too long. Please enter a shorter URL.")
 		}
 		else
 		{

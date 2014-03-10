@@ -58,7 +58,7 @@ public class Question {
 	{
 		boolean answerCorrect = false;
 		for (int i = 0; i < answers.size(); i++){
-			if (answer.equals(answers.get(i))){
+			if (answer.equalsIgnoreCase(answers.get(i))){
 				answerCorrect = true;
 			}
 		}

@@ -62,12 +62,13 @@ public class LoginServlet extends HttpServlet {
 				response.addCookie(cookie);
 			}
 			
+			/*
 			Cookie[] cookies = request.getCookies();
 			for (Cookie c : cookies) {
 				String s = c.getName();
 				String t = c.getValue();
 				int a = 0;
-			}
+			}*/
 			
 			if (user.getIsAdministrator()) { //display administrator homepage
 				RequestDispatcher dispatch = request.getRequestDispatcher("administratorHomepage.jsp");
