@@ -77,7 +77,9 @@
 
 	<h2><%= friendName %>'s Profile</h2>
 	
-		<a href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"><button> Send Message </button></a>
+		<%if (!friendName.equals(username)) {%>
+			<a href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"><button> Send Message </button></a>
+		<%}%>
 	
 	<%
 	if (!friendName.equals(username)) {
