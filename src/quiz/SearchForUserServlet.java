@@ -37,13 +37,25 @@ public class SearchForUserServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
 		String userToSearch = (String)request.getParameter("usernameToSearch");
-		if (dal.accountExists(userToSearch)) {
-			RequestDispatcher dispatch = request.getRequestDispatcher("friendProfile.jsp?friendName=" + userToSearch);		
-			dispatch.forward(request,response);
-		} else { //Profile was not found
-			RequestDispatcher dispatch = request.getRequestDispatcher("profileNotFound.jsp?usernameToSearch=" + userToSearch);		
-			dispatch.forward(request,response);
+		if (request.getSession().getAttribute("user") != null) {
+			if (dal.accountExists(userToSearch)) {
+				RequestDispatcher dispatch = request.getRequestDispatcher("friendProfile.jsp?friendName=" + userToSearch);		
+				dispatch.forward(request,response);
+			} else { //Profile was not found
+				RequestDispatcher dispatch = request.getRequestDispatcher("profileNotFound.jsp?usernameToSearch=" + userToSearch);		
+				dispatch.forward(request,response);
+			}
+		} else {
+			if (dal.accountExists(userToSearch)) {
+				RequestDispatcher dispatch = request.getRequestDispatcher("guestFriendProfile.jsp?friendName=" + userToSearch);		
+				dispatch.forward(request,response);
+			} else { //Profile was not found
+				RequestDispatcher dispatch = request.getRequestDispatcher("profileNotFound.jsp?usernameToSearch=" + userToSearch);		
+				dispatch.forward(request,response);
+			}
 		}
+		
+		
 	}
 
 }

@@ -23,11 +23,17 @@
 	<p> Sorry, we couldn't find <b><%=name%>'s</b> profile :( </p>	
 
 	<%
-	if (dal.isUserAdmin(loginName)) {
-		%> Go back <a href="administratorHomepage.jsp">home</a><% 
+	if (loginName != null) {
+		if (dal.isUserAdmin(loginName)) {
+			%> Go back <a href="administratorHomepage.jsp">home</a><% 
+		} else {
+			%> Go back <a href="userHomepage.jsp">home</a><% 
+		}
 	} else {
-		%> Go back <a href="userHomepage.jsp">home</a><% 
+		%> Go back <a href="guestHomepage.jsp">home</a><% 
 	}%>
+	
+	
 
 </body>
 </html>

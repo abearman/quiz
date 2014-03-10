@@ -12,7 +12,8 @@
 	<%
 		User user = (User)session.getAttribute("user");
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
-		String username = user.getLoginName();
+		String username = null;
+		if (user != null) username = user.getLoginName();
 		ArrayList<Quiz> allQuizzes = dal.getAllQuizzes();
 	%>
 	<title><%= username %>'s Friends</title>
@@ -21,10 +22,14 @@
 <body>
 
 	<%
-	if (user.getIsAdministrator()) {
-		%> Go back <a href="administratorHomepage.jsp">home</a><% 
+	if (username != null) {
+		if (user.getIsAdministrator()) {
+			%> Go back <a href="administratorHomepage.jsp">home</a><% 
+		} else {
+			%> Go back <a href="userHomepage.jsp">home</a><% 
+		}
 	} else {
-		%> Go back <a href="userHomepage.jsp">home</a><% 
+		%> Go back <a href="guestHomepage.jsp">home</a><% 
 	}%>
 	
 	<ul>
@@ -32,10 +37,15 @@
 		for (Quiz quiz : allQuizzes) {
 			String quizName = quiz.getQuizName();
 			String creator = quiz.getCreatorName();
-			%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <%
-		} 
-		%>
+			if (username != null) {
+				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="friendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> <%
+			} else {
+				%> <li> Quiz: <a href="guestQuizSummary.jsp?quizName=<%=quizName%>"><%=quizName%></a>, by <a href="guestFriendProfile.jsp?friendName=<%=creator%>"><%=creator%></a> </li> 
+			<%}
+		}%>
 	</ul>
 
 </body>
 </html>
+
+
