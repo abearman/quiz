@@ -34,6 +34,54 @@
 	
 </head>
 
+<script>
+function checkRadioButtons()
+{
+	var isRandomButtons = document.getElementsByName("isRandom");
+	for(var i=0; i<isRandomButtons.length; i++)
+	{
+		if(isRandomButtons[i].checked)
+			{
+				break;
+			}
+		if(i+1 == isRandomButtons.length)
+			{
+				alert("Please select if the quiz had a random question order.");
+				return;
+			}
+	}
+	
+	var isMultiplePageButtons = document.getElementsByName("isMultiplePage");
+	for(var i=0; i<isMultiplePageButtons.length; i++)
+	{
+		if(isMultiplePageButtons[i].checked)
+			{
+				break;
+			}
+		if(i+1 == isMultiplePageButtons.length)
+			{
+				alert("Please select if the quiz will be displayed over multipe pages.");
+				return;
+			}
+	}
+	
+	var isImmediateCorrectionButtons = document.getElementsByName("isImmediateCorrection");
+	for(var i=0; i<isImmediateCorrectionButtons.length; i++)
+	{
+		if(isImmediateCorrectionButtons[i].checked)
+			{
+				break;
+			}
+		if(i+1 == isImmediateCorrectionButtons.length)
+			{
+				alert("Please select if the quiz will have immediate corrections for the user.");
+				return;
+			}
+	}
+	document.creationForm.submit();
+}
+</script>
+
 <body style="background-color:#f5f5f5">
 
 	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
@@ -55,7 +103,7 @@
 
 		<h3>Create a Quiz</h3>
 	
-		<form action="QuizCreationServlet" method = "post">
+		<form name= "creationForm" action="QuizCreationServlet" method = "post">
 			<p>Quiz Name: <input type = "text" name = "quizName"/></p>
 			<p>Quiz Description: <input type = "text" name = "quizDescription"/></p>
 			<p>Random Question Order: <br>
@@ -67,7 +115,7 @@
 			<p>Immediate Correction: <br>
 			Yes: <input type = "radio" name = "isImmediateCorrection" value = "true"/><br>
 			No: <input type = "radio" name = "isImmediateCorrection" value = "false"/></p>
-			<input type = "submit" value = "Done"/>
+			<input type = "button" value = "Done" onclick="checkRadioButtons()"/>
 		</form>
 	
 	</div>
