@@ -20,8 +20,7 @@
 	
 	String achievements = dal.getUserAchievements(username);
 	ArrayList<String> announcements = dal.getAllAnnouncements();
-	java.sql.Date lastMessageDate = (java.sql.Date) getServletContext().getAttribute("lastMessageDate");
-	boolean hasNewMessages = dal.userHasNewMessages(username, lastMessageDate);
+	boolean hasNewMessages = dal.userHasNewMessages(username);
 	
 	ArrayList<NewsfeedObject> newsfeed = dal.getNewsfeed(username);
 	%>  

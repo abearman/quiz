@@ -117,7 +117,8 @@ CREATE TABLE users (
     isAdministrator BOOLEAN,
     password CHAR(64),
     achievements CHAR(64),
-    recentActivity CHAR(64)
+    recentActivity CHAR(64),
+    hasNewMessage BOOLEAN
 );
 
 

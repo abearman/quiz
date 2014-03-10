@@ -18,8 +18,7 @@
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(friendName);
 	String achievements = dal.getUserAchievements(friendName);
 	ArrayList<String> friends = dal.getFriendListForUser(friendName);
-	java.sql.Date lastMessageDate = (java.sql.Date) getServletContext().getAttribute("lastMessageDate");
-	boolean hasNewMessages = dal.userHasNewMessages(username, lastMessageDate);
+	boolean hasNewMessages = dal.userHasNewMessages(username);
 	%>  
 	
 	<title> <%=friendName%>'s Profile </title>

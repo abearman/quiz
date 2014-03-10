@@ -181,6 +181,19 @@ public class DAL {
 	}
 
 	/* Setters */
+	
+	public void setHasNewMessage(String loginName, boolean value) {
+		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				String update = "UPDATE users SET hasNewMessage = " + value + " WHERE loginName = \"" + loginName + "\";";
+				stmt.executeUpdate(update);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements, String recentActivity) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
@@ -879,8 +892,8 @@ public class DAL {
 	///////////////////////////////////////////////////
 	/** MESSAGES TABLE */
 	
-	public java.sql.Date getLastReadMessageDate(User user) {
-		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendDate DESC;";
+	public java.sql.Date getLastReadMessageDate(String username) {
+		String query = "SELECT * FROM messages WHERE toUser =\""+username+"\" ORDER BY sendDate DESC;";
 		try {
 			
 			ResultSet rs = stmt.executeQuery(query);
@@ -943,17 +956,15 @@ public class DAL {
 		return result;
 	}
 
-	public boolean userHasNewMessages(String username, java.sql.Date lastDate) {
-		if (lastDate == null)
-			return true;
-		
-		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\" ORDER BY sendDate DESC;";
+	public boolean userHasNewMessages(String username) {
+
+		String query = "SELECT * FROM users WHERE loginName = \"" + username + "\";";
 		try {
 			
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) {
-				java.sql.Date curDate = rs.getDate("sendDate");
-				return (curDate.compareTo(lastDate) > 0);
+				boolean hasNewMessage = rs.getBoolean("hasNewMessage");
+				return hasNewMessage;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -981,17 +992,17 @@ public class DAL {
 		String currentTime = sdf.format(sendDate);
 		try {
 			if (type.equals(Message.NOTE_MESSAGE)) {
-				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + "\", \"" + currentTime + "\");";
+				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ", \"" + currentTime + "\");";
 				stmt.executeUpdate(update);
 			} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
 				String query = "SELECT * FROM messages WHERE fromUser = \"" + fromUser + "\" AND toUser = \"" + toUser + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
 				ResultSet rs = stmt.executeQuery(query);
 				if (!rs.next()) { //Only insert the message if the friend request doesn't already exist in the message table 
-					String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + "\", \"" + currentTime + "\");";
+					String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ", \"" + currentTime + "\");";
 					stmt.executeUpdate(update);
 				} 
 			} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
-				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + "\", \"" + currentTime + "\");";
+				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ", \"" + currentTime + "\");";
 				stmt.executeUpdate(update);
 			}
 		} catch (SQLException e) {

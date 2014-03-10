@@ -40,8 +40,7 @@
 		DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
 		String username = (String)session.getAttribute("loginName");
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
-		java.sql.Date lastMessageDate = (java.sql.Date) getServletContext().getAttribute("lastMessageDate");
-		boolean hasNewMessages = dal.userHasNewMessages(username, lastMessageDate);
+		boolean hasNewMessages = dal.userHasNewMessages(username);
 		
 		ArrayList<Question> questions = quiz.getQuestions();
 		ArrayList<String> usersAnswers = quiz.getAnswers();
