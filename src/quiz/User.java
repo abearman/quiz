@@ -199,15 +199,15 @@ public class User {
 		if (type.equals(Message.NOTE_MESSAGE)) {
 			NoteMessage nm = new NoteMessage(this.loginName, toUser.getLoginName(), message, dal);
 			messages.add(nm);
-			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.NOTE_MESSAGE, message, null, -1);
+			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.NOTE_MESSAGE, message, null, -1, new Date());
 		} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
 			FriendRequestMessage frm = new FriendRequestMessage(this.loginName, toUser.getLoginName(), dal);
 			messages.add(frm);
-			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.FRIEND_REQUEST_MESSAGE, message, null, -1);
+			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.FRIEND_REQUEST_MESSAGE, message, null, -1, new Date());
 		} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
 			ChallengeMessage cm = new ChallengeMessage(this.loginName, toUser.getLoginName(), quiz, dal);
 			messages.add(cm);
-			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quiz.getQuizName(), cm.challengingUserBestScore(this.loginName));
+			dal.addMessageForUser(this.loginName, toUser.getLoginName(), Message.CHALLENGE_MESSAGE, message, quiz.getQuizName(), cm.challengingUserBestScore(this.loginName), new Date());
 		}
 		hasNewMessages = true;
 	}

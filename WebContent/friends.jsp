@@ -14,7 +14,8 @@
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
 		String username = user.getLoginName();
 		ArrayList<String> friends = dal.getFriendListForUser(username);
-		boolean hasNewMessages = dal.userHasNewMessages(username);
+		java.sql.Date lastMessageDate = (java.sql.Date) getServletContext().getAttribute("lastMessageDate");
+		boolean hasNewMessages = dal.userHasNewMessages(username, lastMessageDate);
 	%>
 	<title><%= username %>'s Friends</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">

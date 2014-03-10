@@ -13,7 +13,10 @@
 		DAL dal = (DAL)getServletContext().getAttribute("DAL");
 		ArrayList<Message> friendRequestMessages = dal.getFriendRequestMessages(username);
 		ArrayList<Message> otherMessages = dal.getUserMessages(user);
-		boolean hasNewMessages = dal.userHasNewMessages(username);
+		java.sql.Date lastMessageDate = (java.sql.Date) getServletContext().getAttribute("lastMessageDate");
+		boolean hasNewMessages = dal.userHasNewMessages(username, lastMessageDate);
+		getServletContext().setAttribute("lastMessageDate", dal.getLastReadMessageDate(user));
+		
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>

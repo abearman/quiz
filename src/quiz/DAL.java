@@ -22,7 +22,7 @@ public class DAL {
 	public Statement getStatement() {
 		return stmt;
 	}
-	
+
 	private ArrayList<NewsfeedObject> mergeTwoSortedArrayLists(ArrayList<NewsfeedObject> al1, ArrayList<NewsfeedObject> al2) {
 		ArrayList<NewsfeedObject> result = new ArrayList<NewsfeedObject>();
 		int i = 0, j = 0;
@@ -31,7 +31,7 @@ public class DAL {
 			NewsfeedObject al2Obj = al2.get(j);
 			java.sql.Date al1Date = al1Obj.getDate();
 			java.sql.Date al2Date = al2Obj.getDate();
-			
+
 			if (al1Date.after(al2Date)) { //if (cqDate < tqDate), more recent should go first
 				result.add(al1Obj);
 				i++;
@@ -40,30 +40,30 @@ public class DAL {
 				j++;
 			}
 		}
-		
+
 		while (i < al1.size()) result.add(al1.get(i++));
 		while (j < al2.size()) result.add(al2.get(j++));
 		return result;
 	}
-	
+
 	///////////////////////////////////////////////////
 	/** NEWSFEED */
-	
+
 	public ArrayList<NewsfeedObject> getNewsfeed(String loginName) {
 		ArrayList<NewsfeedObject> allCreatedQuizzes = getAllCreatedQuizzesForNewsFeed(loginName); 
 		ArrayList<NewsfeedObject> allTakenQuizzes = getAllTakenQuizzesForNewsFeed(loginName);
 		ArrayList<NewsfeedObject> allAchievements = getAllAchievementsForNewsFeed(loginName);
 		//Get all statuses, sorted by date (that were posted by friends of this user) ==> Do this later //TODO
-		
+
 		ArrayList<NewsfeedObject> quizzes = mergeTwoSortedArrayLists(allCreatedQuizzes, allTakenQuizzes);
 		return mergeTwoSortedArrayLists(quizzes, allAchievements); //This is our news feed
 	}
 
 	///////////////////////////////////////////////////
 	/**  USERS TABLE */
-	
+
 	/* Getters */
-	
+
 	/**
 	 * Administrative site statistics getter: number of users
 	 */
@@ -78,7 +78,7 @@ public class DAL {
 		}
 		return 0;
 	}
-	
+
 	public User getUser(String loginName) {
 		User user = new User(loginName);
 		String query = "SELECT * FROM users WHERE loginName = \"" + loginName + "\";";
@@ -163,10 +163,10 @@ public class DAL {
 			try {
 				ResultSet rs = stmt.executeQuery(query);
 				rs.first();
-				
+
 				String activity = rs.getString("recentActivity");
 				System.out.println(activity);
-				
+
 				StringTokenizer st = new StringTokenizer(rs.getString("recentActivity"), "\n");
 				FriendRecentActivity act = new FriendRecentActivity(f);
 				act.setRecentAchievement(Integer.getInteger(st.nextToken()));
@@ -179,9 +179,9 @@ public class DAL {
 		}
 		return fra;
 	}
-	
+
 	/* Setters */
-	
+
 	public void insertUser(String loginName, boolean isAdministrator, String passwordHash, boolean[] achievements, String recentActivity) {
 		String achievementsString = "000000"; //Initialized to all 0's for all "false"
 		try {
@@ -217,18 +217,18 @@ public class DAL {
 			}
 			String update = "UPDATE users SET achievements = \"" + sb.toString() + "\" WHERE loginName = \"" + loginName + "\";";
 			stmt.executeUpdate(update);
-			
+
 			//Add achievement for user
 			String achievementStr = Achievements.achievements[index];
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			String updateAchievements = "INSERT INTO achievements VALUES(\"" + loginName + "\", \"" + achievementStr + "\", \"" + date + "\");";
 			stmt.executeUpdate(updateAchievements);
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void updateUserAchievements(String loginName, String achievementsString) {
 		try {
 			String update = "UPDATE users SET achievements = \"" + achievementsString + "\" WHERE loginName = \"" + loginName + "\";";
@@ -255,7 +255,7 @@ public class DAL {
 			e.printStackTrace();
 		}
 	}
-	
+
 	//updates a user's most recent activity
 	public void updateRecentUserActivity(String loginName, String recentActivity) {
 		String execute = "UPDATE users SET recentActivity= \""+recentActivity+"\" WHERE loginName= \""+loginName+"\";";
@@ -265,17 +265,17 @@ public class DAL {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	//////////////////////////////////////////////
 	/** QUIZZES TABLE */
-	
+
 	/* Getters */
-	
+
 	public Quiz getQuiz(String quizName) {
 		Quiz quiz = new Quiz(this, quizName);
 		return quiz;
 	}
-	
+
 	public int getNumberQuizzesCreatedForUser(String userName) {
 		try {
 			String query = "SELECT * FROM quizzes WHERE creatorName = \"" + userName + "\";";
@@ -287,7 +287,7 @@ public class DAL {
 		}
 		return 0;
 	}
-	
+
 	//check if a quiz exists in the database
 	public boolean doesQuizExist(String quizName) {
 		String query = "SELECT * FROM quizzes WHERE quizName = \""+quizName+"\";";
@@ -304,7 +304,7 @@ public class DAL {
 		}
 		return false;
 	}
-	
+
 	/* 
 	 * Returns a list of all created quizzes, ordered by date, created by users who are friends 
 	 * of a given user (are included in the friendList) 
@@ -312,7 +312,7 @@ public class DAL {
 	public ArrayList<NewsfeedObject> getAllCreatedQuizzesForNewsFeed(String loginName) {
 		ArrayList<String> friendList = getFriendListForUser(loginName);
 		ArrayList<NewsfeedObject> recentlyCreatedQuizzes = new ArrayList<NewsfeedObject>();
-		
+
 		String query = "SELECT * FROM quizzes ORDER BY creationDate DESC;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
@@ -331,8 +331,8 @@ public class DAL {
 		}
 		return recentlyCreatedQuizzes;
 	}
-		
-		
+
+
 	public ArrayList<String> getRecentlyCreatedQuizzes() {
 		ArrayList<String> recentlyCreatedQuizzes = new ArrayList<String>();
 		String query = "SELECT * FROM quizzes ORDER BY creationDate DESC LIMIT 0, 10;";
@@ -346,7 +346,7 @@ public class DAL {
 		}
 		return recentlyCreatedQuizzes;
 	}
-	
+
 	public ArrayList<String> getUserRecentlyCreatedQuizzes(String username) {
 		ArrayList<String> usersRecentlyCreatedQuizzes = new ArrayList<String>();
 		String query = "SELECT * FROM quizzes WHERE creatorName = \"" + username + "\" ORDER BY creationDate DESC LIMIT 0, 10;";
@@ -360,7 +360,7 @@ public class DAL {
 		}
 		return usersRecentlyCreatedQuizzes;
 	}
-	
+
 	/**
 	 * Administrative site statistics getter: number of quizzes created
 	 */
@@ -390,7 +390,7 @@ public class DAL {
 		}
 		return popularQuizzes;
 	}
-	
+
 	//	public ArrayList<Quiz> getAllQuizzes() {
 	//	ArrayList<Quiz> allQuizzes = new ArrayList<Quiz>();
 	//	
@@ -406,10 +406,10 @@ public class DAL {
 	//	}
 	//	return allQuizzes;
 	//}
-	
+
 	public ArrayList<Quiz> getAllQuizzes() {
 		ArrayList<Quiz> allQuizzes = new ArrayList<Quiz>();
-		
+
 		try {
 			String query = "SELECT * FROM quizzes;";
 			ResultSet rs = stmt.executeQuery(query);
@@ -423,7 +423,7 @@ public class DAL {
 				String creatorName = rs.getString("creatorName");
 				java.util.Date creationDate = rs.getDate("creationDate");
 				int numTimesTaken = rs.getInt("numTimesTaken");
-				
+
 				allQuizzes.add(new Quiz(this, quizName, description, isRandom, isMultiplePage, isImmediateCorrection, 
 						canBeTakenInPracticeMode, creatorName, creationDate, numTimesTaken, true));
 			}
@@ -435,7 +435,7 @@ public class DAL {
 		}
 		return allQuizzes;
 	}
-	
+
 	//what does this do??
 	public String getNameOfQuiz(String givenQuizName){
 		try{
@@ -553,9 +553,9 @@ public class DAL {
 		}
 		return 0;
 	}
-	
+
 	/* Setters */
-	
+
 	public void insertQuiz(Quiz quiz) {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(quiz.getCreationDate());
@@ -594,12 +594,12 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
-	
+
 	///////////////////////////////////////////////////
 	/** HISTORIES TABLE */
-	
+
 	/* Getters */
-	
+
 	public int getNumberQuizzesTakenForUser(String userName) {
 		try {
 			String query = "SELECT * FROM histories WHERE loginName = \"" + userName + "\";";
@@ -611,7 +611,7 @@ public class DAL {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Administrative site statistics getter: number of quizzes taken
 	 */
@@ -626,7 +626,7 @@ public class DAL {
 		}
 		return 0;
 	}
-	
+
 	/* 
 	 * Returns a list of all taken quizzes, ordered by date, taken by users who are friends 
 	 * of a given user (are included in the friendList) 
@@ -666,7 +666,7 @@ public class DAL {
 		}
 		return recentlyTakenQuizzes;
 	}
-	
+
 	public ArrayList<String> getUserRecentlyTakenQuizzes(String username) {
 		ArrayList<String> usersRecentlyTakenQuizzes = new ArrayList<String>();
 		String query = "SELECT * FROM histories WHERE loginName = \"" + username + "\" ORDER BY dateValue DESC LIMIT 0, 10;";
@@ -680,7 +680,7 @@ public class DAL {
 		}
 		return usersRecentlyTakenQuizzes;
 	}
-	
+
 	public boolean isHighestScorerForQuiz(String userName, String quizName) {
 		try {
 			String query = "SELECT * FROM histories WHERE quizName = \"" + quizName + "\" ORDER BY numQuestionsCorrect DESC;";
@@ -712,7 +712,7 @@ public class DAL {
 		}
 		return historyList;
 	}
-	
+
 	public ArrayList<HistoryObject> getAllHistoryLists(String quizTitle) {
 		ArrayList<HistoryObject> result = new ArrayList<HistoryObject>();
 
@@ -735,9 +735,9 @@ public class DAL {
 		}
 		return result;
 	}
-	
+
 	/* Setters */
-	
+
 	public void addToHistoryListForUser(String loginName, String quizName, int numQuestionsCorrect, long timeElapsed, java.util.Date utilDate) {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(utilDate);
@@ -748,7 +748,7 @@ public class DAL {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void clearAllHistoryForQuiz(String quizName) {
 		String update = "DELETE FROM histories WHERE quizName = \"" + quizName + "\";";
 		try {
@@ -757,7 +757,7 @@ public class DAL {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void removeUserHistory(String loginName) {
 		String update = "DELETE FROM histories WHERE loginName = \"" + loginName + "\";";
 		try {
@@ -766,12 +766,12 @@ public class DAL {
 			e.printStackTrace();
 		}
 	}
-	
+
 	///////////////////////////////////////////////////
 	/** FRIENDS TABLE */
-	
+
 	/* Getters */
-	
+
 	public ArrayList<String> getFriendListForUser(String loginName) {
 		ArrayList<String> friendList = new ArrayList<String>();
 		String query = "SELECT * FROM friends WHERE user1 = \"" + loginName + "\";";
@@ -786,7 +786,7 @@ public class DAL {
 		}
 		return friendList;
 	}
-	
+
 	public boolean areFriends(String friend1, String friend2) {
 		boolean areFriends = false;
 		String query = "SELECT * FROM friends WHERE user1 = \"" + friend1 + "\" AND user2 = \"" + friend2 + "\";";
@@ -798,9 +798,9 @@ public class DAL {
 		}
 		return areFriends;
 	}
-	
+
 	/* Setters */
-	
+
 	public void addFriendPair(String user1, String user2) {
 		try {
 			String query = "SELECT * FROM friends WHERE user1 = \"" + user1 + "\" AND user2 = \"" + user2 + "\";";
@@ -824,10 +824,10 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
-	
+
 	///////////////////////////////////////////////////
 	/** TOPSCORERS TABLE */
-	
+
 	/* Getters */
 
 	public ArrayList<TopScorer> getAllTopScorersForQuiz(String quizName) {
@@ -853,9 +853,9 @@ public class DAL {
 		}
 		return topScorers;
 	}
-	
+
 	/* Setters */
-	
+
 	public void addTopScorer(TopScorer topScorer, String quizName) {
 		try {
 			String update = "INSERT INTO topscorers VALUES(\""+quizName+"\",\""+topScorer.getLoginName()+"\","+ 
@@ -875,30 +875,45 @@ public class DAL {
 		}
 	}
 
-	
+
 	///////////////////////////////////////////////////
 	/** MESSAGES TABLE */
 	
+	public java.sql.Date getLastReadMessageDate(User user) {
+		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendMessage DESC;";
+		try {
+			
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) 
+				return rs.getDate("sendDate");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/* Getters */
-	
+
 	public ArrayList<Message> getFriendRequestMessages(String user) {
 		ArrayList<Message> messages = new ArrayList<Message>();
-		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
+		String query = "SELECT * FROM messages WHERE toUser = \"" + user + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\" ORDER BY sendMessage DESC;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, this, true);
-		 		messages.add(frm);
+				java.sql.Date sendDate = rs.getDate("sendDate");
+				FriendRequestMessage frm = new FriendRequestMessage(rs.getString("fromUser"), user, sendDate, this, true);
+				messages.add(frm);
 			}
-		 } catch (SQLException e) {
-			 e.printStackTrace(); 
-		 }
-		 return messages;
+		} catch (SQLException e) {
+			e.printStackTrace(); 
+		}
+		return messages;
 	}
 
 	public ArrayList<Message> getUserMessages(User user) {
 		ArrayList<Message> result = new ArrayList<Message>();
-		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\";";
+		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendMessage DESC;";
 		try {
 			ResultSet rs = stmt.executeQuery(query);
 
@@ -907,17 +922,18 @@ public class DAL {
 				String toUser = rs.getString("toUser");
 				String messageType = rs.getString("messageType");
 				String message = rs.getString("message");
-				
+				java.sql.Date sendDate = rs.getDate("sendDate");
+
 				String quizName = "";
 				double bestScore = -1;
 				if (messageType.equals(Message.CHALLENGE_MESSAGE)) {
 					quizName = rs.getString("quizName");
 					bestScore = rs.getDouble("bestScore");
-					result.add(new ChallengeMessage(fromUser, toUser, quizName, this, bestScore));
+					result.add(new ChallengeMessage(fromUser, toUser, quizName, sendDate, this, bestScore));
 				} else if (messageType.equals(Message.FRIEND_REQUEST_MESSAGE)) {
-					result.add(new FriendRequestMessage(fromUser, toUser, this, true));
+					result.add(new FriendRequestMessage(fromUser, toUser, sendDate, this, true));
 				} else {
-					result.add(new NoteMessage(fromUser, toUser, message, this, true));
+					result.add(new NoteMessage(fromUser, toUser, message, sendDate, this, true));
 				}				
 			}
 
@@ -926,18 +942,25 @@ public class DAL {
 		}
 		return result;
 	}
-	
-	public boolean userHasNewMessages(String username) {
-		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\";";
+
+	public boolean userHasNewMessages(String username, java.sql.Date lastDate) {
+		if (lastDate == null)
+			return true;
+		
+		String query = "SELECT * FROM messages WHERE toUser = \"" + username + "\" ORDER BY sendMessage DESC;";
 		try {
+			
 			ResultSet rs = stmt.executeQuery(query);
-			if (rs.next()) return true;
+			if (rs.next()) {
+				java.sql.Date curDate = rs.getDate("sendDate");
+				return (curDate.compareTo(lastDate) > 0);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public boolean userHasPendingFriendRequestForThisFriend(String userName, String friendName) {
 		try {
 			String query = "SELECT * FROM messages WHERE fromUser = \"" + userName + "\" AND toUser = \"" + friendName + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
@@ -951,29 +974,31 @@ public class DAL {
 	}
 
 	/* Setters */
-	
+
 	//VALUES and not "values"; messages, not users; need number of arguments in insert to be equivalent with number of columns
-	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore) {		
+	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore, java.util.Date sendDate) {
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(sendDate);
 		try {
 			if (type.equals(Message.NOTE_MESSAGE)) {
-				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
+				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + "\", \"" + currentTime + "\");";
 				stmt.executeUpdate(update);
 			} else if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
 				String query = "SELECT * FROM messages WHERE fromUser = \"" + fromUser + "\" AND toUser = \"" + toUser + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
 				ResultSet rs = stmt.executeQuery(query);
 				if (!rs.next()) { //Only insert the message if the friend request doesn't already exist in the message table 
-					String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + ");";
+					String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + " " + "\", " + -1 + "\", \"" + currentTime + "\");";
 					stmt.executeUpdate(update);
 				} 
 			} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
-				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + ");";
+				String update = "INSERT INTO messages VALUES(\"" + fromUser + "\", \"" + toUser + "\", \"" + type + "\", \"" + message + "\", \"" + quizName + "\", " + bestScore + "\", \"" + currentTime + "\");";
 				stmt.executeUpdate(update);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void removeMessageForUser(String toUser) { 
 		try {
 			String update = "DELETE FROM messages WHERE toUser = \"" + toUser + "\";";
@@ -982,7 +1007,7 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
-	
+
 	public void removeFriendRequestMessage(String toUser, String fromUser) {
 		try {
 			String update = "DELETE FROM messages WHERE toUser = \"" + toUser + "\" AND fromUser = \"" + fromUser + "\" AND messageType = \"" + Message.FRIEND_REQUEST_MESSAGE + "\";";
@@ -991,12 +1016,12 @@ public class DAL {
 			e.printStackTrace();
 		}
 	}
-	
+
 	////////////////////////////////////
 	/** VARIOUS QUESTION TABLES */
-	
+
 	/* Getters */
-	
+
 	public ArrayList<Question> getQuestionsFromDB(String quizName){
 		ArrayList<Question> questions = new ArrayList<Question>();
 		try{
@@ -1052,9 +1077,9 @@ public class DAL {
 		}
 		return questions;
 	}
-	
+
 	/* Setters */
-	
+
 	public void addQuestion(String quizName, Question question) {
 		try {
 			String update = "";
@@ -1112,10 +1137,10 @@ public class DAL {
 			e.printStackTrace(); 
 		}
 	}
-	
+
 	/////////////////////////////////////////////////
 	/** ANNOUNCEMENTS TABLE */
-	
+
 	public void createAnnouncement(String announcement) {
 		try {
 			String update = "INSERT INTO announcements VALUES(\"" + announcement + "\");";
@@ -1140,9 +1165,9 @@ public class DAL {
 	}
 	//////////////////////////////////////
 
-	
+
 	/** ACHIEVEMENTS TABLE */
-	
+
 	public ArrayList<NewsfeedObject> getAllAchievementsForNewsFeed(String loginName) {
 		ArrayList<String> friendList = getFriendListForUser(loginName);
 		ArrayList<NewsfeedObject> achievements = new ArrayList<NewsfeedObject>();
@@ -1163,8 +1188,8 @@ public class DAL {
 		}
 		return achievements;
 	}
-	
-	
+
+
 }
 
 

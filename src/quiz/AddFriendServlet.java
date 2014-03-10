@@ -1,6 +1,7 @@
 package quiz;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,7 +41,7 @@ public class AddFriendServlet extends HttpServlet {
 		String user2 = (String)request.getParameter("user2");
 
 		FriendRequestMessage frm = new FriendRequestMessage(user1, user2, dal);
-		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, frm.getMessage(), null, -1);
+		dal.addMessageForUser(user1, user2, Message.FRIEND_REQUEST_MESSAGE, frm.getMessage(), null, -1, new Date());
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher("friendProfile.jsp?friendName=" + user2);
 		dispatch.forward(request, response);
