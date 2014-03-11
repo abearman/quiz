@@ -29,7 +29,7 @@ public class ChallengeMessage extends Message {
 	
 	//Used for building
 	public ChallengeMessage(String fromUserString, String toUserString, String quizName, java.util.Date sendDate, DAL dal, double bestScore) {
-		super(toUserString, toUserString, Message.CHALLENGE_MESSAGE, sendDate, dal);
+		super(fromUserString, toUserString, Message.CHALLENGE_MESSAGE, sendDate, dal);
 		this.quizName = quizName;
 		this.bestScore = bestScore;
 		message = fromUserString + " is challenging you to take the " + quizName + " quiz!";

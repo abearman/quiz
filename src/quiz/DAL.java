@@ -910,6 +910,38 @@ public class DAL {
 	}
 
 	/* Getters */
+	
+	public ArrayList<Message> getSevenMostRecentUserMessages(User user) {
+		ArrayList<Message> result = new ArrayList<Message>();
+		String query = "SELECT * FROM messages WHERE toUser =\""+user.getLoginName()+"\" ORDER BY sendDate DESC LIMIT 0, 7;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()) {
+				String fromUser = rs.getString("fromUser");
+				String toUser = rs.getString("toUser");
+				String messageType = rs.getString("messageType");
+				String message = rs.getString("message");
+				java.sql.Date sendDate = rs.getDate("sendDate");
+
+				String quizName = "";
+				double bestScore = -1;
+				if (messageType.equals(Message.CHALLENGE_MESSAGE)) {
+					quizName = rs.getString("quizName");
+					bestScore = rs.getDouble("bestScore");
+					result.add(new ChallengeMessage(fromUser, toUser, quizName, sendDate, this, bestScore));
+				} else if (messageType.equals(Message.FRIEND_REQUEST_MESSAGE)) {
+					result.add(new FriendRequestMessage(fromUser, toUser, sendDate, this, true));
+				} else {
+					result.add(new NoteMessage(fromUser, toUser, message, sendDate, this, true));
+				}				
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public ArrayList<Message> getFriendRequestMessages(String user) {
 		ArrayList<Message> messages = new ArrayList<Message>();
