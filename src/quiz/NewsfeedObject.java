@@ -16,10 +16,10 @@ public class NewsfeedObject {
 	private String action;
 	private boolean hasQuiz;
 	private String quizName;
-	private java.sql.Date date;
+	private java.util.Date date;
 	
 	/* Constructor */
-	public NewsfeedObject(String loginName, String action, boolean hasQuiz, String quizName, java.sql.Date date) {
+	public NewsfeedObject(String loginName, String action, boolean hasQuiz, String quizName, java.util.Date date) {
 		this.loginName = loginName;
 		this.action = action;
 		this.hasQuiz = hasQuiz;
@@ -43,7 +43,7 @@ public class NewsfeedObject {
 		return this.quizName;
 	}
 	
-	public java.sql.Date getDate() {
+	public java.util.Date getDate() {
 		return this.date;
 	}
 	

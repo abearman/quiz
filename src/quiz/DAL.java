@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DAL {
@@ -29,8 +32,8 @@ public class DAL {
 		while (i < al1.size() && j < al2.size()) {
 			NewsfeedObject al1Obj  = al1.get(i);
 			NewsfeedObject al2Obj = al2.get(j);
-			java.sql.Date al1Date = al1Obj.getDate();
-			java.sql.Date al2Date = al2Obj.getDate();
+			java.util.Date al1Date = al1Obj.getDate();
+			java.util.Date al2Date = al2Obj.getDate();
 
 			if (al1Date.after(al2Date)) { //if (cqDate < tqDate), more recent should go first
 				result.add(al1Obj);
@@ -56,8 +59,8 @@ public class DAL {
 		ArrayList<NewsfeedObject> allStatuses = getAllStatusesForNewsFeed(loginName);
 
 		ArrayList<NewsfeedObject> quizzes = mergeTwoSortedArrayLists(allCreatedQuizzes, allTakenQuizzes);
-		ArrayList<NewsfeedObject> achievementsAndStatuses = mergeTwoSortedArrayLists(allAchievements, allStatuses);
-		return mergeTwoSortedArrayLists(quizzes, achievementsAndStatuses); //This is our news feed
+		ArrayList<NewsfeedObject> quizzesAndAchievements = mergeTwoSortedArrayLists(quizzes, allAchievements);
+		return mergeTwoSortedArrayLists(quizzesAndAchievements, allStatuses); //This is our news feed 
 	}
 
 	///////////////////////////////////////////////////
@@ -335,7 +338,15 @@ public class DAL {
 				if (friendList.contains(friendName) || friendName.equals(loginName)) {
 					String action = NewsfeedObject.CREATED_A_QUIZ_STRING;
 					String quizName = rs.getString("quizName");
-					java.sql.Date date = rs.getDate("creationDate");
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+					String dateStr = rs.getString("creationDate");
+					java.util.Date date = null;
+					try {
+						date = df.parse(dateStr);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					int a = 0;
 					NewsfeedObject nfo = new NewsfeedObject(friendName, action, true, quizName, date);
 					recentlyCreatedQuizzes.add(nfo);
 				}
@@ -658,7 +669,16 @@ public class DAL {
 				if (friendList.contains(friendName) || friendName.equals(loginName)) {
 					String action = NewsfeedObject.TOOK_A_QUIZ_STRING;
 					String quizName = rs.getString("quizName");
-					java.sql.Date date = rs.getDate("dateValue");
+					
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+					String dateStr = rs.getString("dateValue");
+					java.util.Date date = null;
+					try {
+						date = df.parse(dateStr);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
 					NewsfeedObject nfo = new NewsfeedObject(friendName, action, true, quizName, date);
 					recentlyTakenQuizzes.add(nfo);
 				}
@@ -1245,7 +1265,16 @@ public class DAL {
 				String friendName = rs.getString("loginName");
 				if (friendList.contains(friendName) || friendName.equals(loginName)) {
 					String action = NewsfeedObject.EARNED_ACHIEVEMENT_STRING + rs.getString("achievement");
-					java.sql.Date date = rs.getDate("achievementDate");
+					
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+					String dateStr = rs.getString("achievementDate");
+					java.util.Date date = null;
+					try {
+						date = df.parse(dateStr);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
 					NewsfeedObject nfo = new NewsfeedObject(friendName, action, false, null, date);
 					achievements.add(nfo);
 				}
@@ -1272,7 +1301,16 @@ public class DAL {
 				String friendName = rs.getString("loginName");
 				if (friendList.contains(friendName) || friendName.equals(loginName)) {
 					String action = NewsfeedObject.POSTED_STATUS_STRING + rs.getString("status");
-					java.sql.Date date = rs.getDate("statusDate");
+					
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+					String dateStr = rs.getString("statusDate");
+					java.util.Date date = null;
+					try {
+						date = df.parse(dateStr);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
 					NewsfeedObject nfo = new NewsfeedObject(friendName, action, false, null, date);
 					allStatuses.add(nfo);
 				}
