@@ -86,6 +86,10 @@
 		<form action="addQuestions.jsp" method="post">
 		<input type = "submit" class="btn btn-primary" value="Add Question"/>
 		</form>
+		
+		<form action="quizCreationSuccessful.jsp" method="post">
+		<input type = "submit" class="btn btn-primary" value="Done Editing"/>
+		</form>
 	
 	</div>
 	
