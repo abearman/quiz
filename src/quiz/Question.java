@@ -84,6 +84,33 @@ public class Question {
 	}
 	
 	/**
+	 * Allows easy correction for MultiAnswerMultipleChoice
+	 * questions.
+	 */
+	public boolean isCorrect(ArrayList<String> usersAnswers)
+	{
+		if(usersAnswers.size() != answers.size())
+		{
+			return false;
+		}
+		for(String uAnswer: usersAnswers)
+		{
+			for(int i = 0; i < answers.size(); i++)
+			{
+				if(answers.get(i).equalsIgnoreCase(uAnswer))
+				{
+					break;
+				}
+				if(i+1 == answers.size())
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Returns a int corresponding to the Question type for
 	 * subclasses.
 	 */
