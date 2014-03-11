@@ -721,12 +721,14 @@ public class DAL {
 		return usersRecentlyTakenQuizzes;
 	}
 
-	public boolean isHighestScorerForQuiz(String userName, String quizName) {
+	public boolean isHighestScorerForQuiz(String userName, String quizName, long elapsedTime) {
 		try {
-			String query = "SELECT * FROM histories WHERE quizName = \"" + quizName + "\" ORDER BY numQuestionsCorrect DESC;";
+			String query = "SELECT * FROM histories WHERE quizName = \"" + quizName + "\" ORDER BY numQuestionsCorrect DESC, timeElapsed;";
 			ResultSet rs = stmt.executeQuery(query);
 			rs.first();
-			if (rs.getString("loginName").equals(userName)) return true;
+			if ((rs.getString("loginName").equals(userName)) && (rs.getInt("timeElapsed") == elapsedTime)) {
+				return true;
+			}
 			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
