@@ -117,7 +117,7 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<div class="container">
+	<div class="form-quiz" style="width:1000px">
 	
 		<h3><%= quizName %> by <%= quizCreator %></h3>
 		<h5><%= descriptionOfQuiz %></h5>
