@@ -237,8 +237,12 @@ public class DAL {
 
 			//Add achievement for user
 			String achievementStr = Achievements.achievements[index];
+			
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			String updateAchievements = "INSERT INTO achievements VALUES(\"" + loginName + "\", \"" + achievementStr + "\", \"" + date + "\");";
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String currentTime = sdf.format(date);
+			
+			String updateAchievements = "INSERT INTO achievements VALUES(\"" + loginName + "\", \"" + achievementStr + "\", \"" + currentTime + "\");";
 			stmt.executeUpdate(updateAchievements);
 
 		} catch (SQLException e) {

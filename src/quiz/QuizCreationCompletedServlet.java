@@ -36,11 +36,11 @@ public class QuizCreationCompletedServlet extends HttpServlet {
 		String loginName = (String)request.getSession().getAttribute("loginName");
 		
 		int numQuizzesCreated = dal.getNumberQuizzesCreatedForUser(loginName);
-		if (numQuizzesCreated >= 10) { //Created 10 quizzes
+		if (numQuizzesCreated == 10) { //Created 10 quizzes
 			dal.addAchievementForUser(loginName, Achievements.PRODIGIOUS_AUTHOR); 
-		} else if (numQuizzesCreated >=5) { //Created 5 quizzes
+		} else if (numQuizzesCreated == 5) { //Created 5 quizzes
 			dal.addAchievementForUser(loginName, Achievements.PROLIFIC_AUTHOR); 
-		} else { //Created 1 quiz
+		} else if (numQuizzesCreated == 1) { //Created 1 quiz
 			dal.addAchievementForUser(loginName, Achievements.AMATEUR_AUTHOR);
 		}
 		
