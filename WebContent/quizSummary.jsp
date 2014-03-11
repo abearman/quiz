@@ -117,7 +117,7 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<div class="container">
+	<div class="form-quiz" style="width:1000px">
 	
 		<h3><%= quizName %> by <%= quizCreator %></h3>
 		<h5><%= descriptionOfQuiz %></h5>
@@ -133,19 +133,27 @@
 		<%
 		ArrayList<HistoryObject> usersHistory = dal.getHistoryListForUser(user.getLoginName());
 		out.println("<ul>");
-		int upperLimit = usersHistory.size();
-		if (usersHistory.size() > 5) upperLimit = 5;
-		for (int i = 0; i < upperLimit; i++){
-			HistoryObject history = usersHistory.get(i);
+		
+		ArrayList<HistoryObject> usersHistoryCappedAt5 = new ArrayList<HistoryObject>();
+		int count = 0;
+		int index = 0;
+		while (count < 5 && index < usersHistory.size()){
+			HistoryObject history = usersHistory.get(index);
 			if (history.getQuizName().equals(quizName)){
-				double elapsedTimeInSeconds = ((Long)history.getElapsedTime()).doubleValue()/1000;
-				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String currentTime = sdf.format(history.getDate());
-				out.println("<li><b>Date:</b> " + currentTime +
-						" <b>Time Taken:</b> " + elapsedTimeInSeconds + 
-						" sec <b>Number of Questions Correct:</b> " + history.getNumQuestionsCorrect()
-						+ "</li>");
+				usersHistoryCappedAt5.add(history);
+				count++;
 			}
+			index++;
+		}
+		for (int i = usersHistoryCappedAt5.size() - 1; i>=0; i--){
+			HistoryObject history = usersHistoryCappedAt5.get(i);
+			double elapsedTimeInSeconds = ((Long)history.getElapsedTime()).doubleValue()/1000;
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String currentTime = sdf.format(history.getDate());
+			out.println("<li><b>Date:</b> " + currentTime +
+					" <b>Time Taken:</b> " + elapsedTimeInSeconds + 
+					" sec <b>Number of Questions Correct:</b> " + history.getNumQuestionsCorrect()
+					+ "</li>");
 		}
 		out.println("</ul>");
 		%>
