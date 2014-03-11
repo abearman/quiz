@@ -114,7 +114,7 @@
 
 			<h2 style="margin-left:15px">Newsfeed</h2>
 			
-			<form class="navbar-form" role="search" name="updateStatus" action="" method="post">
+			<form class="navbar-form" role="search" name="updateStatus" action="SubmitStatusServlet" method="post">
 				<div class="form-group">
 					<input type="text" class="form-control" placeholder="Update status" name="status" size=80>
 					<button type="submit" class="btn btn-default">Submit</button>

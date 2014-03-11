@@ -53,10 +53,11 @@ public class DAL {
 		ArrayList<NewsfeedObject> allCreatedQuizzes = getAllCreatedQuizzesForNewsFeed(loginName); 
 		ArrayList<NewsfeedObject> allTakenQuizzes = getAllTakenQuizzesForNewsFeed(loginName);
 		ArrayList<NewsfeedObject> allAchievements = getAllAchievementsForNewsFeed(loginName);
-		//Get all statuses, sorted by date (that were posted by friends of this user) ==> Do this later //TODO
+		ArrayList<NewsfeedObject> allStatuses = getAllStatusesForNewsFeed(loginName);
 
 		ArrayList<NewsfeedObject> quizzes = mergeTwoSortedArrayLists(allCreatedQuizzes, allTakenQuizzes);
-		return mergeTwoSortedArrayLists(quizzes, allAchievements); //This is our news feed
+		ArrayList<NewsfeedObject> achievementsAndStatuses = mergeTwoSortedArrayLists(allAchievements, allStatuses);
+		return mergeTwoSortedArrayLists(quizzes, achievementsAndStatuses); //This is our news feed
 	}
 
 	///////////////////////////////////////////////////
@@ -894,13 +895,13 @@ public class DAL {
 	///////////////////////////////////////////////////
 	/** MESSAGES TABLE */
 	
-	public java.sql.Date getLastReadMessageDate(String username) {
+	public String getLastMessageType (String username) {
 		String query = "SELECT * FROM messages WHERE toUser =\""+username+"\" ORDER BY sendDate DESC;";
 		try {
 			
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) 
-				return rs.getDate("sendDate");
+				return rs.getString("messageType");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -988,7 +989,6 @@ public class DAL {
 
 	/* Setters */
 
-	//VALUES and not "values"; messages, not users; need number of arguments in insert to be equivalent with number of columns
 	public void addMessageForUser(String fromUser, String toUser, String type, String message, String quizName, double bestScore, java.util.Date sendDate) {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(sendDate);
@@ -1223,7 +1223,60 @@ public class DAL {
 		}
 		return achievements;
 	}
+	
+	///////////////////////////////////////////////////
+	/** STATUSES TABLE */
 
+	/* Getters */
+	
+	private ArrayList<NewsfeedObject> getAllStatusesForNewsFeed(String loginName) {
+		ArrayList<String> friendList = getFriendListForUser(loginName);
+		ArrayList<NewsfeedObject> allStatuses = new ArrayList<NewsfeedObject>();
+		
+		String query = "SELECT * FROM statuses ORDER BY statusDate DESC;";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String friendName = rs.getString("loginName");
+				if (friendList.contains(friendName) || friendName.equals(loginName)) {
+					String action = NewsfeedObject.POSTED_STATUS_STRING + rs.getString("status");
+					java.sql.Date date = rs.getDate("statusDate");
+					NewsfeedObject nfo = new NewsfeedObject(friendName, action, false, null, date);
+					allStatuses.add(nfo);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return allStatuses;
+	}
+	
+	public String getUserStatus(String loginName) {
+		String query = "SELECT * FROM statuses WHERE loginName =\"" + loginName + "\" ORDER BY statusDate DESC;";
+		try {
+			
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) 
+				return rs.getString("status");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	/* Setters */
+
+	public void addStatusForUser(String loginName, String status, java.util.Date statusDate) {
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(statusDate);
+		String update = "INSERT INTO statuses VALUES(\"" + loginName + "\", \"" + status + "\", \"" + currentTime + "\");";
+		try {
+				stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
 
