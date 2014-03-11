@@ -276,7 +276,7 @@
 	  </div><!-- /.modal -->
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-	<script src="/twitter-bootstrap/twitter-bootstrap-v2>/js/bootstrap-modal.js"></script> 
+	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
