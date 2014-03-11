@@ -23,8 +23,6 @@
 	boolean hasNewMessages = dal.userHasNewMessages(username);
 	ArrayList<Message> messages = dal.getSevenMostRecentUserMessages(user);
 	ArrayList<NewsfeedObject> newsfeed = dal.getNewsfeed(username);
-	
-	//ArrayList<Message> messages = dal.getUserMessages(user);
 	%>  
 
 	<title>Welcome <%= username %> </title>

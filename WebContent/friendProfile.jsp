@@ -19,6 +19,7 @@
 	String achievements = dal.getUserAchievements(friendName);
 	ArrayList<String> friends = dal.getFriendListForUser(friendName);
 	boolean hasNewMessages = dal.userHasNewMessages(username);
+	ArrayList<Message> messages = dal.getSevenMostRecentUserMessages(user);
 	%>  
 	
 	<title> <%=friendName%>'s Profile </title>
@@ -58,6 +59,28 @@
 	        } else {%>
 	        	<li class="active"><a href="messages.jsp" style="margin:0; margin-left:10px; padding:0"><img src="exclamation.jpg" height="50px" height="50px"/></a></li>
 			<%}%>
+			
+			<li class="navbar-form">
+				<div class="dropdown">
+				  <button class="btn dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown"> Notifications <span class="caret"></span> </button>
+				  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				  	
+				  	<% for (int i = 0; i < messages.size(); i++) {
+				  		%><li role="presentation">
+				  			<a role="menuitem" tabindex="-1" href="messages.jsp">
+				  				<%
+				  				Message message = messages.get(i);
+				  				String type = message.getMessageType();
+				  				String fromUser = message.getFromUser();%>
+				  				<%=type%> from <%=fromUser%> 
+				  			</a>
+				  		</li>
+				  	<%}%>
+				    <li role="presentation" class="divider"></li>
+				    <li role="presentation"><a role="menuitem" tabindex="-1" href="messages.jsp">See All</a></li>
+				  </ul>
+				</div>
+			</li>
 			
 			<%if (user.getIsAdministrator()) {
 				%> <li class="active"><a href="administratorHomepage.jsp">Home</a></li><%
@@ -139,6 +162,10 @@
 			}
 		%>
 	</ul>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
 </body>
 </html>
