@@ -1070,6 +1070,14 @@ public class DAL {
 		}
 	}
 
+	public void removeMessageWithQuery(String update) {
+		try {
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void removeMessageForUser(String toUser) { 
 		try {
 			String update = "DELETE FROM messages WHERE toUser = \"" + toUser + "\";";

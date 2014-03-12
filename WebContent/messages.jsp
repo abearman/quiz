@@ -15,6 +15,7 @@
 		dal.setHasNewMessage(username, false);
 		boolean hasNewMessages = dal.userHasNewMessages(username);
 		ArrayList<Message> messagesNotifications = dal.getSevenMostRecentUserMessages(user);
+		String userToReplyTo = "keenon";
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>
@@ -112,32 +113,70 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<%for (Message message : messages) {
-		if (message.getMessageType().equals(Message.NOTE_MESSAGE)) {
-			NoteMessage note = (NoteMessage)message;
-			String fromUser = note.getFromUser();
-			String messageString = note.getMessage(); %>
-			<p> <%= fromUser %>: <%= messageString %> </p>
-		<%} else if (message.getMessageType().equals(Message.CHALLENGE_MESSAGE)) {
-			ChallengeMessage challenge = (ChallengeMessage) message;
-			String fromUser = challenge.getFromUser();
-			String messageString = challenge.getMessage(); 
-			String quizName = challenge.getQuizName(); %>
-			<p><%= messageString %> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!</p>
-		<%} else if (message.getMessageType().equals(Message.FRIEND_REQUEST_MESSAGE)) {
-			FriendRequestMessage friendRequest = (FriendRequestMessage) message;
-			String messageStr = friendRequest.getMessage();
-			String requestor = friendRequest.getFromUser();
-			String acceptor = friendRequest.getToUser();
-			%><p><%=messageStr%></p>
-			<form name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
-				<input type="hidden" name="requestor" value="<%=requestor%>">
-				<input type="hidden" name="acceptor" value="<%=acceptor%>">
-				<input type="submit" value="Accept">
-			</form>
-		<%}
-	}%>
-
+	<table class="table table-hover">
+		<%for (int i = 0; i < messages.size(); i++) {
+			%><tr><%
+				Message message = messages.get(i);
+				String type = message.getMessageType();
+				if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
+					FriendRequestMessage friendRequest = (FriendRequestMessage) message;
+					String messageStr = friendRequest.getMessage();
+					String requestor = friendRequest.getFromUser();
+					String acceptor = friendRequest.getToUser();%>
+					<div class=".col-md-11 col-md-offset-1">
+						<td><b> <%=requestor%> </b></td>
+						<td> <%=messageStr%> </td>
+						<form class="form-inline" name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
+							<input type="hidden" name="requestor" value="<%=requestor%>">
+							<input type="hidden" name="acceptor" value="<%=acceptor%>">
+							<td><button class="btn btn-success" type="submit"> Accept </button></td>
+						</form>
+						<form class="form-line" name = "friendDecline" action="DeclineFriendRequestServlet" method="post">
+							<input type="hidden" name="requestor" value="<%=requestor%>">
+							<input type="hidden" name="acceptor" value="<%=acceptor%>">
+							<td><button class="btn btn-danger" type="submit"> Decline </button></td>
+						</form>
+					</div>
+				<%} else {
+					if (type.equals(Message.NOTE_MESSAGE)) {
+						NoteMessage note = (NoteMessage)message;
+						String fromUser = note.getFromUser();
+						String toUser = note.getToUser();
+						String messageString = note.getMessage(); %>
+						<div class=".col-md-11 col-md-offset-1">
+							<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+								<td><b><%=fromUser%></b></td> 
+								<td><%=messageString%></td>
+								<input type="hidden" name="fromUser" value="<%=fromUser%>">
+								<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+								<input type="hidden" name="type" value="<%=type%>">
+								<input type="hidden" name="message" value="<%=messageString%>">
+								<td><button class="btn btn-danger" type="submit"> Delete Message </button></td>
+							</form>
+						</div>
+					<%} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
+						ChallengeMessage challenge = (ChallengeMessage) message;
+						String fromUser = challenge.getFromUser();
+						String messageString = challenge.getMessage(); 
+						String quizName = challenge.getQuizName(); %>
+						<div class=".col-md-11 col-md-offset-1">
+							<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+								<td> <b><%=fromUser%> </b></td>
+								<td> <%=messageString%> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it! </td>
+								<input type="hidden" name="fromUser" value="<%=fromUser%>">
+								<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+								<input type="hidden" name="type" value="<%=type%>">
+								<input type="hidden" name="message" value="<%=messageString%>">
+								<input type="hidden" name="quizName" value="<%=quizName%>">
+								<td> <button class="btn btn-danger" type="submit"> Delete Message </button> </td>
+							</form>
+						</div>
+					<%}%>
+				<%}%>
+			</tr>
+		<%}%>
+	</table>
+	  
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
 	<script src="js/bootstrap.min.js"></script>
