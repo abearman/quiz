@@ -155,76 +155,73 @@
 			</tr>
 		<%
 			for (int i = 0; i < questions.size(); i++){
-				String correctAnswer = questions.get(i).getAnswer().get(0);
 				String usersAnswer = usersAnswers.get(i);
-				if(questions.get(i).getQuestionType()==Question.MultiAnswer_MultipleChoice)
+				if(questions.get(i).getQuestionType()==Question.MultiAnswer_MultipleChoice)//if question is multiAnswerMultipleChoice
 				{
 					ArrayList<String> realAnswers = Question.createArray(usersAnswer);
-					for(int s =0; s < realAnswers.size(); s++ )
+					if(questions.get(i).isCorrect(realAnswers))//if answers is right
 					{
-						if(!(questions.get(i).answerIsCorrect(realAnswers.get(s)))){
-							out.println("<tr>");
-							out.println("<td>");
-							String userOutput = "";
-							for(int j =0; j < realAnswers.size(); j++)//adds up users answers
-							{
-								if(j+1==realAnswers.size())
-								{
-									userOutput+=realAnswers.get(j);
-								}
-								else
-								{
-									userOutput+=realAnswers.get(j)+", ";
-								}
-							}
-							out.println(userOutput);
-							out.println("</td>");
-							out.println("<td>");
-							ArrayList<String> actualAnswers = questions.get(i).getAnswer();
-							String quizOutput = "";
-							for(int j =0; j < actualAnswers.size(); j++)//adds up users answers
-							{
-								if(j+1==actualAnswers.size())
-								{
-									quizOutput+=actualAnswers.get(j);
-								}
-								else
-								{
-									quizOutput+=actualAnswers.get(j)+", ";
-								}
-							}
-							out.println(quizOutput);
-							out.println("</td>");
-							out.println("</tr>");
-							break;
-						}
-						if(s+1 == realAnswers.size())//if all of the users answers are correct
+						out.println("<tr>");
+						out.println("<td>");
+						String userOutput = "";
+						for(int j =0; j < realAnswers.size(); j++)//adds up users answers
 						{
-							out.println("<tr>");
-							out.println("<td>");
-							String userOutput = "";
-							for(int j =0; j < realAnswers.size(); j++)//adds up users answers
+							if(j+1==realAnswers.size())
 							{
-								if(j+1==realAnswers.size())
-								{
-									userOutput+=realAnswers.get(j);
-								}
-								else
-								{
-									userOutput+=realAnswers.get(j)+", ";
-								}
+								userOutput+=realAnswers.get(j);
 							}
-							out.println(userOutput);
-							out.println("</td>");
-							out.println("<td>");
-							out.println(userOutput);
-							out.println("</td>");
-							out.println("</tr>");
+							else
+							{
+								userOutput+=realAnswers.get(j)+", ";
+							}
 						}
+						out.println(userOutput);
+						out.println("</td>");
+						out.println("<td>");
+						out.println(userOutput);
+						out.println("</td>");
+						out.println("</tr>");
+					}
+					else //if answer is wrong
+					{
+						out.println("<tr>");
+						out.println("<td>");
+						String userOutput = "";
+						for(int j =0; j < realAnswers.size(); j++)//adds up users answers
+						{
+							if(j+1==realAnswers.size())
+							{
+								userOutput+=realAnswers.get(j);
+							}
+							else
+							{
+								userOutput+=realAnswers.get(j)+", ";
+							}
+						}
+						out.println(userOutput);
+						out.println("</td>");
+						out.println("<td>");
+						ArrayList<String> actualAnswers = questions.get(i).getAnswer();
+						String quizOutput = "";
+						for(int j =0; j < actualAnswers.size(); j++)//adds up users answers
+						{
+							if(j+1==actualAnswers.size())
+							{
+								quizOutput+=actualAnswers.get(j);
+							}
+							else
+							{
+								quizOutput+=actualAnswers.get(j)+", ";
+							}
+						}
+						out.println(quizOutput);
+						out.println("</td>");
+						out.println("</tr>");
 					}
 				}
-				else
+				else //
 				{
+					String correctAnswer = questions.get(i).getAnswer().get(0);
 					if (questions.get(i).answerIsCorrect(usersAnswer)){
 						correctAnswer = usersAnswer;
 					}
