@@ -248,7 +248,7 @@
 		</form>
 		</div>
 
-		Go back <a href="quizSummary.jsp?quizName=<%=quiz.getQuizName()%>"><%=quiz.getQuizName()%></a>
+		<p>Go back <a href="quizSummary.jsp?quizName=<%=quiz.getQuizName()%>"><%=quiz.getQuizName()%></a></p>
 
 		<%
 		if (user.getIsAdministrator()) {

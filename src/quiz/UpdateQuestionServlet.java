@@ -3,42 +3,51 @@ package quiz;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.*;
 
 /**
- * Servlet implementation class AddQuestionsServlet
+ * Servlet implementation class UpdateQuestionServlet
  */
-@WebServlet("/AddQuestionsServlet")
-public class AddQuestionsServlet extends HttpServlet {
+@WebServlet("/UpdateQuestionServlet")
+public class UpdateQuestionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddQuestionsServlet() {
+    public UpdateQuestionServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Quiz quizCreated = (Quiz)request.getSession().getAttribute("quizCreated");
-		int questionType = Integer.parseInt(request.getParameter("questionType"));
-		int numAnswers = Integer.parseInt(request.getParameter("numAnswers"));
+		DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
+		Quiz quiz = (Quiz)request.getSession().getAttribute("editQuiz");
+		ArrayList<Question> questions = (ArrayList<Question>)(request.getSession().getAttribute("editQuizQuestions"));
+		Question question = (Question)request.getSession().getAttribute("editQuestion");
+		String questionString = request.getParameter("question");
+		int questionType = question.getQuestionType();
+		int questionNum = question.getQuestionNumber();
+		int numAnswers = question.getAnswer().size();
+		
+		//remove this question
+		dal.removeQuestion(quiz.getQuizName(), question);
+		quiz.removeQuestion(question);
+		
+		//read form and add the question
 		ArrayList<String> answersList = new ArrayList<String>();
 		for(int i = 1; i <=numAnswers; i++)
 		{
@@ -47,44 +56,38 @@ public class AddQuestionsServlet extends HttpServlet {
 		
 		if(questionType == Question.QUESTION_RESPONSE)
 		{
-			String question = request.getParameter("question");
-			quizCreated.addQuestion(new QuestionResponse(question, answersList, quizCreated.getNextQuestionNum()));
+			quiz.addQuestion(new QuestionResponse(questionString, answersList, questionNum));
 		}
 		if(questionType == Question.FILL_IN_THE_BLANK)
 		{
-			String question = request.getParameter("question");
-			quizCreated.addQuestion(new FillInTheBlank(question, answersList, quizCreated.getNextQuestionNum()));
+			quiz.addQuestion(new FillInTheBlank(questionString, answersList, questionNum));
 		}
 		if(questionType == Question.MULTIPLE_CHOICE)
 		{
-			String question = request.getParameter("question");
+			int numChoices = ((MultipleChoice)question).getChoices().size();
 			ArrayList<String> choicesList = new ArrayList<String>();
-			int numChoices = Integer.parseInt(request.getParameter("numChoices"));
 			for(int i = 1; i <=numChoices; i++)
 			{
 				choicesList.add(request.getParameter("choice"+i));
 			}
-			quizCreated.addQuestion(new MultipleChoice(question, answersList, quizCreated.getNextQuestionNum(), choicesList));
+			quiz.addQuestion(new MultipleChoice(questionString, answersList, questionNum, choicesList));
 		}
 		if(questionType == Question.PICTURE_RESPONSE)
 		{
-			String question = request.getParameter("question");
 			String imageURL = request.getParameter("imageURL");
-			quizCreated.addQuestion(new PictureResponse(question, answersList, quizCreated.getNextQuestionNum(),imageURL));
+			quiz.addQuestion(new PictureResponse(questionString, answersList, questionNum,imageURL));
 		}
 		if(questionType == Question.MultiAnswer_MultipleChoice)
 		{
-			String question = request.getParameter("question");
+			int numChoices = ((MultipleChoice)question).getChoices().size();
 			ArrayList<String> choicesList = new ArrayList<String>();
-			int numChoices = Integer.parseInt(request.getParameter("numChoices"));
 			for(int i = 1; i <=numChoices; i++)
 			{
 				choicesList.add(request.getParameter("choice"+i));
 			}
-			quizCreated.addQuestion(new MultiAnswerMultipleChoice(question, answersList, quizCreated.getNextQuestionNum(), choicesList));
+			quiz.addQuestion(new MultiAnswerMultipleChoice(questionString, answersList, questionNum, choicesList));
 		}
-		
-		RequestDispatcher dispatch = request.getRequestDispatcher("addQuestions.jsp");
+		RequestDispatcher dispatch = request.getRequestDispatcher("editQuiz.jsp");
 		dispatch.forward(request,response);
 	}
 
