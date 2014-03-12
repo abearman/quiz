@@ -120,39 +120,50 @@
 			String messageStr = friendRequest.getMessage();
 			String requestor = friendRequest.getFromUser();
 			String acceptor = friendRequest.getToUser();%>
-			<p><%=messageStr%></p>
-			<form name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
-				<input type="hidden" name="requestor" value="<%=requestor%>">
-				<input type="hidden" name="acceptor" value="<%=acceptor%>">
-				<input type="submit" value="Accept">
-			</form>
+			<div class=".col-md-11 col-md-offset-1">
+				<%=messageStr%>
+				<form class="form-inline" name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
+					<input type="hidden" name="requestor" value="<%=requestor%>">
+					<input type="hidden" name="acceptor" value="<%=acceptor%>">
+					<button class="btn btn-success" type="submit"> Accept </button>
+				</form>
+				<form class="form-line" name = "friendDecline" action="DeclineFriendRequestServlet" method="post">
+					<input type="hidden" name="requestor" value="<%=requestor%>">
+					<input type="hidden" name="acceptor" value="<%=acceptor%>">
+					<button class="btn btn-danger" type="submit"> Decline </button>
+				</form>
+			</div>
 		<%} else {
 			if (type.equals(Message.NOTE_MESSAGE)) {
 				NoteMessage note = (NoteMessage)message;
 				String fromUser = note.getFromUser();
 				String messageString = note.getMessage(); %>
-				<p> <%=fromUser%>: <%=messageString%> </p>
-				<form name="deleteMessage" action="DeleteMessageServlet" method="post">
-					<input type="hidden" name="fromUser" value="<%=fromUser%>">
-					<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
-					<input type="hidden" name="type" value="<%=type%>">
-					<input type="hidden" name="message" value="<%=messageString%>">
-					<input type="submit" value="Delete Message"> 
-				</form>
+				<div class=".col-md-11 col-md-offset-1">
+					<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+						<%=fromUser%>: <%=messageString%>
+						<input type="hidden" name="fromUser" value="<%=fromUser%>">
+						<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+						<input type="hidden" name="type" value="<%=type%>">
+						<input type="hidden" name="message" value="<%=messageString%>">
+						<button class="btn btn-danger" type="submit"> Delete Message </button>
+					</form>
+				</div>
 			<%} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
 				ChallengeMessage challenge = (ChallengeMessage) message;
 				String fromUser = challenge.getFromUser();
 				String messageString = challenge.getMessage(); 
 				String quizName = challenge.getQuizName(); %>
-				<p><%=messageString%> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!</p>
-				<form name="deleteMessage" action="DeleteMessageServlet" method="post">
-					<input type="hidden" name="fromUser" value="<%=fromUser%>">
-					<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
-					<input type="hidden" name="type" value="<%=type%>">
-					<input type="hidden" name="message" value="<%=messageString%>">
-					<input type="hidden" name="quizName" value="<%=quizName%>">
-					<input type="submit" value="Delete Message"> 
-				</form>
+				<div class=".col-md-11 col-md-offset-1">
+					<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+						<%=messageString%> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!
+						<input type="hidden" name="fromUser" value="<%=fromUser%>">
+						<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+						<input type="hidden" name="type" value="<%=type%>">
+						<input type="hidden" name="message" value="<%=messageString%>">
+						<input type="hidden" name="quizName" value="<%=quizName%>">
+						<button class="btn btn-danger" type="submit"> Delete Message </button>
+					</form>
+				</div>
 			<%}%>
 			
 		<%}
