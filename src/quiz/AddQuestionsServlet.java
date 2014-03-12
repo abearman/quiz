@@ -82,15 +82,6 @@ public class AddQuestionsServlet extends HttpServlet {
 				choicesList.add(request.getParameter("choice"+i));
 			}
 			quizCreated.addQuestion(new MultiAnswerMultipleChoice(question, answersList, quizCreated.getNextQuestionNum(), choicesList));
-			/*System.out.println("Question: "+question);
-			for(int i = 0; i < answersList.size(); i++)
-			{
-				System.out.println("Answer: "+answersList.get(i));
-			}
-			for(int i = 0; i < choicesList.size(); i++)
-			{
-				System.out.println("Choice: "+choicesList.get(i));
-			}*/
 		}
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher("addQuestions.jsp");
