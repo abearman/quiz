@@ -15,6 +15,7 @@
 		dal.setHasNewMessage(username, false);
 		boolean hasNewMessages = dal.userHasNewMessages(username);
 		ArrayList<Message> messagesNotifications = dal.getSevenMostRecentUserMessages(user);
+		String userToReplyTo = "keenon";
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>
@@ -112,73 +113,70 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<%for (int i = 0; i < messages.size(); i++) {
-		Message message = messages.get(i);
-		String type = message.getMessageType();
-		if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
-			FriendRequestMessage friendRequest = (FriendRequestMessage) message;
-			String messageStr = friendRequest.getMessage();
-			String requestor = friendRequest.getFromUser();
-			String acceptor = friendRequest.getToUser();%>
-			<div class=".col-md-11 col-md-offset-1">
-				<%=messageStr%>
-				<form class="form-inline" name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
-					<input type="hidden" name="requestor" value="<%=requestor%>">
-					<input type="hidden" name="acceptor" value="<%=acceptor%>">
-					<button class="btn btn-success" type="submit"> Accept </button>
-				</form>
-				<form class="form-line" name = "friendDecline" action="DeclineFriendRequestServlet" method="post">
-					<input type="hidden" name="requestor" value="<%=requestor%>">
-					<input type="hidden" name="acceptor" value="<%=acceptor%>">
-					<button class="btn btn-danger" type="submit"> Decline </button>
-				</form>
-			</div>
-		<%} else {
-			if (type.equals(Message.NOTE_MESSAGE)) {
-				NoteMessage note = (NoteMessage)message;
-				String fromUser = note.getFromUser();
-				String messageString = note.getMessage(); %>
-				<div class=".col-md-11 col-md-offset-1">
-					<form name="deleteMessage" action="DeleteMessageServlet" method="post">
-						<%=fromUser%>: <%=messageString%>
-						<input type="hidden" name="fromUser" value="<%=fromUser%>">
-						<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
-						<input type="hidden" name="type" value="<%=type%>">
-						<input type="hidden" name="message" value="<%=messageString%>">
-						<button class="btn btn-danger" type="submit"> Delete Message </button>
-					</form>
-				</div>
-			<%} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
-				ChallengeMessage challenge = (ChallengeMessage) message;
-				String fromUser = challenge.getFromUser();
-				String messageString = challenge.getMessage(); 
-				String quizName = challenge.getQuizName(); %>
-				<div class=".col-md-11 col-md-offset-1">
-					<form name="deleteMessage" action="DeleteMessageServlet" method="post">
-						<%=messageString%> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!
-						<input type="hidden" name="fromUser" value="<%=fromUser%>">
-						<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
-						<input type="hidden" name="type" value="<%=type%>">
-						<input type="hidden" name="message" value="<%=messageString%>">
-						<input type="hidden" name="quizName" value="<%=quizName%>">
-						<button class="btn btn-danger" type="submit"> Delete Message </button>
-					</form>
-				</div>
-			<%}%>
-			
-		<%}
-	}%>
-		
-		
-		<!--  
-		 fromUser CHAR(64),
-    toUser CHAR(64),
-    messageType CHAR(64),
-    message CHAR(64),
-    quizName CHAR(64),
-    bestScore DOUBLE,
-    sendDate DATETIME-->
-
+	<table class="table table-hover">
+		<%for (int i = 0; i < messages.size(); i++) {
+			%><tr><%
+				Message message = messages.get(i);
+				String type = message.getMessageType();
+				if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
+					FriendRequestMessage friendRequest = (FriendRequestMessage) message;
+					String messageStr = friendRequest.getMessage();
+					String requestor = friendRequest.getFromUser();
+					String acceptor = friendRequest.getToUser();%>
+					<div class=".col-md-11 col-md-offset-1">
+						<td><b> <%=requestor%> </b></td>
+						<td> <%=messageStr%> </td>
+						<form class="form-inline" name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
+							<input type="hidden" name="requestor" value="<%=requestor%>">
+							<input type="hidden" name="acceptor" value="<%=acceptor%>">
+							<td><button class="btn btn-success" type="submit"> Accept </button></td>
+						</form>
+						<form class="form-line" name = "friendDecline" action="DeclineFriendRequestServlet" method="post">
+							<input type="hidden" name="requestor" value="<%=requestor%>">
+							<input type="hidden" name="acceptor" value="<%=acceptor%>">
+							<td><button class="btn btn-danger" type="submit"> Decline </button></td>
+						</form>
+					</div>
+				<%} else {
+					if (type.equals(Message.NOTE_MESSAGE)) {
+						NoteMessage note = (NoteMessage)message;
+						String fromUser = note.getFromUser();
+						String toUser = note.getToUser();
+						String messageString = note.getMessage(); %>
+						<div class=".col-md-11 col-md-offset-1">
+							<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+								<td><b><%=fromUser%></b></td> 
+								<td><%=messageString%></td>
+								<input type="hidden" name="fromUser" value="<%=fromUser%>">
+								<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+								<input type="hidden" name="type" value="<%=type%>">
+								<input type="hidden" name="message" value="<%=messageString%>">
+								<td><button class="btn btn-danger" type="submit"> Delete Message </button></td>
+							</form>
+						</div>
+					<%} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
+						ChallengeMessage challenge = (ChallengeMessage) message;
+						String fromUser = challenge.getFromUser();
+						String messageString = challenge.getMessage(); 
+						String quizName = challenge.getQuizName(); %>
+						<div class=".col-md-11 col-md-offset-1">
+							<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+								<td> <b><%=fromUser%> </b></td>
+								<td> <%=messageString%> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it! </td>
+								<input type="hidden" name="fromUser" value="<%=fromUser%>">
+								<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+								<input type="hidden" name="type" value="<%=type%>">
+								<input type="hidden" name="message" value="<%=messageString%>">
+								<input type="hidden" name="quizName" value="<%=quizName%>">
+								<td> <button class="btn btn-danger" type="submit"> Delete Message </button> </td>
+							</form>
+						</div>
+					<%}%>
+				<%}%>
+			</tr>
+		<%}%>
+	</table>
+	  
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
 	<script src="js/bootstrap.min.js"></script>

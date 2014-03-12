@@ -60,7 +60,7 @@
 		request.getSession().setAttribute("editQuizQuestions",questions);
 	%>
 	
-	<div class="form-quiz" style="width:1100px">
+	<div class="form-quiz" style="width:800px">
 		<h2><%= quizName %></h2>
 		<h4>Quiz Details:</h4>
 		<ul>
