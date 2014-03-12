@@ -6,7 +6,7 @@
 	<meta content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Question Response</title>
+	<title>Multiple Choice</title>
 
 	<style type="text/css">
       body {
@@ -78,9 +78,11 @@
 		if (questionNum == quiz.getQuestions().size()-1){
 			out.println("<form action=\"DoneWithQuizServlet\" method=\"post\">");
 			out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Done\">");
+			out.println("</form>");
 		}else{
 			out.println("<form action=\"NextQuestionServlet\" method=\"post\">");
 			out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Next Question\">");
+			out.println("</form>");
 		}
 		%>
 

@@ -55,16 +55,10 @@ public class DoneWithQuizServlet extends HttpServlet {
 			if(questions.get(i).getQuestionType()==Question.MultiAnswer_MultipleChoice)
 			{
 				String comboAnswers =answers.get(i);
-				ArrayList<String> realAnswers = Question.createArray(comboAnswers);
-				for(int s =0; s < realAnswers.size(); s++ )
+				ArrayList<String> usersAnswers = Question.createArray(comboAnswers);
+				if(questions.get(i).isCorrect(usersAnswers))
 				{
-					if(!(questions.get(i).answerIsCorrect(realAnswers.get(s)))){
-						break;
-					}
-					if(s+1 == realAnswers.size())
-					{
-						numQuestionsCorrect++;
-					}
+					numQuestionsCorrect++;
 				}
 			}
 			else
