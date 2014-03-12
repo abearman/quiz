@@ -18,6 +18,7 @@
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(friendName);
 	String achievements = dal.getUserAchievements(friendName);
 	ArrayList<String> friends = dal.getFriendListForUser(friendName);
+	
 	boolean hasNewMessages = dal.userHasNewMessages(username);
 	ArrayList<Message> messages = dal.getSevenMostRecentUserMessages(user);
 	%>  
@@ -117,71 +118,68 @@
 	      </ul>
 	  </div><!-- /.container-fluid -->
 	</nav>
-
-	<h2><%= friendName %>'s Profile</h2>
 	
-		<%if (!friendName.equals(username)) {%>
-			<a href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"><button> Send Message </button></a>
-		<%}%>
+	<div class="row">
+		<div class="col-md-2 col-md-offset-1">
+			<h3><a href="friendProfile.jsp?friendName=<%=friendName%>"><%= friendName %></a></h3>
+			<%if (!friendName.equals(username)) {%>
+					<button class="btn btn-primary"><a style="color:white; text-decoration:none;" href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"> Send Message </a></button>
+			<%}%>
 	
-	<%
-	if (!friendName.equals(username)) {
-		if(dal.getFriendListForUser(username).contains(friendName)) {%> 
-			<form name="removeFriend" action ="RemoveFriendServlet" method="post">
-				<input type="hidden" name="user2" value="<%=friendName%>">
-				<input type="submit" value="Remove friend">
-			</form>
-		<%} else if (dal.userHasPendingFriendRequestForThisFriend(username, friendName)) {
-			%><button> Pending Friend Request </button>
-		<%} else {%>
-			<form name="addFriend" action ="AddFriendServlet" method="post">
-				<input type="hidden" name="user2" value="<%=friendName%>">
-				<input type="submit" value="Add friend!">
-			</form>
-		<%}
-	}
-	%>
-
-	<h2> Achievements: </h2>
-	<ul>
-		<% 
-			for (int i = 0; i < achievements.length(); i++) {
-				if (achievements.charAt(i) == '1') {
-					%> <li> <%= Achievements.achievements[i] %></li> <% ;	
+		<%
+		if (!friendName.equals(username)) {
+			if(dal.getFriendListForUser(username).contains(friendName)) {%> 
+				<form name="removeFriend" action ="RemoveFriendServlet" method="post" style="padding-top:5px; padding-bottom:5px">
+					<input type="hidden" name="user2" value="<%=friendName%>">
+					<button type="submit" class="btn btn-primary"> Remove friend </button>
+				</form>
+			<%} else if (dal.userHasPendingFriendRequestForThisFriend(username, friendName)) {
+				%><button class="btn btn-primary"> Pending Friend Request </button>
+			<%} else {%>
+				<form name="addFriend" action ="AddFriendServlet" method="post" style="padding-top:5px; padding-bottom: 5px">
+					<input type="hidden" name="user2" value="<%=friendName%>">
+					<button type="submit" class="btn btn-primary"> Add friend!</button>
+				</form>
+			<%}
+		}%>
+		</div>
+		
+		<div class="col-md-6 well">
+			<h3> Achievements: </h3>
+			<%for (int i = 0; i < achievements.length(); i++) {
+				if (achievements.charAt(i) == '1') {%>
+					<div style="padding-left:10px">
+						<img src="<%=Achievements.achievementsImgs[i]%>" height="30px" width="30px" />
+						<%=Achievements.achievements[i]%>	
+					</div> <% ;
 				}
-			}
-			%> 
-	</ul>
+			}%> 
+			
+			<h3> <%=friendName%>'s Friends: </h3>
+			<ul>
+				<%
+					for (int i = 0; i < friends.size(); i++) {
+						String friend = friends.get(i);
+						%> <li> <a href="friendProfile.jsp?friendName=<%=friend%>"> <%=friend%> </a> </li> <%
+					}
+				%>
+			</ul>
+			
+			<h3> <%=friendName%>'s Recently Created Quizzes: </h3> 
+				<%for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
+					String quizName = userRecentlyCreatedQuizzes.get(i);
+					%> <div><a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </div> <% 
+				}%>
+				
+			<h3> <%=friendName%>'s Recently Taken Quizzes: </h3>
+				<%for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
+						String quizName = userRecentlyTakenQuizzes.get(i);
+						%> <div><a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a></div> <% 
+				}%>
+
+		</div>
 	
-	<h2> My Recently Created Quizzes: </h2> 
-	<ul>
-		<%
-			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
-				String quizName = userRecentlyCreatedQuizzes.get(i);
-				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
-			}
-		%>
-	</ul>
-	
-	<h2> My Recently Taken Quizzes: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
-				String quizName = userRecentlyTakenQuizzes.get(i);
-				%> <li> Quiz: <a href="quizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
-			}
-		%>
-	</ul>
-	
-	<h2> <%=friendName%>'s Friends: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < friends.size(); i++) {
-				String friend = friends.get(i);
-				%> <li> <a href="friendProfile.jsp?friendName=<%=friend%>"> <%=friend%> </a> </li> <%
-			}
-		%>
-	</ul>
+	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
