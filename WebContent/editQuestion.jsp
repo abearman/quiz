@@ -57,42 +57,41 @@
 		DAL dal = (DAL)request.getServletContext().getAttribute("DAL");
 		ArrayList<Question> questions = quiz.getQuestions();
 		int numQuestions = questions.size();
-		request.getSession().setAttribute("editQuizQuestions",questions);
+		Question editQuestion = (Question)request.getSession().getAttribute("editQuestion");
 	%>
 	
 	<div class="form-quiz" style="width:800px">
 		<h2><%= quizName %></h2>
 		
-		<h4>Sorry, that question number was invalid. Please enter a number between 1 and <%= numQuestions %>.</h4><br>
-
-		<h4>Quiz Details:</h4>
-		<ul>
+		<h4>Question Details:</h4>
+		
+		<form action="UpdateQuestionServlet" method="post">
+		Question: <input type = "text" name = "question" value = "<%= editQuestion.getQuestion() %>"/><br>
 		<%
-			for (int i = 0; i < numQuestions; i++){
-				out.println("<li>" + (i+1) + ". " + questions.get(i).getQuestion() + "</li>");
+			ArrayList<String> answers = editQuestion.getAnswer();
+			for (int i = 0; i < answers.size(); i++){
+				out.println("Answer " + (i+1) + ": <input type = \"text\" name = \"answer" + (i+1) + "\"value = \"" + answers.get(i) + "\"/><br>");
+			}
+			
+			if (editQuestion.getQuestionType() == Question.MULTIPLE_CHOICE){
+				ArrayList<String> choices = ((MultipleChoice)editQuestion).getChoices();
+				for (int i = 0; i < choices.size(); i++){
+					out.println("Choice " + (i+1) + ": <input type = \"text\" name = \"choice" + (i+1) + "\"value = \"" + choices.get(i) + "\"/><br>");
+				}
+			}
+			
+			if (editQuestion.getQuestionType() == Question.MultiAnswer_MultipleChoice){
+				ArrayList<String> choices = ((MultiAnswerMultipleChoice)editQuestion).getChoices();
+				for (int i = 0; i < choices.size(); i++){
+					out.println("Choice " + (i+1) + ": <input type = \"text\" name = \"choice" + (i+1) + "\"value = \"" + choices.get(i) + "\"/><br>");
+				}
+			}
+			
+			if (editQuestion.getQuestionType() == Question.PICTURE_RESPONSE){
+				String imageURL = ((PictureResponse)editQuestion).getImageURL();
+				out.println("Image URL: <input type = \"text\" name = \"imageURL\" value = \"" + imageURL + "\"/><br>");
 			}
 		%>
-		</ul>
-		
-		<%
-			request.getSession().setAttribute("quizCreated",quiz);
-		%>
-		
-		<form action="RemoveQuestionServlet" method="post">
-		<br>Remove Question #: <input type="text" class="span2" name="answer" />
-		<input type = "submit" class="btn btn-primary"/>
-		</form>
-		
-		<form action="EditQuestionServlet" method="post">
-		<br>Edit Question #: <input type="text" class="span2" name="answer" />
-		<input type = "submit" class="btn btn-primary" value="Edit Question"/>
-		</form>
-		
-		<form action="addQuestions.jsp" method="post">
-		<input type = "submit" class="btn btn-primary" value="Add Question"/>
-		</form>
-		
-		<form action="quizCreationSuccessful.jsp" method="post">
 		<input type = "submit" class="btn btn-primary" value="Done Editing"/>
 		</form>
 	

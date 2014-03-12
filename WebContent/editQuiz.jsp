@@ -63,22 +63,26 @@
 	<div class="form-quiz" style="width:800px">
 		<h2><%= quizName %></h2>
 		<h4>Quiz Details:</h4>
-		<ul>
+		
 		<%
 			for (int i = 0; i < numQuestions; i++){
-				out.println("<li>" + (i+1) + ". " + questions.get(i).getQuestion() + "</li>");
+				out.println((i+1) + ". " + questions.get(i).getQuestion() + "<br>");
 			}
 		%>
-		</ul>
+		
+		<%
+			request.getSession().setAttribute("quizCreated",quiz);
+		%>
 		
 		<form action="RemoveQuestionServlet" method="post">
 		<br>Remove Question #: <input type="text" class="span2" name="answer" />
 		<input type = "submit" class="btn btn-primary" value="Remove Question"/>
 		</form>
 		
-		<%
-			request.getSession().setAttribute("quizCreated",quiz);
-		%>
+		<form action="EditQuestionServlet" method="post">
+		<br>Edit Question #: <input type="text" class="span2" name="answer" />
+		<input type = "submit" class="btn btn-primary" value="Edit Question"/>
+		</form>
 		
 		<form action="addQuestions.jsp" method="post">
 		<input type = "submit" class="btn btn-primary" value="Add Question"/>
