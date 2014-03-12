@@ -16,7 +16,7 @@
 		if (user != null) username = user.getLoginName();
 		ArrayList<Quiz> allQuizzes = dal.getAllQuizzes();
 	%>
-	<title><%= username %>'s Friends</title>
+	<title>All Quizzes</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
