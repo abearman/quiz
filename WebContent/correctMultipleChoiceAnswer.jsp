@@ -78,9 +78,11 @@
 		if (questionNum == quiz.getQuestions().size()-1){
 			out.println("<form action=\"DoneWithQuizServlet\" method=\"post\">");
 			out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Done\">");
+			out.println("</form>");
 		}else{
 			out.println("<form action=\"NextQuestionServlet\" method=\"post\">");
 			out.println("<input type=\"submit\" class=\"btn btn-primary\" value=\"Next Question\">");
+			out.println("</form>");
 		}
 		%>
 	</div>

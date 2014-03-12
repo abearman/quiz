@@ -65,23 +65,6 @@ public class Question {
 		return answerCorrect;
 	}
 	
-	/**
-	 * Takes in the user's answer,
-	 * compares it to the answers for the question,
-	 * and returns true if there is a match or false,
-	 * if there is no match.
-	 */
-	public boolean isCorrect(String input)
-	{
-		for(String answer: answers)
-		{
-			if(answer.equalsIgnoreCase(input))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	/**
 	 * Allows easy correction for MultiAnswerMultipleChoice

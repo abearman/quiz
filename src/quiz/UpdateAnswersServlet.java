@@ -59,14 +59,8 @@ public class UpdateAnswersServlet extends HttpServlet {
 			boolean answerCorrect = true;
 			if(questionType ==Question.MultiAnswer_MultipleChoice)
 			{
-				ArrayList<String> realAnswers = Question.createArray(answer);
-				for(int s =0; s < realAnswers.size(); s++ )
-				{
-					if(!(question.answerIsCorrect(realAnswers.get(s)))){
-						answerCorrect = false;
-						break;
-					}
-				}
+				ArrayList<String> usersAnswers = Question.createArray(answer);
+				answerCorrect = question.isCorrect(usersAnswers);
 			}
 			else
 			{
