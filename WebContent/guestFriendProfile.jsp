@@ -10,7 +10,6 @@
 	
 	<%
 	String friendName = request.getParameter("friendName");
-	
 	DAL dal = (DAL) request.getServletContext().getAttribute("DAL");
 	ArrayList<String> userRecentlyCreatedQuizzes = dal.getUserRecentlyCreatedQuizzes(friendName);
 	ArrayList<String> userRecentlyTakenQuizzes = dal.getUserRecentlyTakenQuizzes(friendName);
@@ -42,58 +41,62 @@
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search for friends" name="usernameToSearch">
 				<button type="submit" class="btn btn-default">Submit</button>
-				
 			</div>	
 		</form>
-	      
+		
 	      <ul class="nav navbar-nav navbar-right">
 	      	<li class="active"><a href="guestHomepage.jsp">Home</a></li>
+	      	<li class="active"><a href="index.html">Log In</a>
+	      	<li class="active"><a href="createAccount.html">Create Account</a>
 	      </ul>
 	  </div><!-- /.container-fluid -->
 	</nav>
-
-	<h2><%= friendName %>'s Profile</h2>
-
-	<h2> Achievements: </h2>
-	<ul>
-		<% 
-			for (int i = 0; i < achievements.length(); i++) {
-				if (achievements.charAt(i) == '1') {
-					%> <li> <%= Achievements.achievements[i] %></li> <% ;	
+	
+	<div class="row">
+		<div class="col-md-2 col-md-offset-1">
+			<h3><a href="guestFriendProfile.jsp?friendName=<%=friendName%>"><%= friendName %></a></h3>
+		</div>
+		
+		<div class="col-md-6 well">
+			<h3> Achievements: </h3>
+			<%for (int i = 0; i < achievements.length(); i++) {
+				if (achievements.charAt(i) == '1') {%>
+					<div style="padding-left:10px">
+						<img src="<%=Achievements.achievementsImgs[i]%>" height="30px" width="30px" />
+						<%=Achievements.achievements[i]%>	
+					</div> <% ;
 				}
-			}
-			%> 
-	</ul>
+			}%> 
+			
+			<h3> <%=friendName%>'s Friends: </h3>
+			<ul>
+				<%
+					for (int i = 0; i < friends.size(); i++) {
+						String friend = friends.get(i);
+						%> <li> <a href="guestFriendProfile.jsp?friendName=<%=friend%>"> <%=friend%> </a> </li> <%
+					}
+				%>
+			</ul>
+			
+			<h3> <%=friendName%>'s Recently Created Quizzes: </h3> 
+				<%for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
+					String quizName = userRecentlyCreatedQuizzes.get(i);
+					%> <div><a href="guestQuizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </div> <% 
+				}%>
+				
+			<h3> <%=friendName%>'s Recently Taken Quizzes: </h3>
+				<%for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
+						String quizName = userRecentlyTakenQuizzes.get(i);
+						%> <div><a href="guestQuizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a></div> <% 
+				}%>
+
+		</div>
 	
-	<h2> My Recently Created Quizzes: </h2> 
-	<ul>
-		<%
-			for (int i = 0; i < userRecentlyCreatedQuizzes.size(); i++) {
-				String quizName = userRecentlyCreatedQuizzes.get(i);
-				%> <li> Quiz: <a href="guestQuizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
-			}
-		%>
-	</ul>
-	
-	<h2> My Recently Taken Quizzes: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < userRecentlyTakenQuizzes.size(); i++) {
-				String quizName = userRecentlyTakenQuizzes.get(i);
-				%> <li> Quiz: <a href="guestQuizSummary.jsp?quizName=<%=quizName%>"> <%=quizName%> </a> </li> <% 
-			}
-		%>
-	</ul>
-	
-	<h2> <%=friendName%>'s Friends: </h2>
-	<ul>
-		<%
-			for (int i = 0; i < friends.size(); i++) {
-				String friend = friends.get(i);
-				%> <li> <a href="guestFriendProfile.jsp?friendName=<%=friend%>"> <%=friend%> </a> </li> <%
-			}
-		%>
-	</ul>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
 </body>
 </html>
