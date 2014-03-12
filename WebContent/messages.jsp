@@ -112,31 +112,61 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<%for (Message message : messages) {
-		if (message.getMessageType().equals(Message.NOTE_MESSAGE)) {
-			NoteMessage note = (NoteMessage)message;
-			String fromUser = note.getFromUser();
-			String messageString = note.getMessage(); %>
-			<p> <%= fromUser %>: <%= messageString %> </p>
-		<%} else if (message.getMessageType().equals(Message.CHALLENGE_MESSAGE)) {
-			ChallengeMessage challenge = (ChallengeMessage) message;
-			String fromUser = challenge.getFromUser();
-			String messageString = challenge.getMessage(); 
-			String quizName = challenge.getQuizName(); %>
-			<p><%= messageString %> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!</p>
-		<%} else if (message.getMessageType().equals(Message.FRIEND_REQUEST_MESSAGE)) {
+	<%for (int i = 0; i < messages.size(); i++) {
+		Message message = messages.get(i);
+		String type = message.getMessageType();
+		if (type.equals(Message.FRIEND_REQUEST_MESSAGE)) {
 			FriendRequestMessage friendRequest = (FriendRequestMessage) message;
 			String messageStr = friendRequest.getMessage();
 			String requestor = friendRequest.getFromUser();
-			String acceptor = friendRequest.getToUser();
-			%><p><%=messageStr%></p>
+			String acceptor = friendRequest.getToUser();%>
+			<p><%=messageStr%></p>
 			<form name = "friendAccept" action="AcceptFriendRequestServlet" method="post">
 				<input type="hidden" name="requestor" value="<%=requestor%>">
 				<input type="hidden" name="acceptor" value="<%=acceptor%>">
 				<input type="submit" value="Accept">
 			</form>
+		<%} else {
+			if (type.equals(Message.NOTE_MESSAGE)) {
+				NoteMessage note = (NoteMessage)message;
+				String fromUser = note.getFromUser();
+				String messageString = note.getMessage(); %>
+				<p> <%=fromUser%>: <%=messageString%> </p>
+				<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+					<input type="hidden" name="fromUser" value="<%=fromUser%>">
+					<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+					<input type="hidden" name="type" value="<%=type%>">
+					<input type="hidden" name="message" value="<%=messageString%>">
+					<input type="submit" value="Delete Message"> 
+				</form>
+			<%} else if (type.equals(Message.CHALLENGE_MESSAGE)) {
+				ChallengeMessage challenge = (ChallengeMessage) message;
+				String fromUser = challenge.getFromUser();
+				String messageString = challenge.getMessage(); 
+				String quizName = challenge.getQuizName(); %>
+				<p><%=messageString%> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it!</p>
+				<form name="deleteMessage" action="DeleteMessageServlet" method="post">
+					<input type="hidden" name="fromUser" value="<%=fromUser%>">
+					<input type="hidden" name="toUser" value="<%=message.getToUser()%>">
+					<input type="hidden" name="type" value="<%=type%>">
+					<input type="hidden" name="message" value="<%=messageString%>">
+					<input type="hidden" name="quizName" value="<%=quizName%>">
+					<input type="submit" value="Delete Message"> 
+				</form>
+			<%}%>
+			
 		<%}
 	}%>
+		
+		
+		<!--  
+		 fromUser CHAR(64),
+    toUser CHAR(64),
+    messageType CHAR(64),
+    message CHAR(64),
+    quizName CHAR(64),
+    bestScore DOUBLE,
+    sendDate DATETIME-->
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
