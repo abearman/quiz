@@ -86,12 +86,12 @@ public class DoneWithQuizServlet extends HttpServlet {
 		quiz.addTopScorer(new TopScorer(user.getLoginName(), numQuestionsCorrect, elapsedTime, dal));
 		quiz.incrementNumTimesTaken();
 		
-		if (dal.isHighestScorerForQuiz(loginName, quiz.getQuizName())) {
+		if (dal.isHighestScorerForQuiz(loginName, quiz.getQuizName(), elapsedTime)) {
 			dal.addAchievementForUser(loginName, Achievements.I_AM_THE_GREATEST);
 		}
 		
 		int numQuizzesTaken = dal.getNumberQuizzesTakenForUser(loginName);
-		if (numQuizzesTaken >= 10) {
+		if (numQuizzesTaken == 10) {
 			dal.addAchievementForUser(loginName, Achievements.QUIZ_MACHINE);
 		}
 		
