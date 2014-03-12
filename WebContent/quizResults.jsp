@@ -248,6 +248,8 @@
 		</form>
 		</div>
 
+		Go back <a href="quizSummary.jsp?quizName=<%=quiz.getQuizName()%>"><%=quiz.getQuizName()%></a>
+
 		<%
 		if (user.getIsAdministrator()) {
 			%> Go back <a href="administratorHomepage.jsp">home</a><% 
