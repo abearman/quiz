@@ -49,7 +49,7 @@
 	String username = "";
 	String password = "";
 	Cookie[] cookies = request.getCookies();
-	if (cookies.length > 1) {
+	if ((cookies != null) && (cookies.length > 1)) {
 		username = cookies[1].getName();
 		password = cookies[1].getValue();
 	}
