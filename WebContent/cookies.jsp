@@ -1,5 +1,3 @@
-<!--  <META HTTP-EQUIV="Refresh" CONTENT="0; URL=cookies.jsp"/> -->
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
@@ -47,14 +45,24 @@
 
 </head>
 
+	<%
+	String username = "";
+	String password = "";
+	Cookie[] cookies = request.getCookies();
+	if (cookies.length > 1) {
+		username = cookies[1].getName();
+		password = cookies[1].getValue();
+	}
+	%>
+
 <body style="background-color:#f5f5f5">
 
 	<div class="form-signin container" style="width:400px; padding-left:30px">
 			<form action="LoginServlet" method="post">
 				<h2>Welcome to <span style="font-family:'Fugaz One', cursive;">Quizzler!</span></h2>
 				<h3> Please log in </h3>
-				<div><input name="username" type="text" class="input-block-level" placeholder="User Name"></div>
-				<div><input name="password" type="password" class="input-block-level" placeholder="Password"></div>
+				<div><input name="username" type="text" class="input-block-level" placeholder="User Name" value=<%=username%>></div>
+				<div><input name="password" type="password" class="input-block-level" placeholder="Password" value=<%=password%>></div>
 				<label class="checkbox">
 					<input name="checkbox" type="checkbox" value="remember-me" checked> Remember me
 				</label>
