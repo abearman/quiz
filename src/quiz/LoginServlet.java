@@ -56,19 +56,20 @@ public class LoginServlet extends HttpServlet {
 			User user = dal.getUser(username); //Gets User from database to store on session 
 			request.getSession().setAttribute("user", user); //Sets the user as an attribute on the session
 			
-			if (checked != null) {
+			if (checked == null) { //Remove cookies
+				Cookie cookies[] = request.getCookies();
+				for (Cookie c : cookies) {
+					if (c.getName().equals(username)) {
+						Cookie cookie = new Cookie(username, password);
+						cookie.setMaxAge(0);
+						response.addCookie(cookie);
+					}
+				}
+			} else { //Add cookies
 				Cookie cookie = new Cookie(username, password);
 				cookie.setMaxAge(60*60); //1 hour
 				response.addCookie(cookie);
 			}
-			
-			/*
-			Cookie[] cookies = request.getCookies();
-			for (Cookie c : cookies) {
-				String s = c.getName();
-				String t = c.getValue();
-				int a = 0;
-			}*/
 			
 			if (user.getIsAdministrator()) { //display administrator homepage
 				RequestDispatcher dispatch = request.getRequestDispatcher("administratorHomepage.jsp");
