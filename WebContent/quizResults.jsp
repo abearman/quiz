@@ -156,6 +156,7 @@
 		<%
 			for (int i = 0; i < questions.size(); i++){
 				String usersAnswer = usersAnswers.get(i);
+				if (usersAnswer == null) usersAnswer = "";
 				if(questions.get(i).getQuestionType()==Question.MultiAnswer_MultipleChoice)//if question is multiAnswerMultipleChoice
 				{
 					ArrayList<String> realAnswers = Question.createArray(usersAnswer);
@@ -247,8 +248,6 @@
 			<input type = "submit" class="btn btn-primary" value = "Challenge"/> 
 		</form>
 		</div>
-
-		<p>Go back <a href="quizSummary.jsp?quizName=<%=quiz.getQuizName()%>"><%=quiz.getQuizName()%></a></p>
 
 		<%
 		if (user.getIsAdministrator()) {

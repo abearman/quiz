@@ -159,6 +159,7 @@
 			for (int i = 0; i < questions.size(); i++){
 				String correctAnswer = questions.get(i).getAnswer().get(0);
 				String usersAnswer = usersAnswers.get(i);
+				if (usersAnswer == null) usersAnswer = "";
 				if(questions.get(i).getQuestionType()==Question.MultiAnswer_MultipleChoice)
 				{
 					ArrayList<String> realAnswers = Question.createArray(usersAnswer);
