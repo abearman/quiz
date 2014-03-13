@@ -5,6 +5,29 @@
 	<meta content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #000000;
+      }
+      
+      .send-message {
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    </style>
+	
+	
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	
 	<%
@@ -17,22 +40,42 @@
 	
 </head>
 
-<body>
+<body style="background-color:#f5f5f5">
 
-	<h3>Send message to <%=toUser%></h3>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <div><a class="navbar-brand" style="color:white; font-family:'Fugaz One', cursive; font-size:40px">Quizzler</a></div>
+	    </div>
+	  </div><!-- /.container-fluid -->
+	</nav>
 	
-<div>
-	<form name ="frm" action ="SendMessageServlet" method = "post">
-		<div id ="messageArea">
-			<h3>Note Message</h3>
-			<input type="hidden" name="messageType" value ="NoteMessage">
-			<input type="hidden" name="fromUser" value=<%=fromUser%>>
-			<input type="hidden" name="toUser" value=<%=toUser%>>
-			<p>Message:<input type = "text" name="message"></p>
-		</div>		
-		<input type = "submit" value = "Send Message"/> 
-	</form>
-</div>
+	<div class="send-message" style="width:400px">
+
+		<h3>Send message to <%=toUser%></h3>
+	
+		<div>
+			<form name ="frm" action ="SendMessageServlet" method = "post">
+				<div id ="messageArea">
+					<h3>Note Message</h3>
+					<input type="hidden" name="messageType" value ="NoteMessage">
+					<input type="hidden" name="fromUser" value=<%=fromUser%>>
+					<input type="hidden" name="toUser" value=<%=toUser%>>
+					<input type = "text" name="message"> <button type="submit" class="btn btn-primary"> Send Message </button>
+				</div>		
+			</form>
+		</div>
+	</div>
+
+
+	
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
