@@ -56,6 +56,7 @@ public class Question {
 	 */
 	public boolean answerIsCorrect(String answer)
 	{
+		if (answer == null) return false;
 		boolean answerCorrect = false;
 		for (int i = 0; i < answers.size(); i++){
 			if (answer.equalsIgnoreCase(answers.get(i))){
