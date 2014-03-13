@@ -114,14 +114,23 @@
 	
 	<h1><%=username %>'s friends: </h1>
 	
-	<ul>
-		<% 
-		for (int i = 0; i < friends.size(); i++) {
-			String friend = friends.get(i);
-			%> <li> <a href="friendProfile.jsp?friendName=<%=friend%>"> <%= friend %> </a> </li> <%
-		} 
-		%>
-	</ul>
+	<table class="table table-hover">
+		<%for (int i = 0; i < friends.size(); i++) {
+			%><tr><%
+				String friendName = friends.get(i);
+				String status = dal.getUserStatus(friendName);%>
+				<div class=".col-md-1 col-md-offset-1">
+					<td> <h4><a href="friendProfile.jsp?friendName=<%=friendName%>"><b><%=friendName%> </b></a></h4></td>
+					<td><h5> <%= status %></h5></td>
+					<td> <a href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"><button type="submit" class="btn btn-primary"> Send Message </button> </a></td>
+					<form name="removeFriend" action ="RemoveFriendServlet" method="post">
+					<input type="hidden" name="user2" value="<%=friendName%>">
+						<td><button type="submit" class="btn btn-danger"> Remove friend </button></td>
+					</form>
+				</div>
+			</tr>
+		<%}%>
+	</table>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
