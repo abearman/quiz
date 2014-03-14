@@ -15,7 +15,6 @@
 		dal.setHasNewMessage(username, false);
 		boolean hasNewMessages = dal.userHasNewMessages(username);
 		ArrayList<Message> messagesNotifications = dal.getSevenMostRecentUserMessages(user);
-		String userToReplyTo = "keenon";
 	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title><%= username %>'s Messages</title>

@@ -242,8 +242,8 @@
 		<div>
 		<form name ="frm" action ="SendMessageServlet" method = "post">
 			<input type="hidden" name="messageType" value ="ChallengeMessage">
-			<input type="hidden" name="quiz" value=<%=quiz.getQuizName()%>>
-			<input type="hidden" name="fromUser" value=<%=user.getLoginName()%>>
+			<input type="hidden" name="quiz" value="<%=quiz.getQuizName()%>">
+			<input type="hidden" name="fromUser" value="<%=user.getLoginName()%>">
 			<h5>Challenge a friend to take this quiz!<input type = "text" name="toUser"></h5>	
 			<input type = "submit" class="btn btn-primary" value = "Challenge"/> 
 		</form>

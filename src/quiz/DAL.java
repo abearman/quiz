@@ -25,7 +25,7 @@ public class DAL {
 	public Statement getStatement() {
 		return stmt;
 	}
-
+	
 	private ArrayList<NewsfeedObject> mergeTwoSortedArrayLists(ArrayList<NewsfeedObject> al1, ArrayList<NewsfeedObject> al2) {
 		ArrayList<NewsfeedObject> result = new ArrayList<NewsfeedObject>();
 		int i = 0, j = 0;
@@ -584,7 +584,7 @@ public class DAL {
 	}
 
 	/* Setters */
-
+	
 	public void insertQuiz(Quiz quiz) {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(quiz.getCreationDate());
@@ -726,7 +726,7 @@ public class DAL {
 			String query = "SELECT * FROM histories WHERE quizName = \"" + quizName + "\" ORDER BY numQuestionsCorrect DESC, timeElapsed;";
 			ResultSet rs = stmt.executeQuery(query);
 			rs.first();
-			if ((rs.getString("loginName").equals(userName)) && (rs.getInt("timeElapsed") == elapsedTime)) {
+			if ((rs.getString("loginName").equals(userName)) && (rs.getLong("timeElapsed") == elapsedTime)) {
 				return true;
 			}
 			return false;

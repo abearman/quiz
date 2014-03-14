@@ -57,6 +57,7 @@ public class AccountCreationServlet extends HttpServlet {
 			DAL dal = (DAL)getServletContext().getAttribute("DAL");
 			User user = new User(username, password, dal); //The constructor handles putting the User in the database
 			request.getSession().setAttribute("user", user); //Sets the user as an attribute on the session
+			request.getSession().setAttribute("loginName", username);
 			
 			//display user homepage
 			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");
