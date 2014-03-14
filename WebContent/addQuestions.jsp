@@ -216,11 +216,12 @@ function checkForm()//error checking to make sure fields are filled out properly
 	}
 	else if (options[selected].value == "MultipleChoice")
 	{
-		var numChoices = document.fmr.numChoices.value;
+		var numChoices = document.frm.numChoices.value;
 		var choiceLength = 0;
 		for(var i = 1; i <=  numChoices; i++)
 		{
-			var length = document.getElementsByName("choice"+i)[0].value.length;
+			var array = document.getElementsByName("choice"+i);
+			var length = array[0].value.length;
 			choiceLength += length;
 			choiceLength++;
 		}
@@ -252,11 +253,12 @@ function checkForm()//error checking to make sure fields are filled out properly
 	}
 	else if (options[selected].value == "MultiAnswerMultipleChoice")
 	{
-		var numChoices = document.getElementByName("numChoices").value;
+		var numChoices = document.frm.numChoices.value;
 		var choiceLength = 0;
 		for(var i = 1; i <=  numChoices; i++)
 		{
-			var length = document.getElementsByName("choice"+i)[0].value.length;
+			var array = document.getElementsByName("choice"+i);
+			var length = array[0].value.length;
 			choiceLength += length;
 			choiceLength++;
 		}
