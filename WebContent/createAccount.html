@@ -50,7 +50,6 @@
 <script type="text/javascript">
 function checkForm()//error checking to make sure fields are filled out properly
 {
-	alert("IN CHECK FORM");
 	if(document.frm.username.value == "")
 	{
 		alert("Please enter a username.");
@@ -77,7 +76,7 @@ function checkForm()//error checking to make sure fields are filled out properly
 	<div class="container">
 		<form name="frm" style="width:400px" class="form-signin" action="AccountCreationServlet" method="post">
 			<h3>Create a <span style="font-family:'Fugaz One', cursive;">Quizzler</span> account </h3>
-			<h4 class="form-signin-heading">Please enter a NAME and PASSWORD:</h4>
+			<h4 class="form-signin-heading">Please enter a name and password:</h4>
 			<div><input name="username" type="text" class="input-block-level" placeholder="User Name"></div>
 			<div><input name="password" type="password" class="input-block-level" placeholder="Password"></div>
 			<input type="button" class="btn btn-large btn-primary" value="Submit" onclick="checkForm()">
