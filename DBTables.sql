@@ -44,7 +44,7 @@ CREATE TABLE messages (
     fromUser CHAR(255),
     toUser CHAR(255),
     messageType CHAR(255),
-    message CHAR(255),
+    message VARCHAR(5000),
     quizName CHAR(255),
     bestScore DOUBLE,
     sendDate DATETIME
