@@ -194,7 +194,7 @@ function checkForm()//error checking to make sure fields are filled out properly
 	for(var i = 1; i <=  numAnswers; i++)
 	{
 		var array = document.getElementsByName("answer"+i);
-		var length = array[0].length;
+		var length = array[0].value.length;
 		answerLength += length;
 		answerLength++;
 	}
