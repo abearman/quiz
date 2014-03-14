@@ -104,8 +104,8 @@ function checkRadioButtons()
 		<h3>Create a Quiz</h3>
 	
 		<form name= "creationForm" action="QuizCreationServlet" method = "post">
-			<p>Quiz Name: <input type = "text" name = "quizName"/></p>
-			<p>Quiz Description: <input type = "text" name = "quizDescription"/></p>
+			<p>Quiz Name: <input type = "text" name = "quizName" class="input-block-level" placeholder="Name"/></p>
+			<p>Quiz Description: <input type = "text" name = "quizDescription" class="input-block-level" placeholder="Description"/></p>
 			<p>Random Question Order: <br>
 			Yes: <input type = "radio" name = "isRandom" value = "true"/><br>
 			No: <input type = "radio" name = "isRandom" value = "false"/></p>

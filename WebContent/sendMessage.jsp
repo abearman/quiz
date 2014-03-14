@@ -69,7 +69,8 @@
 					<input type="hidden" name="messageType" value ="NoteMessage">
 					<input type="hidden" name="fromUser" value=<%=fromUser%>>
 					<input type="hidden" name="toUser" value=<%=toUser%>>
-					<input type = "text" name="message"> <button type="submit" class="btn btn-primary"> Send Message </button>
+					<input type ="text" name="message" class="input-block-level" placeholder="Message"> 
+					<button type="submit" class="btn btn-primary"> Send Message </button>
 				</div>		
 			</form>
 		</div>
