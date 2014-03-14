@@ -41,6 +41,24 @@
 	
 </head>
 
+<script>
+function checkMessage()
+{
+	if(document.getElementById("message").value == "")
+	{
+		alert("Please enter a message.");
+	}
+	else if(document.getElementById("message").value.length > 5000)
+	{
+		alert("Message needs to be less than 5000 characters.");
+	}
+	else
+	{
+		document.frm.submit();
+	}
+}
+</script>
+
 <body style="background-color:#f5f5f5">
 
 	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
@@ -70,7 +88,7 @@
 					<input type="hidden" name="fromUser" value=<%=fromUser%>>
 					<input type="hidden" name="toUser" value=<%=toUser%>>
 					<input type ="text" name="message" class="input-block-level" placeholder="Message"> 
-					<button type="submit" class="btn btn-primary"> Send Message </button>
+					<input type="button" class="btn btn-primary" value="Send Message" onclick="checkMessage()">
 				</div>		
 			</form>
 		</div>

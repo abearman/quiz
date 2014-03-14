@@ -60,7 +60,7 @@
 	
 	<h4><i>Choose a question type from the drop down menu and fill out the necessary fields. Press "Add Question" to add another
 question or press "Done" if you are complete. Press "Add Answers" to add another possible answer to the question. Press "Remove Answers" to remove the last answer.
-Please enter one answer per box and do not leave any boxes unfilled.</i></h4>
+Please enter one answer per box and do not leave any boxes unfilled.<b>Please do not use "\n" in your inputs.</b></i></h4>
 
 <script type="text/javascript">
 
@@ -189,19 +189,48 @@ function checkForm()//error checking to make sure fields are filled out properly
 {
 	var selected = document.getElementById("optionsBox").selectedIndex;
 	var options = document.getElementById("optionsBox").options;
+	var numAnswers = document.getElementById("numAnswers").value;
+	var answerLength = 0;
+	alert("in check form");
+	for(var i = 1; i <=  numAnswers; i++)
+	{
+		var length = document.getElementById("answer"+i).value.length;
+		answerLength += length;
+		answerLength++;
+	}
 	if(document.frm.question.value == "")
 	{
 		alert("Please enter a Question.");
+	}
+	else if(document.frm.question.value.length > 5000)
+	{
+		alert("Question is too long. It must be less than 5000 characters.");
 	}
 	else if(document.frm.answer1.value == "")
 	{
 		alert("Please enter an Answer.");
 	}
+	else if(answerLength > 5000)
+	{
+		alert("Answers are too long. The answers combined should be less than 5000 characters.");
+	}
 	else if (options[selected].value == "MultipleChoice")
 	{
+		var numChoices = document.getElementById("numChoices").value;
+		var choiceLength = 0;
+		for(var i = 1; i <=  numChoices; i++)
+		{
+			var length = document.getElementById("choice"+i).value.length;
+			choiceLength += length;
+			choiceLength++;
+		}
 		if(document.frm.choice1.value == "")
 		{
 			alert("Please enter a Choice.");
+		}
+		else if(choiceLength > 5000)
+		{
+			alert("Choices are too long. The choices combined should be less than 5000 characters.");
 		}
 		else
 		{
@@ -213,8 +242,8 @@ function checkForm()//error checking to make sure fields are filled out properly
 		if(document.frm.imageURL.value == "")
 		{
 			alert("Please enter an Image URL.");
-		}else if (document.frm.imageURL.value.length > 255){
-			alert("This URL is too long. Please enter a shorter URL.")
+		}else if (document.frm.imageURL.value.length > 5000){
+			alert("This URL is too long. Please enter a URL shorter than 5000 characters.");
 		}
 		else
 		{
@@ -223,9 +252,21 @@ function checkForm()//error checking to make sure fields are filled out properly
 	}
 	else if (options[selected].value == "MultiAnswerMultipleChoice")
 	{
+		var numChoices = document.getElementById("numChoices").value;
+		var choiceLength = 0;
+		for(var i = 1; i <=  numChoices; i++)
+		{
+			var length = document.getElementById("choice"+i).value.length;
+			choiceLength += length;
+			choiceLength++;
+		}
 		if(document.frm.choice1.value == "")
 		{
 			alert("Please enter a Choice.");
+		}
+		else if(choiceLength > 5000)
+		{
+			alert("Choices are too long. The choices combined should be less than 5000 characters.");
 		}
 		else
 		{
