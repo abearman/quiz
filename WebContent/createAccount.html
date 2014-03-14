@@ -46,14 +46,41 @@
 </head>
 
 <body style="background-color:#f5f5f5">
+
+<script type="text/javascript">
+function checkForm()//error checking to make sure fields are filled out properly
+{
+	alert("IN CHECK FORM");
+	if(document.frm.username.value == "")
+	{
+		alert("Please enter a username.");
+	}
+	else if(document.frm.password.value == "")
+	{
+		alert("Please enter a password.");
+	}
+	if (document.frm.username.value.length > 255)
+	{
+		alert("Please make sure your username is less than 255 characters.");
+	}
+	else if(document.frm.password.value.length > 255)
+	{
+		alert("Please make sure your password is less than 255 characters.");
+	}
+	else
+	{
+		document.frm.submit();
+	}
+}
+</script>
 	
 	<div class="container">
-		<form style="width:400px" class="form-signin" action="AccountCreationServlet" method="post">
+		<form name="frm" style="width:400px" class="form-signin" action="AccountCreationServlet" method="post">
 			<h3>Create a <span style="font-family:'Fugaz One', cursive;">Quizzler</span> account </h3>
-			<h4 class="form-signin-heading">Please enter a name and password:</h4>
+			<h4 class="form-signin-heading">Please enter a NAME and PASSWORD:</h4>
 			<div><input name="username" type="text" class="input-block-level" placeholder="User Name"></div>
 			<div><input name="password" type="password" class="input-block-level" placeholder="Password"></div>
-			<button class="btn btn-large btn-primary" type="submit"> Submit </button>
+			<input type="button" class="btn btn-large btn-primary" value="Submit" onclick="checkForm()">
 			
 			<div style="padding-top:5px"><a href="index.html">Log in</a></div>
 			<div><a href="guestHomepage.jsp">Log in as guest</a></div>
