@@ -14,6 +14,7 @@
 	DAL dal = (DAL)getServletContext().getAttribute("DAL");
 	String name = request.getParameter("usernameToSearch");
 	boolean hasNewMessages = dal.userHasNewMessages(loginName);
+	ArrayList<Message> messagesNotifications = dal.getSevenMostRecentUserMessages(user);
 	%>  
 	
 	<title> Profile Not Found </title>
@@ -40,17 +41,60 @@
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search for friends" name="usernameToSearch">
 				<button type="submit" class="btn btn-default">Submit</button>
+				
 			</div>	
 		</form>
-		
+	      
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="active"><a href="friends.jsp" style="margin:0; padding:0"><img src="friends-icon.jpg" height="50px" height="50px"/></a></li>
 	        <li class="active"><a href="messages.jsp" style="margin:0; margin-left:10px; padding:0"><img src="messages.jpg" height="50px" height="50px"/></a></li>
 	        
 	        <%if (hasNewMessages) {
-	        	%> <li class="active"><a href="messages.jsp" style="margin:0; margin-left:10px; padding:0"><img src="exclamation-red.jpg" height="50px" height="50px"/></a></li> <% 
+	        	%> 
+				<li class="navbar-form">
+				<div class="dropdown">
+				  <button class="btn dropdown-toggle btn-danger" type="button" id="dropdownMenu1" data-toggle="dropdown"> Notifications <span class="caret"></span> </button>
+				  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				  	
+				  	<% for (int i = 0; i < messagesNotifications.size(); i++) {
+				  		%><li role="presentation">
+				  			<a role="menuitem" tabindex="-1" href="messages.jsp">
+				  				<%
+				  				Message message = messagesNotifications.get(i);
+				  				String type = message.getMessageType();
+				  				String fromUser = message.getFromUser();%>
+				  				<%=type%> from <%=fromUser%> 
+				  			</a>
+				  		</li>
+				  	<%}%>
+				    <li role="presentation" class="divider"></li>
+				    <li role="presentation"><a role="menuitem" tabindex="-1" href="messages.jsp">See All</a></li>
+				  </ul>
+				</div>
+			</li>
+				<% 
 	        } else {%>
-	        	<li class="active"><a href="messages.jsp" style="margin:0; margin-left:10px; padding:0"><img src="exclamation.jpg" height="50px" height="50px"/></a></li>
+	        	<li class="navbar-form">
+				<div class="dropdown">
+				  <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"> Notifications <span class="caret"></span> </button>
+				  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				  	
+				  	<% for (int i = 0; i < messagesNotifications.size(); i++) {
+				  		%><li role="presentation">
+				  			<a role="menuitem" tabindex="-1" href="messages.jsp">
+				  				<%
+				  				Message message = messagesNotifications.get(i);
+				  				String type = message.getMessageType();
+				  				String fromUser = message.getFromUser();%>
+				  				<%=type%> from <%=fromUser%> 
+				  			</a>
+				  		</li>
+				  	<%}%>
+				    <li role="presentation" class="divider"></li>
+				    <li role="presentation"><a role="menuitem" tabindex="-1" href="messages.jsp">See All</a></li>
+				  </ul>
+				</div>
+			</li>
 			<%}%>
 			
 			<%if (user.getIsAdministrator()) {

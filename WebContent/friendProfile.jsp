@@ -122,9 +122,7 @@
 	<div class="row">
 		<div class="col-md-2 col-md-offset-1">
 			<h3><a href="friendProfile.jsp?friendName=<%=friendName%>"><%= friendName %></a></h3>
-			<%if (!friendName.equals(username)) {%>
-					<button class="btn btn-primary"><a style="color:white; text-decoration:none;" href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"> Send Message </a></button>
-			<%}%>
+			<button class="btn btn-primary"><a style="color:white; text-decoration:none;" href="sendMessage.jsp?toUser=<%=friendName%>&fromUser=<%=username%>"> Send Message </a></button>
 	
 		<%
 		if (!friendName.equals(username)) {
