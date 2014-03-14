@@ -41,7 +41,7 @@
 	
 </head>
 
-<script>
+<script type="text/javascript">
 function checkMessage()
 {
 	if(document.getElementById("message").value == "")
