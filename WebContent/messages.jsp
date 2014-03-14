@@ -161,7 +161,8 @@
 						ChallengeMessage challenge = (ChallengeMessage) message;
 						String fromUser = challenge.getFromUser();
 						String messageString = challenge.getMessage(); 
-						String quizName = challenge.getQuizName(); %>
+						String quizName = challenge.getQuizName();
+					%>
 						<div class=".col-md-11 col-md-offset-1">
 							<td> <a href="friendProfile.jsp?friendName=<%=fromUser%>"><b><%=fromUser%> </b></a></td>
 							<td> <%=messageString%> Click<a href="quizSummary.jsp?quizName=<%=quizName%>"> here </a>to take it! </td>

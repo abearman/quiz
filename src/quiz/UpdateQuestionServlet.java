@@ -79,7 +79,7 @@ public class UpdateQuestionServlet extends HttpServlet {
 		}
 		if(questionType == Question.MultiAnswer_MultipleChoice)
 		{
-			int numChoices = ((MultipleChoice)question).getChoices().size();
+			int numChoices = ((MultiAnswerMultipleChoice)question).getChoices().size();
 			ArrayList<String> choicesList = new ArrayList<String>();
 			for(int i = 1; i <=numChoices; i++)
 			{
