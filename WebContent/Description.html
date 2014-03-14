@@ -1,0 +1,71 @@
+Group Members:
+Amy Bearman
+Bruno De Martino
+Bhaven Patel
+Pavitra Rengarajan
+
+We used Twitter Bootstrap.
+
+We did all of the required features for a 4-person team. We also did the recommended features: achievements and administration.
+
+Extensions:
+- Newsfeed: displays a list of all of a user's friends' recent actions, sorted in chronological order. 
+  This includes creating a quiz, taking a quiz, earning an achievement, and posting a status.
+- User can post a status
+- User can log out 
+- Cookies: user can choose the "remember me" option when they log in ("Remember Me" is set to default). 
+  By deselecting "Remember Me", the user removes their cookie, if it exists.
+- Non-registered access: a user can log in as a guest. As a guest, a user can view other user profiles 
+  and view quiz summary pages, but they cannot send messages, friend other users, earn achievements, or take/create quizzes.
+- Users can delete note messages and challenge messages
+- Users can directly reply to a note or challenge message
+- Users can decline a friend request (and have the friend request message disappear from their inbox).
+- Additional question type: multiple answer multiple choice (allows a user to check multiple check boxes)
+- Quiz Editing:
+	- You can't edit a quiz unless you're the creator of that quiz
+	- Users can add a question
+	- Users can remove a question
+	- Users can modify an existing question, including changing the question String, and changing correct choices. 
+	  For multiple-choice or multiple-choice-multiple-answer questions, users can change the potential choices. 
+	  For picture-response questions, users can change the image URL. 
+
+UI/UX:
+- Dynamically update page according to question type
+- Our achievements have custom icons
+- Our site has a custom name: "Quizzler"
+- Update the UI on a "friend profile" page to reflect whether or not the logged-in user has a pending friend 
+  request for this person, can add this person as a friend, or remove this person as a friend
+- Navigation bar at the top of all pages, that is fixed at the top:
+	- Can search for users. 
+	- Has an icon representing friends
+	- Has an icon for messages
+	- Has a drop-down menu for notifications, which displays the type of each notification and who it was from. 
+	  Only displays the 7 most recent notifications. 
+	- Notification drop-down turns red when a user has a new notification
+	- Home link
+	- User profile link
+	- Log Out button
+- Pop up modals on the homepage for recently created quizzes, popular quizzes, all existing quizzes, and a user-specific quiz history.
+- Accept and Decline buttons listed next to friend request messages
+- Send Reply Message and Delete Message buttons listed next to note messages and challenge messages
+- Messages list and friend list appear in a neat table layout with hover enabled
+- On their friends list page, there is a Send Message and Remove Friend button listed next to each friend, 
+  so users can easily and direct message each person or remove each person as a friend.
+- Newsfeed has a fixed height and a scrollbar
+
+Error Checking:
+- Make the user enter both a question and an answer for each question, (and choice if the question type 
+  is multiple-answer-multiple-choice)
+- A quiz has to have at least one question
+- Don't allow the user to friend themselves or message themselves
+- Cannot create multiple quizzes with the same name
+- You cannot challenge someone to a quiz who is not your friend
+- Don't allow multiple friend requests
+- If a user searches for a profile that does not exist, displays a message accordingly.
+- Quiz answers are case insensitive (So "george washington" is the same as "George Washington").
+- We check the length of the URL for images (for picture-response questions) if it’s going to be too long.
+- You can't edit a quiz unless you're the creator of that quiz
+- Question, answer, messages, image URL all have maximum 5,000 characters, rather than the standard 64 or 255. 
+
+
+
