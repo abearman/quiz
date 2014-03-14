@@ -41,14 +41,14 @@
 	
 </head>
 
-<script>
+<script type="text/javascript">
 function checkMessage()
 {
-	if(document.getElementById("message").value == "")
+	if(document.frm.message.value == "")
 	{
 		alert("Please enter a message.");
 	}
-	else if(document.getElementById("message").value.length > 5000)
+	else if(document.frm.message.value.length > 5000)
 	{
 		alert("Message needs to be less than 5000 characters.");
 	}
