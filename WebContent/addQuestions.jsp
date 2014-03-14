@@ -189,12 +189,12 @@ function checkForm()//error checking to make sure fields are filled out properly
 {
 	var selected = document.getElementById("optionsBox").selectedIndex;
 	var options = document.getElementById("optionsBox").options;
-	var numAnswers = document.getElementById("numAnswers").value;
+	var numAnswers = document.frm.numAnswers.value;
 	var answerLength = 0;
-	alert("in check form");
 	for(var i = 1; i <=  numAnswers; i++)
 	{
-		var length = document.getElementById("answer"+i).value.length;
+		var array = document.getElementsByName("answer"+i);
+		var length = array[0].length;
 		answerLength += length;
 		answerLength++;
 	}
@@ -216,11 +216,11 @@ function checkForm()//error checking to make sure fields are filled out properly
 	}
 	else if (options[selected].value == "MultipleChoice")
 	{
-		var numChoices = document.getElementById("numChoices").value;
+		var numChoices = document.fmr.numChoices.value;
 		var choiceLength = 0;
 		for(var i = 1; i <=  numChoices; i++)
 		{
-			var length = document.getElementById("choice"+i).value.length;
+			var length = document.getElementsByName("choice"+i)[0].length;
 			choiceLength += length;
 			choiceLength++;
 		}
@@ -252,11 +252,11 @@ function checkForm()//error checking to make sure fields are filled out properly
 	}
 	else if (options[selected].value == "MultiAnswerMultipleChoice")
 	{
-		var numChoices = document.getElementById("numChoices").value;
+		var numChoices = document.getElementByName("numChoices").value;
 		var choiceLength = 0;
 		for(var i = 1; i <=  numChoices; i++)
 		{
-			var length = document.getElementById("choice"+i).value.length;
+			var length = document.getElementsByName("choice"+i)[0].length;
 			choiceLength += length;
 			choiceLength++;
 		}
