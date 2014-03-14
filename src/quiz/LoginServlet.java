@@ -48,13 +48,12 @@ public class LoginServlet extends HttpServlet {
 		String password = (String)request.getParameter("password");
 		String checked = (String)request.getParameter("checkbox");
 		
-		request.getSession().setAttribute("loginName", username);
-		
 		if (manager.accountExists(username) && manager.isPasswordForAccount(username, password)){
 			
 			DAL dal = (DAL)getServletContext().getAttribute("DAL");
 			User user = dal.getUser(username); //Gets User from database to store on session 
 			request.getSession().setAttribute("user", user); //Sets the user as an attribute on the session
+			request.getSession().setAttribute("loginName", username);
 			
 			if (checked == null) { //Remove cookies
 				Cookie cookies[] = request.getCookies();

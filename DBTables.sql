@@ -55,8 +55,8 @@ DROP TABLE IF EXISTS questionResponse;
 
 CREATE TABLE questionResponse (
     quizName CHAR(255),
-    question CHAR(255),
-    answer CHAR(255),
+    question VARCHAR(5000),
+    answer VARCHAR(5000),
     qtype INT,
     qNum INT
     
@@ -67,8 +67,8 @@ DROP TABLE IF EXISTS fillInTheBlank;
 
 CREATE TABLE fillInTheBlank (
     quizName CHAR(255),
-    question CHAR(255),
-    answer CHAR(255),
+    question VARCHAR(5000),
+    answer VARCHAR(5000),
     qtype INT,
     qNum INT
 );
@@ -78,11 +78,11 @@ DROP TABLE IF EXISTS multipleChoice;
 
 CREATE TABLE multipleChoice (
     quizName CHAR(255),
-    question CHAR(255),
-    answer CHAR(255),
+    question VARCHAR(5000),
+    answer VARCHAR(5000),
     qtype INT,
     qNum INT,
-    options CHAR(255)
+    options VARCHAR(5000)
 );
 
 DROP TABLE IF EXISTS multiAnswerMultipleChoice;
@@ -90,11 +90,11 @@ DROP TABLE IF EXISTS multiAnswerMultipleChoice;
 
 CREATE TABLE multiAnswerMultipleChoice (
     quizName CHAR(255),
-    question CHAR(255),
-    answer CHAR(255),
+    question VARCHAR(5000),
+    answer VARCHAR(5000),
     qtype INT,
     qNum INT,
-    options CHAR(255)
+    options VARCHAR(5000)
 );
 
 DROP TABLE IF EXISTS pictureResponse;
@@ -102,11 +102,11 @@ DROP TABLE IF EXISTS pictureResponse;
 
 CREATE TABLE pictureResponse (
     quizName CHAR(255),
-    question CHAR(255),
-    answer CHAR(255),
+    question VARCHAR(5000),
+    answer VARCHAR(5000),
     qtype INT,
     qNum INT,
-    imageURL CHAR(255)
+    imageURL VARCHAR(5000)
 );
 
 

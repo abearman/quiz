@@ -41,8 +41,14 @@ public class SubmitStatusServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("user");
 		if (user != null) {
 			dal.addStatusForUser(user.getLoginName(), status, new Date());
-			RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");		
-			dispatch.forward(request,response);
+			if (user.getIsAdministrator()) {
+				RequestDispatcher dispatch = request.getRequestDispatcher("administratorHomepage.jsp");		
+				dispatch.forward(request,response);
+			} else {
+				RequestDispatcher dispatch = request.getRequestDispatcher("userHomepage.jsp");		
+				dispatch.forward(request,response);
+			}
+			
 		} else {
 			RequestDispatcher dispatch = request.getRequestDispatcher("guestHomepage.jsp");		
 			dispatch.forward(request,response);
